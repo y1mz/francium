@@ -2,7 +2,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import ThemesProvider from "@/components/body/theme-provider"
-import Header from "@/components/body/header"
 import Footer from "@/components/body/footer"
 
 const inter = Inter({ subsets: ["latin"] });
@@ -15,15 +14,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`min-h-screen ${inter.className}`}>
+      <body className={`min-h-screen py-10 ${inter.className}`}>
         <ThemesProvider
           attribute="class"
           defaultTheme="dark"
           disableTransitionOnChange
         >
-          <Header 
-            Title={"Francium Project"}
-          />
           {children}
           <Footer />
         </ThemesProvider>

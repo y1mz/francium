@@ -1,13 +1,28 @@
-"use client"
+import Link from "next/link"
+import ModeToggle from "./header/theme-toggle"
+import UserButton from "./header/user-button"
+import { Button } from "../ui/button"
 
 function Footer() {
     return (
-        <footer className="container mx-auto px-20 py-5 mt-auto fixed inset-x-0 bottom-0">
-            <div className="">
-                <div className="flex gap-3 text-center justify-center font-mono">
-                    <p>Francium Project by <a href="https://github.com/B4tuhanY1lmaz" className="underline">B4tuhanY1lmaz</a>.</p>
-                    <a href="/faq" className="underline">F.A.Q</a>
-                    <a href="/about" className="underline">About</a>
+        <footer 
+            className="container bg-[#1A2032] rounded-xl mx-auto 
+            px-10 w-[350px] md:w-[500px] py-5 fixed inset-x-0 bottom-4"
+        >
+            <div className="flex justify-between">
+                <Button variant="ghost" size="main" asChild>
+                    <Link href="/">
+                        <img src="/Francium.svg"/>
+                    </Link>
+                </Button>
+                <div className="flex gap-1 text-center">
+                    <Button variant="ghost" size="main_text" asChild>
+                        <Link href="/about">
+                            About
+                        </Link>
+                    </Button>
+                    <UserButton />
+                    <ModeToggle />
                 </div>
             </div>
         </footer>

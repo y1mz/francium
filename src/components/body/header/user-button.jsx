@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 
 function UserButton() {
     return (
-        <Button variant="outline">
+        <Button variant="ghost" size="main_text">
             Sign in
         </Button>
     )
