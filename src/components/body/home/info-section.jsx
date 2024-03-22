@@ -16,7 +16,7 @@ function Icon({ name, ...props }) {
 
 function InfoItem({ text, alt, icon, color }) {
     return (
-        <div className="p-5">
+        <div className="px-5">
             <div className="flex flex-col gap-2">
                 <div className="justify-center mx-auto text-center">
                     <Icon name={icon} size={48} color={color}/>

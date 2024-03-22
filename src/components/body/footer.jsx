@@ -6,13 +6,13 @@ import { Button } from "../ui/button"
 function Footer() {
     return (
         <footer 
-            className="container bg-[#1A2032] rounded-xl mx-auto 
+            className="container dark:bg-[#1A2032] shadow-2xl bg-[#bfc6e8] rounded-xl mx-auto 
             px-10 w-[350px] md:w-[500px] py-5 fixed inset-x-0 bottom-4"
         >
             <div className="flex justify-between">
-                <Button variant="ghost" size="main" asChild>
+                <Button variant="ghost" size="main_text" asChild>
                     <Link href="/">
-                        <img src="/Francium.svg"/>
+                        <p className="font-bold text-lg">Francium Project</p>
                     </Link>
                 </Button>
                 <div className="flex gap-1 text-center">
