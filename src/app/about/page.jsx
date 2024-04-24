@@ -9,7 +9,7 @@ async function AboutPage() {
                 title="About"
             />
             <div>
-               <article className="prose prose-invert md:prose-lg lg:prose-xl">
+               <article className="prose dark:prose-invert md:prose-lg lg:prose-xl">
                     <h2>Hello world</h2>
                     <p>This is a styling test!</p>
                </article>

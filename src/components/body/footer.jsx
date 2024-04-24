@@ -3,7 +3,8 @@ import ModeToggle from "./header/theme-toggle"
 import UserButton from "./header/user-button"
 import { Button } from "../ui/button"
 
-function Footer() {
+async function Footer() {
+
     return (
         <footer 
             className="container dark:bg-[#1A2032] shadow-2xl bg-[#bfc6e8] rounded-xl mx-auto 
@@ -17,7 +18,7 @@ function Footer() {
                 </Button>
                 <div className="flex gap-1 text-center">
                     <Button variant="ghost" size="main_text" asChild>
-                        <Link href="/about">
+                        <Link href={"/about"}>
                             About
                         </Link>
                     </Button>
