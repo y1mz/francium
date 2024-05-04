@@ -1,5 +1,3 @@
-"use client"
-
 import config from "../../../../config/siteconfig.json"
 import items from "../../../../config/infoSection.json"
 

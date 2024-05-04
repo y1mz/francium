@@ -1,5 +1,3 @@
-"use client"
-
 import { lazy, Suspense } from "react"
 import dynamicIconImports from "lucide-react/dynamicIconImports"
 

@@ -3,8 +3,7 @@ import ModeToggle from "./header/theme-toggle"
 import UserButton from "./header/user-button"
 import { Button } from "../ui/button"
 
-async function Footer() {
-
+function Footer() {
     return (
         <footer 
             className="container dark:bg-[#1A2032] shadow-2xl bg-[#bfc6e8] rounded-xl mx-auto 
