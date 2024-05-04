@@ -14,7 +14,7 @@ function Icon({ name, ...props }) {
 
 function InfoItem({ text, alt, icon, color }) {
     return (
-        <div className="px-5">
+        <div className="p-5">
             <div className="flex flex-col gap-2">
                 <div className="justify-center mx-auto text-center">
                     <Icon name={icon} size={48} color={color}/>
@@ -33,7 +33,7 @@ function InfoSection({ items }) {
     return (
         <div className="w-full mt-5 sm:mt-10 md:mt-16">
             <div className="p-5 mx-auto justify-center text-center">
-                <div className="grid sm:grid-cols-2">
+                <div className="grid sm:grid-cols-2 gap-3">
                     {items.map((item) => (
                         <InfoItem 
                             text={item.text}
