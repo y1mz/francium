@@ -11,16 +11,15 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String       @id @default(cuid())
   name          String?
-  email         String?         @unique
+  email         String?      @unique
   emailVerified DateTime?
   image         String?
-  role          String          @default("USER")
+  role          String       @default("USER")
   accounts      Account[]
   sessions      Session[]
-  // Optional for WebAuthn support
-  Authenticator Authenticator[]
+  links         ShortLinks[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -67,17 +66,17 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// Optional for WebAuthn support
-model Authenticator {
-  id                   String  @id @default(cuid())
-  credentialID         String  @unique
-  userId               String
-  providerAccountId    String
-  credentialPublicKey  String
-  counter              Int
-  credentialDeviceType String
-  credentialBackedUp   Boolean
-  transports           String?
+model ShortLinks {
+  id   Int     @id @default(autoincrement())
+  name String?
+  slug String  @unique
+  link String
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
+
+  usage Int @default(0)
+
+  creator   User   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId String
 }
