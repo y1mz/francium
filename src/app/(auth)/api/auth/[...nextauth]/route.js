@@ -39,6 +39,12 @@ export const authOptions = {
             session.user.role = user.role
             return session
         }
+    },
+    pages: {
+        signIn: '/sign-in',
+        signOut: '/sign-out',
+        // error: '/error',
+        // newUser: '/sign-in/new
     }
 }
 
