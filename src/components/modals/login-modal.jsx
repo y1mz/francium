@@ -34,7 +34,7 @@ function LoginModal() {
     }
 
     return (
-        <Dialog open={isModalOpen} onOpenChange={() => handleOnClose()}>
+        <Dialog open={isModalOpen}>
             {session ? (
                 <DialogContent>
                     <DialogHeader>
@@ -55,11 +55,13 @@ function LoginModal() {
                     </DialogHeader>
                     <Button
                         className="bg-white"
+                        onClick={() => handleGoogleLogin()}
                     >
                         Continue with Google
                     </Button>
                     <Button
                         className="bg-stone-800 hover:bg-stone-900 text-white"
+                        onClick={() => handleGithubLogin()}
                     >
                         Continue with Github
                     </Button>

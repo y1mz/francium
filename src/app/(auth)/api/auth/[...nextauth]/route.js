@@ -1,8 +1,10 @@
 import NextAuth from "next-auth"
 import { db } from "@/lib/db"
 import { PrismaAdapter } from "@auth/prisma-adapter"
+
 import DiscordProvider from "next-auth/providers/discord"
 import GoogleProvider from "next-auth/providers/google"
+import GithubProvider from "next-auth/providers/github"
 
 export const authOptions = {
     adapter: PrismaAdapter(db),
@@ -29,6 +31,19 @@ export const authOptions = {
                     name: profile.name,
                     email: profile.email,
                     image: profile.picture,
+                    role: profile.role ?? 'USER'
+                }
+            }
+        }),
+        GithubProvider({
+            clientId: process.env.GITHUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+            profile(profile) {
+                return {
+                    id: profile.id,
+                    name: profile.name,
+                    email: profile.email,
+                    image: profile.avatar_url,
                     role: profile.role ?? 'USER'
                 }
             }
