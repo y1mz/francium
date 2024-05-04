@@ -8,7 +8,7 @@ import { DropdownMenu,
     DropdownMenuLabel }
     from "@/components/ui/dropdown-menu"
 
-import { LogOut, Cog, LayoutTemplate, User } from "lucide-react"
+import { LogOut, Cog, LayoutTemplate, LogIn } from "lucide-react"
 
 import { useSession, signIn, signOut } from "next-auth/react"
 
@@ -58,7 +58,7 @@ function UserButton() {
 
     return (
         <Button variant="ghost" size="main" onClick={() => signIn()}>
-            <User />
+            <LogIn className="h-5 w-5" />
         </Button>
     )
 }
