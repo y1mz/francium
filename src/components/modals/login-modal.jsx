@@ -71,6 +71,11 @@ function LoginModal() {
                     >
                         Continue with Discord
                     </Button>
+                    <DialogFooter>
+                        <Button asChild variant="ghost">
+                            <Link href={"/"} onClick={() => onClose()}>Cancel</Link>
+                        </Button>
+                    </DialogFooter>
                 </DialogContent>
             )}
         </Dialog>
