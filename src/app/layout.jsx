@@ -3,6 +3,7 @@ import "./globals.css";
 
 import ThemesProvider from "@/components/body/theme-provider"
 import ModalProvider from "@/components/providers/modal-provider"
+import ServerSessionProvider from "@/components/providers/session-provider"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,14 +16,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
         <body className={`min-h-screen py-10 bg-[#E1E5F4] dark:bg-[#080e1e] ${inter.className}`}>
-        <ThemesProvider
-            attribute="class"
-            defaultTheme="dark"
-            disableTransitionOnChange
-        >
-            <ModalProvider/>
-            {children}
-        </ThemesProvider>
+            <ServerSessionProvider>
+                <ThemesProvider
+                    attribute="class"
+                    defaultTheme="dark"
+                    disableTransitionOnChange
+                >
+                    <ModalProvider/>
+                    {children}
+                </ThemesProvider>
+            </ServerSessionProvider>
         </body>
     </html>
   )

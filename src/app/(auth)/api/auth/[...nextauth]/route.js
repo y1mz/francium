@@ -1,13 +1,11 @@
 import NextAuth from "next-auth"
+import { db } from "@/lib/db"
+import { PrismaAdapter } from "@auth/prisma-adapter"
 import DiscordProvider from "next-auth/providers/discord"
 import GoogleProvider from "next-auth/providers/google"
 
-
-import { FirestoreAdapter } from "@auth/firebase-adapter"
-import { firestore } from "../../../../../firebase/server"
-
 export const authOptions = {
-    adapter: FirestoreAdapter(firestore),
+    adapter: PrismaAdapter(db),
     providers: [
         DiscordProvider({
             clientId: process.env.DISCORD_CLIENT_ID,
@@ -44,6 +42,6 @@ export const authOptions = {
     }
 }
 
-export const { handlers, auth, signIn, signOut } = NextAuth(authOptions)
+const handler = NextAuth(authOptions)
 
-export const { GET, POST } = handlers
+export { handler as GET, handler as POST }
