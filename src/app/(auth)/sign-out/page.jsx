@@ -6,17 +6,16 @@ import AboutHeader from "@/components/about/header"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
+import { useSession, signIn, signOut } from "next-auth/react"
+
 function SignOutPage() {
 
-    useEffect(() => {
-        setTimeout(() => {
-            redirect("/")
-        }, 1200)
-        redirect("/")
-    }, []);
+    const { data: session } = useSession()
 
-    function handleClick() {
-        return redirect("/");
+    if (session) {
+        return signOut({ callbackUrl: '/'})
+    } else {
+        redirect("/")
     }
 
     return (
