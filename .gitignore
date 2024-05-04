@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 .yarn/install-state.gz
+package-lock.json
 
 # testing
 /coverage
@@ -27,6 +28,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -39,3 +41,9 @@ next-env.d.ts
 
 .idea/*
 bun.lockb
+bun.*
+
+## Prisma
+prisma/migrations/*
+prisma/dev.db
+prisma/*.db
