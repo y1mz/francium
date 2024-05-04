@@ -1,11 +1,8 @@
-"use client"
-
 import { Inter } from "next/font/google";
 import "./globals.css";
 
 import ThemesProvider from "@/components/body/theme-provider"
 import ModalProvider from "@/components/providers/modal-provider"
-import { SessionProvider } from "next-auth/react"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +14,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-    <SessionProvider>
         <body className={`min-h-screen py-10 bg-[#E1E5F4] dark:bg-[#080e1e] ${inter.className}`}>
         <ThemesProvider
             attribute="class"
@@ -28,7 +24,6 @@ export default function RootLayout({ children }) {
             {children}
         </ThemesProvider>
         </body>
-    </SessionProvider>
     </html>
   )
 }

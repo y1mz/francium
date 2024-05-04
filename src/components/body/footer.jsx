@@ -6,8 +6,8 @@ import { Button } from "../ui/button"
 function Footer() {
     return (
         <footer 
-            className="container dark:bg-[#1A2032] shadow-2xl bg-[#bfc6e8] rounded-xl mx-auto 
-            px-10 w-[350px] md:w-[500px] py-5 fixed inset-x-0 bottom-4"
+            className="container backdrop-blur-md bg-white/20 dark:bg-white/10 shadow-2xl rounded-xl mx-auto
+            px-5 w-[350px] md:w-[500px] py-5 fixed inset-x-0 bottom-4"
         >
             <div className="flex justify-between">
                 <Button variant="ghost" size="main_text" asChild>
@@ -15,7 +15,7 @@ function Footer() {
                         <p className="font-bold text-lg">Francium Project</p>
                     </Link>
                 </Button>
-                <div className="flex gap-1 text-center">
+                <div className="hidden md:flex gap-1 text-center">
                     <Button variant="ghost" size="main_text" asChild>
                         <Link href={"/about"}>
                             About
