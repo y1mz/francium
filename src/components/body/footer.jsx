@@ -6,7 +6,7 @@ import { Button } from "../ui/button"
 function Footer() {
     return (
         <footer 
-            className="container backdrop-blur-md bg-white/20 dark:bg-white/10 shadow-2xl rounded-xl mx-auto
+            className="container backdrop-blur-2xl bg-white/20 dark:bg-white/10 shadow-2xl rounded-xl mx-auto
             px-5 w-[350px] md:w-[500px] py-5 fixed inset-x-0 bottom-4"
         >
             <div className="flex justify-between">
