@@ -6,9 +6,9 @@ import { useModal } from "@/components/modals/hooks/modal-hook";
 function SignInPage() {
     const { onOpen } = useModal()
 
-     useEffect(() => {
-         onOpen("login")
-     }, []);
+    useEffect(() => {
+        onOpen("login")
+    }, []);
 
     return (
         <div className="flex h-dvh w-full">
