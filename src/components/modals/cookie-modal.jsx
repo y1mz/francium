@@ -3,14 +3,38 @@
 import { Dialog, DialogContent, DialogTitle,
     DialogFooter, DialogHeader} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
+
 import Markdown from "markdown-to-jsx"
+import Link from "next/link"
 
 import { useModal } from "./hooks/modal-hook"
+import { useSession } from "next-auth/react"
+import { generateUUID } from "@/lib/generateUUID"
+import { useState, useEffect } from "react"
 
-function CookiesModal() {
-    const { isOpen, onClose, type, data } = useModal()
+const CookiesModal = () => {
+    const { isOpen, onClose, type } = useModal()
     const isModalOpen = isOpen && type === "cookies"
+    const { data: session } = useSession()
+    const [modalData, setModalData] = useState([])
+
+
+    // Fetch the Markdown based content from server and write into modalData state.
+    useEffect(() => {
+        const getModalContent = async () => {
+            const response = await fetch("/api/content/cookie").then(res => res.json())
+            setModalData(response)
+            }
+        getModalContent()
+    }, [])
+
+    function saveUUID() {
+        const cUUID = localStorage.getItem("localUUID")
+        if (!session && !cUUID) {
+            const UUID = generateUUID(15)
+            localStorage.setItem("localUUID", UUID)
+        }
+    }
 
     if (isModalOpen) {
         // To-do: insert params here.
@@ -18,6 +42,7 @@ function CookiesModal() {
 
     const handleAcceptCookies = () => {
         localStorage.setItem("cookiesAccepted", "True")
+        saveUUID()
         return onClose()
     }
 
@@ -35,21 +60,28 @@ function CookiesModal() {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        Before you continue.
+                        Before you continue
                     </DialogTitle>
                 </DialogHeader>
                 <div>
-                    <article 
+                    <article
                         className="prose dark:prose-invert"
                     >
                         <Markdown>
-                            {fetchMarkdown().content}
+                            {modalData.modalContent}
+
                         </Markdown>
                     </article>
                 </div>
                 <DialogFooter className="mt-2">
                     <Button variant="ghost" asChild>
-                        <Link href="/about#cookies">Learn more</Link>
+                        <Link 
+                        href="/about#cookies"
+                        onClick={() => onClose()}
+                        >
+                            Learn more
+                        </Link>
+
                     </Button>
                     <Button onClick={() => handleAcceptCookies()}>Continue with cookies.</Button>
                 </DialogFooter>

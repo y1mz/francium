@@ -6,9 +6,12 @@ import { useModal } from "@/components/modals/hooks/modal-hook"
 import Footer from "@/components/body/footer";
 
 function MainPageLayout({ children }) {
-    const { onOpen } = useModal()
+    const { onOpen } = useModal()    
+
+    let cA;
     useEffect(() => {
-        const cA = localStorage.getItem("cookiesAccepted")
+
+        cA = localStorage.getItem("cookiesAccepted")
         if (window.location.pathname === "/") {
             if (!cA) {
                 return onOpen("cookies")
