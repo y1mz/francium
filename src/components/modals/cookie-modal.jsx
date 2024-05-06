@@ -3,6 +3,7 @@
 import { Dialog, DialogContent, DialogTitle,
     DialogFooter, DialogHeader} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+
 import Markdown from "markdown-to-jsx"
 import Link from "next/link"
 
@@ -35,10 +36,23 @@ const CookiesModal = () => {
         }
     }
 
+    if (isModalOpen) {
+        // To-do: insert params here.
+    }
+
     const handleAcceptCookies = () => {
         localStorage.setItem("cookiesAccepted", "True")
         saveUUID()
         return onClose()
+    }
+
+    // Fetch markdown content for modal from server.
+    const fetchMarkdown = async () => {
+        const response = await fetch("/api/modal/cookie")
+
+        return {
+            content: response.json()
+        }
     }
 
     return (
@@ -55,6 +69,7 @@ const CookiesModal = () => {
                     >
                         <Markdown>
                             {modalData.modalContent}
+
                         </Markdown>
                     </article>
                 </div>
@@ -66,6 +81,7 @@ const CookiesModal = () => {
                         >
                             Learn more
                         </Link>
+
                     </Button>
                     <Button onClick={() => handleAcceptCookies()}>Continue with cookies.</Button>
                 </DialogFooter>

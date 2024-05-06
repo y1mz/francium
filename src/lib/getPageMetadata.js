@@ -20,4 +20,5 @@ function getPageContent(page) {
     return matter(content)
 }
 
+
 export { getPageContent, getModalContent }
