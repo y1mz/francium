@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 
 import CookiesModal from "@/components/modals/cookie-modal"
 import LoginModal from "@/components/modals/login-modal"
+import LoginReasonModal from "../modals/login-reason-modal"
 
 function ModalProvider() {
     const [isMounted, setIsMounted] = useState(false)
@@ -18,6 +19,7 @@ function ModalProvider() {
         <>
             <CookiesModal />
             <LoginModal />
+            <LoginReasonModal />
         </>
     )
 }
