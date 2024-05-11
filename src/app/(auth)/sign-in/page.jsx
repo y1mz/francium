@@ -7,9 +7,12 @@ import { useSearchParams } from "next/navigation"
 function SignInPage() {
     const { onOpen } = useModal()
 
-    // To-do: Get params from URL and redirect them to auth modal inside useEffect.
-
+    const searchParams = useSearchParams()
      useEffect(() => {
+        const UrlStates = {
+            callbackUrl : searchParams.get("callbackUrl")
+        }
+
          onOpen("login", UrlStates)
      }, []);
 

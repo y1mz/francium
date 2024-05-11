@@ -6,31 +6,30 @@ import { Button } from "@/components/ui/button"
 
 import { useModal } from "./hooks/modal-hook"
 import { redirect } from "next/navigation"
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signIn } from "next-auth/react"
 import Link from "next/link"
+
+import { FcGoogle } from "react-icons/fc"
+import { ImGithub } from "react-icons/im"
+import { FaDiscord } from "react-icons/fa6"
 
 function LoginModal() {
     const { isOpen, onClose, type, data } = useModal()
     const isModalOpen = isOpen && type === "login"
-
+    const { callbackUrl } = data
     const { data: session } = useSession()
 
-    const handleOnClose = () => {
-        onClose()
-        redirect("/")
-    }
-
     const handleDiscordLogin = () => {
-        signIn("discord", { callbackUrl: '/' }).then(redirect("/"))
+        signIn("discord", { callbackUrl: callbackUrl }).then(redirect(callbackUrl))
         return onClose()
     }
 
     const handleGoogleLogin = () => {
-        signIn("google", { callbackUrl: '/' }).then(redirect("/"))
+        signIn("google", { callbackUrl: callbackUrl }).then(redirect(callbackUrl))
     }
 
     const handleGithubLogin = () => {
-        signIn("github", { callbackUrl: '/' }).then(redirect("/"))
+        signIn("github", { callbackUrl: callbackUrl }).then(redirect(callbackUrl))
     }
 
     return (
@@ -54,26 +53,26 @@ function LoginModal() {
                         </DialogTitle>
                     </DialogHeader>
                     <Button
-                        className="bg-white"
+                        className="bg-white items-center"
                         onClick={() => handleGoogleLogin()}
                     >
-                        Continue with Google
+                        <FcGoogle className="text-lg mr-2"/> Continue with Google
                     </Button>
                     <Button
-                        className="bg-stone-800 hover:bg-stone-900 text-white"
+                        className="bg-stone-800 hover:bg-stone-900 text-white items-center"
                         onClick={() => handleGithubLogin()}
                     >
-                        Continue with Github
+                        <ImGithub className="text-lg mr-2"/> Continue with Github
                     </Button>
                     <Button
-                        className="bg-indigo-600 hover:bg-indigo-800 text-white"
+                        className="bg-indigo-600 hover:bg-indigo-800 text-white items-center"
                         onClick={() => handleDiscordLogin()}
                     >
-                        Continue with Discord
+                        <FaDiscord className="text-lg mr-2"/> Continue with Discord
                     </Button>
                     <DialogFooter>
                         <Button asChild variant="ghost">
-                            <Link href={"/"} onClick={() => onClose()}>Cancel</Link>
+                            <Link href={callbackUrl} onClick={() => onClose()}>Cancel</Link>
                         </Button>
                     </DialogFooter>
                 </DialogContent>
