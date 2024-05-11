@@ -16,6 +16,7 @@ const CookiesModal = () => {
     const { isOpen, onClose, type } = useModal()
     const isModalOpen = isOpen && type === "cookies"
     const { data: session } = useSession()
+    const [loading, setIsLoading] = useState(false)
     const [modalData, setModalData] = useState([])
 
 
@@ -25,7 +26,10 @@ const CookiesModal = () => {
             const response = await fetch("/api/content/cookie").then(res => res.json())
             setModalData(response)
             }
+
+        setIsLoading(true)
         getModalContent()
+        setIsLoading(false)
     }, [])
 
     function saveUUID() {
@@ -46,15 +50,6 @@ const CookiesModal = () => {
         return onClose()
     }
 
-    // Fetch markdown content for modal from server.
-    const fetchMarkdown = async () => {
-        const response = await fetch("/api/modal/cookie")
-
-        return {
-            content: response.json()
-        }
-    }
-
     return (
         <Dialog open={isModalOpen} onOpenChange={() => onClose()}>
             <DialogContent>
@@ -67,10 +62,15 @@ const CookiesModal = () => {
                     <article
                         className="prose dark:prose-invert"
                     >
-                        <Markdown>
-                            {modalData.modalContent}
-
-                        </Markdown>
+                        {loading ? (
+                            <>
+                                <p>Fetching content please wait.</p>
+                            </>
+                        ) : (
+                            <Markdown>
+                                {modalData.modalContent}
+                            </Markdown>
+                        )}
                     </article>
                 </div>
                 <DialogFooter className="mt-2">
