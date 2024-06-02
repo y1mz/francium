@@ -1,5 +1,6 @@
 import { db } from '@/lib/db'
 import { redirect } from "next/navigation"
+import { notFound } from "next/navigation"
 
 async function RedirectPage({ params }) {
     const slug = params.slug
@@ -14,11 +15,7 @@ async function RedirectPage({ params }) {
     console.log(redirectUrl)
 
     if (!redirectUrl) {
-        return (
-            <div>
-                <p>Url not found.</p>
-            </div>
-        )
+        return notFound()
     }
 
     if (redirectUrl && redirectUrl.expiresAt >= currentDate) {
