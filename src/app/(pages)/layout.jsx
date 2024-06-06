@@ -1,12 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useModal } from "@/components/modals/hooks/modal-hook"
 
 import Footer from "@/components/body/footer";
 
 function MainPageLayout({ children }) {
-    const { onOpen } = useModal()    
+    const { onOpen } = useModal()
 
     let cA;
     useEffect(() => {

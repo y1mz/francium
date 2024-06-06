@@ -1,6 +1,7 @@
 {
-    "SiteName": "",
+    "SiteName": "Francium Project",
     "SiteDescription": "Francium is a simple but powerfull link shortener that doesn't spies on it's users. It's written using NextJS and Firebase and it's source code can be found here.",
+    "SiteUrl": "http://localhost:3000",
     "Acordions": [
         {
             "title": "",

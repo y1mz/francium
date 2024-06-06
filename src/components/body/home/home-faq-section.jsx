@@ -4,18 +4,20 @@ import faq from "../../../../config/faqSection.json"
 
 function HomeFAQ() {
     return (
-        <div className="md:px-20 py-5">
-            <h2 className="font-bold text-2xl">F.A.Q</h2>
-            <Accordion type="single" collapsible className="w-full">
-                {faq.map((faq) => (
-                    <AccordionItem value={faq.title} key={faq.title}>
-                        <AccordionTrigger>{faq.title}</AccordionTrigger>
-                        <AccordionContent>
-                            {faq.description}
-                        </AccordionContent>
-                    </AccordionItem>
-                ))}
-            </Accordion>
+        <div className="p-5">
+            <div className="px-10 md:px-20 py-5 border border-white/20 backdrop-blur-sm bg-white/10 rounded-lg">
+                <h2 className="font-bold text-2xl">F.A.Q</h2>
+                <Accordion type="single" collapsible className="w-full">
+                    {faq.map((faq) => (
+                        <AccordionItem value={faq.title} key={faq.title}>
+                            <AccordionTrigger>{faq.title}</AccordionTrigger>
+                            <AccordionContent>
+                                {faq.description}
+                            </AccordionContent>
+                        </AccordionItem>
+                    ))}
+                </Accordion>
+            </div>
         </div>
     )
 }

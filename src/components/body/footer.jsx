@@ -3,7 +3,10 @@ import ModeToggle from "./header/theme-toggle"
 import UserButton from "./header/user-button"
 import { Button } from "../ui/button"
 
+import conf from "/config/siteconfig.json"
+
 function Footer() {
+
     return (
         <footer 
             className="container backdrop-blur-2xl bg-white/20 dark:bg-white/10 shadow-2xl rounded-xl mx-auto
@@ -12,7 +15,7 @@ function Footer() {
             <div className="flex justify-between">
                 <Button variant="ghost" size="main_text" asChild>
                     <Link href="/">
-                        <p className="font-bold text-lg">Francium Project</p>
+                        <p className="font-bold text-lg">{conf.SiteName}</p>
                     </Link>
                 </Button>
                 <div className="hidden md:flex gap-1 text-center">
