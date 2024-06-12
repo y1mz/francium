@@ -2,11 +2,12 @@
 
 import { useSession, signIn } from "next-auth/react"
 import { useModal } from "@/components/modals/hooks/modal-hook"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import LinkSuccess from "@/components/shorter/link-success"
+import LinkErrorComp from "@/components/shorter/link-error"
 
 function LinkShorterBox() {
     const { data: session } = useSession()
@@ -17,41 +18,28 @@ function LinkShorterBox() {
     const [isError, setError] = useState()
     const [endRespone, setEndResponse] = useState({})
 
-    let localUUID
-    useEffect(() => {
-        if (!session) {
-            localUUID = localStorage.getItem("localUUID")
-        }
-    });
-
-    const ErrorComponent = () => (
-        <div className="bg-rose-900/20 justify-center items-center text-center rounded-md border border-rose-900">
-            <p className="p-2">There was an error. Please try again. This incident has reported.</p>
-        </div>
-    )
-
     const Content = () => {
 
-       // if (!session) {
-       //     return (
-       //         <div className="flex gap-1">
-       //             <Button
-       //                 className="w-2/3"
-       //                 variant="outline"
-       //                 onClick={() => signIn()}
-       //             >
-       //                 You need to be signed in to continue
-       //             </Button>
-       //             <Button
-       //                 className="w-1/3"
-       //                 variant="outline"
-       //                 onClick={() => onOpen("reason")}
-       //             >
-       //                 See why
-       //             </Button>
-       //         </div>
-       //     )
-       // }
+        if (!session) {
+            return (
+                <div className="flex gap-1">
+                    <Button
+                        className="w-2/3"
+                        variant="outline"
+                        onClick={() => signIn()}
+                    >
+                        You need to be signed in to continue
+                    </Button>
+                    <Button
+                        className="w-1/3"
+                        variant="outline"
+                        onClick={() => onOpen("reason")}
+                    >
+                        See why
+                    </Button>
+                </div>
+            )
+        }
 
         const onSubmit = async (event) => {
             event.preventDefault()
@@ -65,8 +53,7 @@ function LinkShorterBox() {
                     method: 'POST',
                     body: JSON.stringify({
                         link: link
-                    }),
-                    headers: { "auth-localUUID": localUUID }
+                    })
                 })
 
                 if (!response.ok) {
@@ -84,7 +71,7 @@ function LinkShorterBox() {
                 })
 
             } catch (e) {
-                setError(e)
+                setError(e.message)
                 console.log("[SHORT_LINK_PUBLISH]", e)
             } finally {
                 setSubmitting(false)
@@ -109,7 +96,7 @@ function LinkShorterBox() {
 
     return (
         <div className="flex flex-col gap-1 md:px-20">
-            {isError && <ErrorComponent />}
+            {isError && <LinkErrorComp e={isError} e_code={"500"}/>}
             {endRespone.url &&
                 <LinkSuccess
                     title={endRespone.title}
