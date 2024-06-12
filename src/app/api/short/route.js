@@ -3,33 +3,9 @@ import { ServerSession } from "@/lib/server-session"
 import { NextResponse } from "next/server"
 import { generateUUID } from "@/lib/generateUUID"
 import getMetaData from "metadata-scraper"
-import { headers } from "next/headers"
 
 export async function POST(request){
     const session = await ServerSession()
-    let userUUID;
-    if (!session) {
-        userUUID = headers().get("auth-localUUID")
-    }
-    if (userUUID && session) {
-        throw new Error("[2400] User and nonMemberUUID can't be at the same time")
-    }
-
-    // Return 400 if unauthorized person has more than 10 links
-
-    if (userUUID) {
-        const srv = await db.shortLinks.findMany({
-            where: {
-                nonMemberAuthorUUID: userUUID
-            }
-        })
-
-        const linkCount = srv.length
-        if (linkCount >= 10) {
-            console.log(`[2401][SHORT_ROUTE][ERROR] Unauthorized user UUID: ${userUUID} has too many links.`)
-            return new NextResponse("[2401] Too many links", { status: 400 })
-        }
-    }
 
     try {
         const body = await request.json()
@@ -40,7 +16,7 @@ export async function POST(request){
             expDate: body.expDate,
         }
 
-        if (!session && !userUUID) {
+        if (!session) {
             return new NextResponse("Unauthorized", { status: 401 })
         }
 
@@ -48,35 +24,20 @@ export async function POST(request){
             return new NextResponse("link can't be empty", { status: 400 })
         }
 
-        let user
-        if (!userUUID) {
-            user = await db.user.findUnique({
-                where: {
-                    email: session.user.email
-                },
-                include: {
-                    links: true
-                }
-            })
-
-            if (!user) {
-                throw new Error("User has a session but it doesn't exists. Giving up.")
+        let user = await db.user.findUnique({
+            where: {
+                email: session.user.email
+            },
+            include: {
+                links: true
             }
+        })
+        if (!user) {
+            throw new Error("User has a session but it doesn't exists. Giving up.")
         }
 
         // Prevent user from dossing
-        let lastShort
-        if (userUUID) {
-            const unShorts = await db.shortLinks.findMany({
-                where: {
-                    nonMemberAuthorUUID: userUUID
-                }
-            })
-            lastShort = unShorts.reverse()[0]
-        } else {
-            lastShort = user.links?.reverse()[0]
-        }
-
+        let lastShort = user.links?.reverse()[0]
         const postDifference = (new Date() - lastShort?.createdAt) / 1000
 
         if (postDifference < 5.0) {
@@ -139,8 +100,7 @@ export async function POST(request){
                     metaIconUrl: webMetadata.icon,
                     metaImageUrl: webMetadata.image,
                     expiresAt: expDate,
-                    creatorId: user?.id,
-                    nonMemberAuthorUUID: userUUID
+                    creatorId: user?.id
                 }
             })
             const srv = await db.shortLinks.findUnique({
