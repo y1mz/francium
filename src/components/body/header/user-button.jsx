@@ -7,6 +7,7 @@ import { DropdownMenu,
     DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
     DropdownMenuLabel }
     from "@/components/ui/dropdown-menu"
+import Link from "next/link"
 
 import { LogOut, Cog, LayoutTemplate, LogIn } from "lucide-react"
 
@@ -42,9 +43,11 @@ function UserButton() {
                         <Cog className="h-4 w-4" />
                         <p className="ml-2">Settings</p>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => console.warn("Not implemented")}>
-                        <LayoutTemplate className="h-4 w-4" />
-                        <p className="ml-2">My links</p>
+                    <DropdownMenuItem asChild>
+                        <Link href={"/mylinks"} className="flex">
+                            <LayoutTemplate className="h-4 w-4" />
+                            <p className="ml-2">My links</p>
+                        </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => signOut()}>

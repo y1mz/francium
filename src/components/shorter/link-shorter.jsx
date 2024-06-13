@@ -46,10 +46,13 @@ function LinkShorterBox() {
             if (isError) {
                 setError(null)
             }
+            if (endRespone.url) {
+                setEndResponse({})
+            }
             try {
                 setSubmitting(true)
 
-                const response = await fetch("/api/short", {
+                const response = await fetch("/api/short/create", {
                     method: 'POST',
                     body: JSON.stringify({
                         link: link

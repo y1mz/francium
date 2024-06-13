@@ -40,10 +40,6 @@ const CookiesModal = () => {
         }
     }
 
-    if (isModalOpen) {
-        // To-do: insert params here.
-    }
-
     const handleAcceptCookies = () => {
         localStorage.setItem("cookiesAccepted", "True")
         saveUUID()
