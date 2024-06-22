@@ -4,21 +4,18 @@ import { Button } from "@/components/ui/button"
 // import { AspectRatio } from "@/components/ui/aspect-ratio"
 import Link from "next/link"
 
-import {useEffect, useState} from "react"
-import conf from "/config/siteconfig.json"
+import { useEffect, useState } from "react"
 
 function LinkSuccess({ title, url, short, img, desc }) {
     const [clicked, setClicked] = useState(false)
-    const webUrl = process.env.NODE_ENV === 'production'
-        ? `${conf.SiteUrl}`
-        : 'http://localhost:3000'
+    const webUUrl = window.location.origin
 
     useEffect(() => {
         setTimeout(() => setClicked(false), 3500)
     }, [clicked]);
 
     const handleClick = () => {
-        navigator.clipboard.writeText(`${webUrl}${short}`)
+        navigator.clipboard.writeText(`${webUUrl}${short}`)
         setClicked(true)
     }
     return (

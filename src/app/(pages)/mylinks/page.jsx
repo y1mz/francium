@@ -27,7 +27,7 @@ async function MyLinksPage() {
         <div className="mx-auto max-w-[1100px] px-5 py-10 md:px-20">
             <AboutHeader title="My Links" />
             <div className="flex flex-col gap-2 py-5">
-                <h2 className="text-2xl font-bold py-2">Links you've shorted</h2>
+                <h2 className="text-2xl text-center font-bold py-2">Links you've shorted</h2>
                 {links.length === 0 ?
                     (
                         <p className="w-full text-center">There is nothing here.</p>

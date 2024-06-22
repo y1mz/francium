@@ -18,7 +18,7 @@ function Footer() {
                         <p className="font-bold text-lg">{conf.SiteName}</p>
                     </Link>
                 </Button>
-                <div className="hidden md:flex gap-1 text-center">
+                <div className="flex gap-1 text-center">
                     <Button variant="ghost" size="main_text" asChild>
                         <Link href={"/about"}>
                             About
