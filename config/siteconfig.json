@@ -2,18 +2,43 @@
     "SiteName": "Francium Project",
     "SiteDescription": "A simple link shortener that just works.",
     "SiteUrl": "http://localhost:3000",
-    "Acordions": [
-        {
-            "title": "",
-            "description": ""
-        },
-        {
-            "title": "",
-            "description": ""
-        },
-        {
-            "title": "",
-            "description": ""
-        }
-    ]
+    "Ackee" : {
+        "useAckee": true,
+        "AckeeUrl": "",
+        "AckeeDomainId": ""
+    },
+    "HomePage": {
+        "Accordions": [
+            {
+                "title": "",
+                "description": ""
+            },
+            {
+                "title": "",
+                "description": ""
+            },
+            {
+                "title": "",
+                "description": ""
+            }
+        ],
+        "InfoSection": [
+            {
+                "title": "",
+                "icon" : "",
+                "description": ""
+            },
+            {
+                "title": "",
+                "icon" : "",
+                "description": ""
+            },
+            {
+                "title": "",
+                "icon" : "",
+                "description": ""
+            }
+        ]
+    }
+
 }
