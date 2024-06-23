@@ -19,15 +19,7 @@ export async function GET(req, { params }) {
             return new NextResponse("Such link doesn't exists", { status: 404 })
         }
 
-        const response = {
-            title: server.metaName,
-            desc: server.metaDesc,
-            url: server.link,
-            img: server.metaImageUrl,
-            icon: server.metaIconUrl
-        }
-
-        return NextResponse.json(response)
+        return NextResponse.json(server)
     } catch (e) {
         console.log("[SHORT_ROUTE_GET][ERROR]", e)
         return new NextResponse("Internal Server Error", { status: 500 })

@@ -1,0 +1,39 @@
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
+import Link from "next/link"
+
+function LinkCheckResult({ result }) {
+    return (
+        <div className="p-4 rounded-lg border border-white/30 bg-white/10 backdrop-blur-sm">
+            <div className="flex flex-col gap-4">
+                <p className="font-bold text-lg">Short-url details:</p>
+                <div className="flex flex-col gap-2">
+                    <div className="flex gap-3">
+                        <p className="whitespace-nowrap font-bold">Name: </p>
+                        <p className="truncate text-sm">{result.name}</p>
+                    </div>
+                    <Separator className="bg-white/50 px-10"/>
+                    <div className="flex gap-3">
+                        <p className="whitespace-nowrap font-bold">Description: </p>
+                        <p className="line-clamp-2 text-sm">{result.metaDesc}</p>
+                    </div>
+                    <Separator className="bg-white/50 px-10"/>
+                    <div className="flex gap-3">
+                        <p className="whitespace-nowrap font-bold">Url: </p>
+                        <p className="truncate text-sm">{result.link}</p>
+                    </div>
+                    {result.metaImageUrl && <>
+                        <Separator className="bg-white/50 px-10" />
+                        <div className="flex flex-col gap-2">
+                            <p className="font-bold">OpenGraph Image:</p>
+                            <img src={result.metaImageUrl} alt={`OpenGraph Image for ${result.metaName}`} className="rounded-lg" />
+                        </div>
+                    </>}
+                </div>
+                <Button variant="outline" asChild><Link href={result.link}>Visit url</Link></Button>
+            </div>
+        </div>
+    )
+}
+
+export default LinkCheckResult
