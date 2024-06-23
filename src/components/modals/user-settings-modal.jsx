@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogTitle,
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
+import ModalError from "@/components/body/modal-error"
 
 import { useModal } from "./hooks/modal-hook"
 import { useSession } from "next-auth/react"
@@ -18,7 +19,8 @@ const UserSettingsModal = () => {
     const { data: session } = useSession()
     const { register
         , handleSubmit
-        , formState: { errors }, setValue, getValues } = useForm()
+        , formState: { errors },
+        setValue, setError , getValues } = useForm()
 
     useEffect(() => {
         setValue("username", session?.user.name)
@@ -39,7 +41,9 @@ const UserSettingsModal = () => {
             body: feBody
         })
         if (!response.ok) {
-            console.log("There was an error")
+            if (response.status === 402) {
+                setError("email", { type: "focus", message: "Email already registered under a different account."})
+            }
         } else {
             window.location.reload()
         }
@@ -68,6 +72,7 @@ const UserSettingsModal = () => {
                                            className="w-full" {...register("email")}
                                     />
                                 </div>
+                                {errors.email && <ModalError message={errors.email.message} /> }
                             </div>
                             <Button type="submit">Apply</Button>
                         </div>

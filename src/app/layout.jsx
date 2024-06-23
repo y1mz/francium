@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import conf from "/config/siteconfig.json"
 
-import ThemesProvider from "@/components/body/theme-provider"
+import ThemesProvider from "@/components/providers/theme-provider"
 import ModalProvider from "@/components/providers/modal-provider"
 import ServerSessionProvider from "@/components/providers/session-provider"
 
