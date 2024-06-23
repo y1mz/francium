@@ -12,9 +12,11 @@ import Link from "next/link"
 import { LogOut, Cog, LayoutTemplate, LogIn } from "lucide-react"
 
 import { useSession, signIn, signOut } from "next-auth/react"
+import { useModal } from "@/components/modals/hooks/modal-hook"
 
 function UserButton() {
     const { data: session } = useSession()
+    const { onOpen } = useModal()
 
     if (session) {
         const userNameFirst = session.user.name.substring(0,1).toUpperCase()
@@ -39,7 +41,7 @@ function UserButton() {
                         </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator/>
-                    <DropdownMenuItem onClick={() => console.warn("Not implemented")}>
+                    <DropdownMenuItem onClick={() => onOpen("usrSettings")}>
                         <Cog className="h-4 w-4" />
                         <p className="ml-2">Settings</p>
                     </DropdownMenuItem>
