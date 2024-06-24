@@ -19,9 +19,15 @@ async function MyLinksPage() {
         },
         include: {
             links: true
-        }
+        },
     })
     const links = userContent.links
+    const shortedLinks = links.sort((a, b) => {
+        let dateA = new Date(a.createdAt)
+        let dateB = new Date(b.createdAt)
+
+        return dateB.getTime() - dateA.getTime()
+    })
 
     return (
         <div className="mx-auto max-w-[1100px] px-5 py-10 md:px-20">
@@ -33,7 +39,7 @@ async function MyLinksPage() {
                         <p className="w-full text-center">There is nothing here.</p>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {links.map((link) => (
+                            {shortedLinks.map((link) => (
                                 <LinkBox
                                     key={link.id}
                                     LinkId={link.id}

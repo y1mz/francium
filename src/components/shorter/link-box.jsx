@@ -29,8 +29,16 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
             className="relative rounded-lg backdrop-blur-md bg-white/10 hover:bg-white/20 transition duration-200 h-48 px-12 md:px-0">
             <div className="absolute p-6 top-0 bottom-0 inset-x-0">
                 <div className="flex flex-col">
-                    <h2 className="text-xl font-bold my-0">{title.split(" ").slice(0, 5).join(" ")}{title.split(" ").length > 5 && "..."}</h2>
-                    <span className="font-light text-sm truncate">{url}</span>
+                    {title ? (
+                        <>
+                            <h2 className="text-xl font-bold my-0">{title.split(" ").slice(0, 5).join(" ")}{title.split(" ").length > 5 && "..."}</h2>
+                            <span className="font-light text-sm truncate">{url}</span>
+                        </>
+                    ) : (
+                        <h2 className="text-xl font-bold my-0 line-clamp-3">
+                            {url}
+                        </h2>
+                    )}
                 </div>
                 <div className="absolute bottom-0 inset-x-0 p-4">
                     <div className="flex justify-between items-end">

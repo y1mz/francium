@@ -14,12 +14,12 @@ export async function PATCH(req) {
             return new NextResponse("Username and email is required", { status: 401 })
         }
 
-        const emailCheck = db.user.findUnique({
+        const emailCheck = await db.user.findUnique({
             where: {
                 email: email
             }
         })
-        if (emailCheck) {
+        if (emailCheck.email !== session?.user.email) {
             return new NextResponse("Email already registered", { status: 402 })
         }
 
