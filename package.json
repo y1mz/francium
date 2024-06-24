@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 8085",
     "lint": "next lint",
     "postinstall": "prisma generate",
     "filters": "node src/lib/getFilters.js"
@@ -22,12 +22,12 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@tailwindcss/typography": "^0.5.12",
     "@tanstack/react-table": "^8.11.8",
+    "cheerio": "^1.0.0-rc.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "gray-matter": "^4.0.3",
-    "lucide-react": "^0.331.0",
+    "lucide-react": "^0.396.0",
     "markdown-to-jsx": "^7.4.7",
-    "metadata-scraper": "^0.2.61",
     "next": "14.2.3",
     "next-auth": "^4.24.7",
     "next-themes": "^0.2.1",

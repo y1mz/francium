@@ -3,24 +3,17 @@ import { ServerSession } from "@/lib/server-session"
 import { NextResponse } from "next/server"
 import { generateUUID } from "@/lib/generateUUID"
 import { CheckUrl } from "@/lib/checkUrl"
-import getMetaData from "metadata-scraper"
+import { getWebsiteMetadata } from "@/lib/getWebsiteMetadata"
 
 export async function POST(request){
     const session = await ServerSession()
 
     try {
-        const body = await request.json()
-        const { link } = body
-        const contents = {
-            title: body.title,
-            custUrl: body.url,
-            expDate: body.expDate,
-        }
+        const { link } = await request.json()
 
         if (!session) {
             return new NextResponse("Unauthorized", { status: 401 })
         }
-
         if (!link) {
             return new NextResponse("link can't be empty", { status: 400 })
         }
@@ -33,9 +26,6 @@ export async function POST(request){
                 links: true
             }
         })
-        if (!user) {
-            throw new Error("User has a session but it doesn't exists. Giving up.")
-        }
 
         // Run filter before going further
         const filterStatus = CheckUrl(link.split("/").slice(2,3)[0])
@@ -54,7 +44,7 @@ export async function POST(request){
         }
 
         // Database task
-        let UUID, expDate, UrlTitle, slug
+        let UUID, expDate
         UUID = generateUUID(5)
 
         // Create new UUID if the current one already exists
@@ -69,44 +59,21 @@ export async function POST(request){
         }
 
         // Fetch the metadata of url
-        const webMetadata = await getMetaData(link)
+        let webMetadata = await getWebsiteMetadata(link)
+        console.log(webMetadata)
 
-        // Bunch of if else statements for custom urls
-        if (contents.expDate) {
-            expDate = contents.expDate
-        } else {
-            expDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
-        }
-
-        if (contents.title) {
-            UrlTitle = contents.title
-        } else {
-            UrlTitle = webMetadata.title
-        }
-
-        if (contents.custUrl) {
-            const uLength = contents.custUrl?.length
-            // Return 401 if custom url is too long
-            if (uLength > 10) {
-                console.log(`[SHORT_ROUTE][CURRENT URL][ERROR] Custom url (${contents.custUrl}) is too long. It needs to be shorter than 10 characters.`)
-                return new NextResponse("Custom url is too long. It needs to be shorter than 10 characters.", { status: 401 })
-            }
-
-            slug = contents.custUrl
-        } else {
-            slug = UUID
-        }
+        expDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
 
         const server = async () => {
             await db.shortLinks.create({
                 data: {
-                    name: UrlTitle,
-                    slug: slug,
+                    name: webMetadata.title,
+                    slug: UUID,
                     link: link,
-                    metaName: webMetadata.title,
-                    metaDesc: webMetadata.description,
-                    metaIconUrl: webMetadata.icon,
-                    metaImageUrl: webMetadata.image,
+                    metaName: webMetadata?.ogTitle,
+                    metaDesc: webMetadata?.ogDescription,
+                    metaIconUrl: webMetadata?.icon,
+                    metaImageUrl: webMetadata?.ogImage,
                     expiresAt: expDate,
                     creatorId: user?.id
                 }
