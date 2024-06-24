@@ -19,7 +19,7 @@ function LinkSuccess({ title, url, short, img, desc }) {
         setClicked(true)
     }
     return (
-        <div className="justify-center items-center rounded-md bg-background border border-input">
+        <div className="justify-center items-center rounded-md bg-white/10 backdrop-blur-md border border-white/30">
             <div className="justify-center p-4">
                 <h2 className="text-xl font-bold">Your link is ready!</h2>
                 <div className="gap-5">

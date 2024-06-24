@@ -3,6 +3,7 @@
 import { useSession, signIn } from "next-auth/react"
 import { useModal } from "@/components/modals/hooks/modal-hook"
 import { useState } from "react"
+import { useForm } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,6 +13,9 @@ import LinkErrorComp from "@/components/shorter/link-error"
 function LinkShorterBox() {
     const { data: session } = useSession()
     const { onOpen } = useModal()
+    const { register
+        , handleSubmit
+        , formState: { errors } } = useForm()
 
     const [link, setLink] = useState("")
     const [submitting, setSubmitting] = useState(false)
@@ -41,8 +45,7 @@ function LinkShorterBox() {
             )
         }
 
-        const onSubmit = async (event) => {
-            event.preventDefault()
+        const onSubmit = async (data) => {
             if (isError) {
                 setError(null)
             }
@@ -55,7 +58,7 @@ function LinkShorterBox() {
                 const response = await fetch("/api/short/create", {
                     method: 'POST',
                     body: JSON.stringify({
-                        link: link
+                        link: data.link
                     })
                 })
 
@@ -82,10 +85,10 @@ function LinkShorterBox() {
         }
 
         return (
-            <>
-                <form onSubmit={onSubmit} className="w-full flex gap-1">
+            <div className="p-4 rounded-lg backdrop-blur-sm bg-white/10 border border-white/30">
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full flex gap-1">
                     <Input type="url" name="link" placeholder="Link to be shorted"
-                        value={link} onChange={(e) => setLink(e.target.value)} required
+                        {...register("link", { required: true})} required
                     />
                     <Button variant="outline"
                         type="submit" disabled={submitting}
@@ -93,12 +96,12 @@ function LinkShorterBox() {
                         Short!
                     </Button>
                 </form>
-            </>
+            </div>
         )
     }
 
     return (
-        <div className="flex flex-col gap-1 md:px-20">
+        <div className="flex flex-col gap-1 md:px-10">
             {isError && <LinkErrorComp e={isError} e_code={"500"}/>}
             {endRespone.url &&
                 <LinkSuccess

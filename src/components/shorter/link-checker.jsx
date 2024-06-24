@@ -54,7 +54,7 @@ function LinkCheckerBox() {
                     <label htmlFor="link" className="text-xs">Short Link:</label>
                     <div className="flex gap-2">
                         <Input type="url" id="link" name="link" placeholder="Short Link"
-                               {...register("link", { required: true})}
+                                {...register("link", { required: true})}
                         />
                         <Button variant="outline"
                                 type="submit" disabled={submitting}
