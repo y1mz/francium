@@ -47,3 +47,6 @@ bun.*
 prisma/migrations/*
 prisma/dev.db
 prisma/*.db
+
+## Local Filters
+config/filters/*.json

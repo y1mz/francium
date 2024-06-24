@@ -2,6 +2,7 @@ import { db } from "@/lib/db"
 import { ServerSession } from "@/lib/server-session"
 import { NextResponse } from "next/server"
 import { generateUUID } from "@/lib/generateUUID"
+import { CheckUrl } from "@/lib/checkUrl"
 import getMetaData from "metadata-scraper"
 
 export async function POST(request){
@@ -34,6 +35,13 @@ export async function POST(request){
         })
         if (!user) {
             throw new Error("User has a session but it doesn't exists. Giving up.")
+        }
+
+        // Run filter before going further
+        const filterStatus = CheckUrl(link.split("/").slice(2,3)[0])
+        if (filterStatus === 1) {
+            console.log(`[WARN][SHORT_ROUTE] UserId: ${user.id} tried to short a banned url: ${link}`)
+            return new NextResponse("Tried to short a banned Url", { status: 402 })
         }
 
         // Prevent user from dossing
