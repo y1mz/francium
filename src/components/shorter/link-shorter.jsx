@@ -26,16 +26,16 @@ function LinkShorterBox() {
 
         if (!session) {
             return (
-                <div className="flex gap-1">
+                <div className="flex flex-wrap gap-1">
                     <Button
-                        className="w-2/3"
+                        className="w-2/3 flex-grow"
                         variant="outline"
                         onClick={() => signIn()}
                     >
                         You need to be signed in to continue
                     </Button>
                     <Button
-                        className="w-1/3"
+                        className="w-1/3 flex-grow"
                         variant="outline"
                         onClick={() => onOpen("reason")}
                     >
@@ -85,7 +85,7 @@ function LinkShorterBox() {
         }
 
         return (
-            <div className="p-4 rounded-lg backdrop-blur-sm bg-white/10 border border-white/30">
+            <div className="p-4 rounded-lg backdrop-blur-sm bg-white/10 border border-white/30 shadow-lg">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex gap-1">
                     <Input type="url" name="link" placeholder="Link to be shorted"
                         {...register("link", { required: true})} required

@@ -16,7 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-        <body className={`min-h-screen py-10 bg-[#E1E5F4] dark:bg-[#080e1e] ${inter.className}`}>
+        <body className={`min-h-screen overflow-x-hidden py-10 bg-[#E1E5F4] dark:bg-[#080e1e] scroll-smooth ${inter.className}`}>
             <ServerSessionProvider>
                 <ThemesProvider
                     attribute="class"

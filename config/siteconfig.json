@@ -8,35 +8,19 @@
         "AckeeDomainId": ""
     },
     "HomePage": {
+        "homeHeader": "Vexxit Link Shortener",
         "Accordions": [
             {
-                "title": "",
-                "description": ""
+                "title": "Accordion 1",
+                "description": "Accordion 1 test"
             },
             {
-                "title": "",
-                "description": ""
+                "title": "Accordion 2",
+                "description": "Accordion 2 test"
             },
             {
-                "title": "",
-                "description": ""
-            }
-        ],
-        "InfoSection": [
-            {
-                "title": "",
-                "icon" : "",
-                "description": ""
-            },
-            {
-                "title": "",
-                "icon" : "",
-                "description": ""
-            },
-            {
-                "title": "",
-                "icon" : "",
-                "description": ""
+                "title": "Accordion 3",
+                "description": "Accordion 3 test"
             }
         ]
     }

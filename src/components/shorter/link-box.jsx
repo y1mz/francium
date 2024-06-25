@@ -26,7 +26,7 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
 
     return (
         <div
-            className="relative rounded-lg backdrop-blur-md bg-white/10 hover:bg-white/20 transition duration-200 h-48 px-12 md:px-0">
+            className="relative rounded-lg backdrop-blur-md bg-white/10 hover:bg-white/20 shadow-lg transition duration-200 h-48 px-12 md:px-0">
             <div className="absolute p-6 top-0 bottom-0 inset-x-0">
                 <div className="flex flex-col">
                     {title ? (

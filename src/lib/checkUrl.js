@@ -1,5 +1,6 @@
 import fs from "fs"
 import path from "path"
+const { GoogleSafebrowsingV4 } = require('@googleapis/safebrowsing')
 
 async function CheckUrl(url) {
     const FilterDir = fs.readdirSync(path.resolve("config/filters"))
@@ -17,8 +18,10 @@ async function CheckUrl(url) {
 
         if (jsonContent.indexOf(url) !== -1) {
             FilterStatus = 1
-        } else FilterStatus = 0
+            break
+        }
     }
+
     return FilterStatus
 }
 

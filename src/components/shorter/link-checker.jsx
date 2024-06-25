@@ -49,7 +49,7 @@ function LinkCheckerBox() {
         }
 
         return (
-            <div className="p-4 rounded-lg backdrop-blur-sm bg-white/10 border border-white/30">
+            <div className="p-4 rounded-lg backdrop-blur-sm bg-white/10 border border-white/30 shadow-lg">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-1">
                     <label htmlFor="link" className="text-xs">Short Link:</label>
                     <div className="flex gap-2">

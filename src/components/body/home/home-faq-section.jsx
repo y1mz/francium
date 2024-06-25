@@ -7,7 +7,7 @@ function HomeFAQ() {
     const faoq = conf.HomePage.Accordions
     return (
         <div className="p-5">
-            <div className="px-10 md:px-20 py-5 border border-white/20 backdrop-blur-sm bg-white/10 rounded-lg">
+            <div className="px-10 md:px-20 py-5 border border-white/20 backdrop-blur-sm bg-white/10 rounded-lg shadow-lg">
                 <h2 className="font-bold text-2xl">F.A.Q</h2>
                 <Accordion type="single" collapsible className="w-full">
                     {faoq.map((faq) => (

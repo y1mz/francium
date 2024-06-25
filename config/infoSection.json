@@ -1,25 +1,25 @@
 [
     {
-      "icon": "scroll-text",
-      "text": "Item 1",
+      "icon": "code-xml",
+      "text": "Open-source",
       "color": "#295078",
-      "alt": "Pages and blog posts are based on Markdown."
+      "alt": "vexxit.xyz is based on francium which is a open source project."
     },
     {
-      "icon": "sliders",
+      "icon": "banknote",
       "text": "Item 2",
       "color": "#DD5D00",
-      "alt": "Configuring Caesium as simple as editing JSON files!"
+      "alt": "vexxit.xyz is a free service and it'll stay free forever!"
     },
     {
-      "icon": "search",
-      "text": "Item 3",
-      "alt": "SEO makes Caesium more discoverable!",
+      "icon": "lock",
+      "text": "Secure",
+      "alt": "Everything inside vexxit.xyz is scanned against malicious websites to keep users secure.",
       "color": "#F7BC13"
     },
     {
-      "icon": "save-all",
-      "text": "Item 4",
-      "alt": "Every page on Caesium is being rendered on build. Which allows you to deploy it anywhere!"
+      "icon": "app-window",
+      "text": "Clean UI",
+      "alt": "Blazing fast and responsive clean UI."
     }
   ]
