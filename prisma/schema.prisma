@@ -20,6 +20,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   links         ShortLinks[]
+  reports       LinkReports[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -58,14 +59,6 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
 model ShortLinks {
   id   Int     @id @default(autoincrement())
   name String?
@@ -79,11 +72,27 @@ model ShortLinks {
 
   createdAt DateTime  @default(now())
   expiresAt DateTime?
+  active    Boolean   @default(true)
 
   usage Int @default(0)
 
-  creator   User?   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
-  creatorId String?
+  creator   User   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId String
 
-  nonMemberAuthorUUID String?
+  reports LinkReports[]
+}
+
+model LinkReports {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  reportUrl ShortLinks @relation(fields: [reportUrlSlug], references: [slug], onDelete: Cascade)
+  reportUrlSlug String
+  reportDesc String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reportProcessed Boolean @default(false)
 }

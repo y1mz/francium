@@ -14,7 +14,7 @@ function Icon({ name, ...props }) {
 
 function InfoItem({ text, alt, icon, color }) {
     return (
-        <div className="p-5 border border-white/20 backdrop-blur-sm bg-white/10 rounded-lg shadow-lg">
+        <div className="p-5 border border-white/20 backdrop-blur-sm bg-white/10 hover:bg-white/20 rounded-lg shadow-lg hover:shadow-sm transition duration-300">
             <div className="flex flex-col gap-2">
                 <div className="justify-center mx-auto text-center">
                     <Icon name={icon} size={48} color={color}/>

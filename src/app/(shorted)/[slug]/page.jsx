@@ -7,41 +7,6 @@ import AboutHeader from "@/components/about/header"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-export async function generateMetadata({ params, searchParams }) {
-    const slug = params.slug
-    const webUrl = process.env.NODE_ENV === 'production'
-        ? `${conf.SiteUrl}`
-        : 'http://localhost:3000/'
-
-    const metadata = await fetch(`${webUrl}/api/meta/${slug}`).then(res => res.json())
-    return {
-        title: metadata.title,
-        description: metadata.desc,
-        openGraph: {
-            url: metadata.url,
-            type: 'website',
-            images: [
-                {
-                    url: metadata.img,
-                    width: 800,
-                    height: 600,
-                    alt: `Preview for ${metadata.title}`,
-                }
-            ]
-        },
-        icons: {
-          icon: [
-              { url: metadata.icon },
-          ]
-        },
-        robots: {
-            index: false,
-            follow: true,
-            nocache: true
-        }
-    }
-}
-
 async function RedirectPage({ params }) {
     const slug = params.slug
     const currentDate = new Date()

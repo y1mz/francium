@@ -3,13 +3,18 @@ import { ServerSession } from "@/lib/server-session"
 import { NextResponse } from "next/server"
 import { generateUUID } from "@/lib/generateUUID"
 import { CheckUrl } from "@/lib/checkUrl"
-import { getWebsiteMetadata } from "@/lib/getWebsiteMetadata"
 
 export async function POST(request){
     const session = await ServerSession()
 
     try {
-        const { link } = await request.json()
+        const body = await request.json()
+        const { link } = body
+        const contents = {
+            title: body.title,
+            custUrl: body.url,
+            expDate: body.expDate,
+        }
 
         if (!session) {
             return new NextResponse("Unauthorized", { status: 401 })
@@ -26,6 +31,9 @@ export async function POST(request){
                 links: true
             }
         })
+        if (!user) {
+            throw new Error("User has a session but it doesn't exists. Giving up.")
+        }
 
         // Run filter before going further
         const filterStatus = CheckUrl(link.split("/").slice(2,3)[0])
@@ -35,16 +43,16 @@ export async function POST(request){
         }
 
         // Prevent user from dossing
-        let lastShort = user.links?.reverse()[0]
-        const postDifference = (new Date() - lastShort?.createdAt) / 1000
+        // let lastShort = user.links?.reverse()[0]
+        // const postDifference = (new Date() - lastShort?.createdAt) / 1000
 
-        if (postDifference < 5.0) {
-            console.log(`[WARN][SHORT_ROUTE] User (${user?.name}) acted so quickly.`)
-            return new NextResponse("Please try again 5 seconds later.", { status: 401 })
-        }
+        // if (postDifference < 5.0) {
+        //     console.log(`[WARN][SHORT_ROUTE] User (${user?.name}) acted so quickly.`)
+        //     return new NextResponse("Please try again 5 seconds later.", { status: 401 })
+        // }
 
         // Database task
-        let UUID, expDate
+        let UUID, expDate, UrlTitle, slug
         UUID = generateUUID(5)
 
         // Create new UUID if the current one already exists
@@ -59,20 +67,44 @@ export async function POST(request){
         }
 
         // Fetch the metadata of url
-        let webMetadata = await getWebsiteMetadata(link)
+        // const webMetadata = await getMetaData(link)
 
-        expDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+        // Bunch of if else statements for custom urls
+        if (contents.expDate) {
+            expDate = contents.expDate
+        } else {
+            expDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+        }
+
+        if (contents.title) {
+            UrlTitle = contents.title
+        } else {
+            UrlTitle = link
+        }
+
+        if (contents.custUrl) {
+            const uLength = contents.custUrl?.length
+            // Return 401 if custom url is too long
+            if (uLength > 10) {
+                console.log(`[SHORT_ROUTE][CURRENT URL][ERROR] Custom url (${contents.custUrl}) is too long. It needs to be shorter than 10 characters.`)
+                return new NextResponse("Custom url is too long. It needs to be shorter than 10 characters.", { status: 401 })
+            }
+
+            slug = contents.custUrl
+        } else {
+            slug = UUID
+        }
 
         const server = async () => {
             await db.shortLinks.create({
                 data: {
-                    name: webMetadata.title,
-                    slug: UUID,
+                    name: UrlTitle,
+                    slug: slug,
                     link: link,
-                    metaName: webMetadata?.ogTitle,
-                    metaDesc: webMetadata?.ogDescription,
-                    metaIconUrl: webMetadata?.icon,
-                    metaImageUrl: webMetadata?.ogImage,
+                    metaName: webMetadata.title,
+                    metaDesc: webMetadata.description,
+                    metaIconUrl: webMetadata.icon,
+                    metaImageUrl: webMetadata.image,
                     expiresAt: expDate,
                     creatorId: user?.id
                 }

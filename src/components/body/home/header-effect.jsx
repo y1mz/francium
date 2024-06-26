@@ -9,7 +9,7 @@ const bebas = Bebas_Neue({
 })
 
 function HeaderEffect({ text }) {
-    const headerTextToShow = useTypingEffect(text, 100)
+    const headerTextToShow = useTypingEffect(text, 50)
 
     return (
         <h1 className={`text-center text-6xl font-bold pt-20 ${bebas.className}`}>{headerTextToShow}</h1>

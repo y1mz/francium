@@ -1,6 +1,5 @@
 import fs from "fs"
 import path from "path"
-const { GoogleSafebrowsingV4 } = require('@googleapis/safebrowsing')
 
 async function CheckUrl(url) {
     const FilterDir = fs.readdirSync(path.resolve("config/filters"))

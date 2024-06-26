@@ -4,6 +4,7 @@ import { redirect } from "next/navigation"
 
 import AboutHeader from "@/components/about/header"
 import LinkBox from "@/components/shorter/link-box"
+import LinkNewBox from "@/components/shorter/link-new-box"
 
 async function MyLinksPage() {
     const session = await ServerSession()
@@ -39,6 +40,7 @@ async function MyLinksPage() {
                         <p className="w-full text-center">There is nothing here.</p>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            <LinkNewBox />
                             {shortedLinks.map((link) => (
                                 <LinkBox
                                     key={link.id}
