@@ -9,7 +9,7 @@ import { DropdownMenu,
     from "@/components/ui/dropdown-menu"
 import Link from "next/link"
 
-import { LogOut, Cog, LayoutTemplate, LogIn } from "lucide-react"
+import { LogOut, Cog, LayoutTemplate, LogIn, Dock } from "lucide-react"
 
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useModal } from "@/components/modals/hooks/modal-hook"
@@ -41,6 +41,16 @@ function UserButton() {
                         </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator/>
+                    {session.user?.role === "ADMIN" && (
+                        <>
+                            <DropdownMenuItem asChild>
+                                <Link href="/dashboard">
+                                    <Dock className="h-4 w-4" />
+                                    <p className="ml-2">Dashboard</p>
+                                </Link>
+                            </DropdownMenuItem>
+                        </>
+                    )}
                     <DropdownMenuItem onClick={() => onOpen("usrSettings")}>
                         <Cog className="h-4 w-4" />
                         <p className="ml-2">Settings</p>

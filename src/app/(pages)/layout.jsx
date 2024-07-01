@@ -20,7 +20,7 @@ function MainPageLayout({ children }) {
     }, []);
 
     return (
-        <section>
+        <section className="py-10">
             {children}
             <Footer />
         </section>
