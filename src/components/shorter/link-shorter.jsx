@@ -67,7 +67,6 @@ function LinkShorterBox() {
                 }
 
                 const responseData = await response.json()
-                console.warn(responseData)
                 setEndResponse({
                     title: responseData.title,
                     url: responseData.url,
@@ -88,7 +87,7 @@ function LinkShorterBox() {
             <div className="p-4 rounded-lg backdrop-blur-sm bg-white/10 border border-white/30 shadow-lg">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex gap-1">
                     <Input type="url" name="link" placeholder="Link to be shortened"
-                        {...register("link", { required: true})} required
+                        {...register("link", { required: true })} required
                     />
                     <Button variant="outline"
                         type="submit" disabled={submitting}

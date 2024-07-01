@@ -9,7 +9,8 @@ function LinkNewBox() {
 
     return (
         <div
-            className="relative rounded-lg backdrop-blur-md bg-white/10 hover:bg-white/20 hover:shadow-none shadow-lg transition duration-200 h-48 px-12 md:px-0 grid place-content-center"
+            className="relative rounded-lg backdrop-blur-md bg-white/10 hover:bg-white/20 hover:shadow-none shadow-lg transition duration-200 h-48 px-12 md:px-0 grid place-content-center hover:cursor-pointer"
+            onClick={() => onOpen("newUrl")}
         >
             <Plus className="h-16 w-16 mx-auto" />
             <p className="font-bold text-lg">Create new Url</p>
