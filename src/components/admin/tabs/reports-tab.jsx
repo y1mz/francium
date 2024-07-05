@@ -58,7 +58,7 @@ function AdminReportsTab({ reports }) {
                     </TableHeader>
                     <TableBody>
                         {reports.map((item) => (
-                            <TableRow>
+                            <TableRow key={item.id}>
                                 <TableCell>{item.reportUrlSlug}</TableCell>
                                 <TableCell>
                                     <Link href={item.reportUrl.link} className="text-xs truncate font-light">
