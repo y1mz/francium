@@ -1,11 +1,8 @@
 import { db } from '@/lib/db'
 import { redirect } from "next/navigation"
 import { notFound } from "next/navigation"
-import conf from "/config/siteconfig.json"
 
-import AboutHeader from "@/components/about/header"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { UrlExpiredContainer, UrlReportedContainer } from '@/components/body/containers/redirecting-container'
 
 async function RedirectPage({ params }) {
     const slug = params.slug
@@ -15,14 +12,21 @@ async function RedirectPage({ params }) {
         where: {
             slug
         },
+        include: {
+            reports: true
+        }
     })
 
     if (!redirectUrl) {
         return notFound()
     }
 
-    if (redirectUrl && redirectUrl.expiresAt >= currentDate) {
+    if (redirectUrl.active === false) {
+        return notFound()
+    }
 
+    if (redirectUrl && redirectUrl.expiresAt >= currentDate) {
+        let reported = redirectUrl.reports
         let usageA
         usageA = redirectUrl.usage + 1
 
@@ -35,17 +39,16 @@ async function RedirectPage({ params }) {
             }
         })
 
+        if (reported.length > 0) {
+            return (
+                <UrlReportedContainer url={redirectUrl.link} />
+            )
+        }
+
         return redirect(redirectUrl.link)
     } else {
         return (
-            <div className="container mx-auto">
-                <AboutHeader title={"Url has expired"} />
-                <div className="w-full flex items-center justify-center py-16">
-                    <Button variant={"outline"} asChild className="w-full max-w-md">
-                        <Link href={"/"}>Return homepage</Link>
-                    </Button>
-                </div>
-            </div>
+            <UrlExpiredContainer />
         )
     }
 }

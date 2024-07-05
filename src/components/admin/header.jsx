@@ -18,11 +18,13 @@ const Goodtext = () => {
 }
 
 const BadText = ({ reports }) => {
-    <div className={inter.className}>
-        <p className="text-red-300 dark:text-rose-200">
-            There are {reports.length} reports needs to be processed.
-        </p>
-    </div>
+    return (
+        <div className={inter.className}>
+            <p className="text-lg text-red-300 dark:text-rose-200">
+                There are {reports.length} reports needs to be processed.
+            </p>
+        </div>
+    )
 }
 
 function AdminWelcomeHeader({ user, reports }) {
@@ -32,9 +34,9 @@ function AdminWelcomeHeader({ user, reports }) {
                 <div className="absolute top-4 -left-12 w-48 h-48 md:w-72 md:h-72 bg-purple-300 dark:bg-purple-400/90 rounded-full  mix-blend blur-2xl opacity-70"/>
                 <div className="absolute inset-x-0 inset-y-0 pt-20">
                     <div className={`${bebas.className}`}>
-                        <p className="md:text-6xl">Welcome back</p>
-                        <p className="md:text-5xl">{user.name}!</p>
-                        {!reports?.length ? <Goodtext /> : <BadText reports={reports} />}
+                        <p className="text-6xl">Welcome back</p>
+                        <p className="text-5xl">{user.name}!</p>
+                        {!reports.length ? <Goodtext /> : <BadText reports={reports} />}
                     </div>
                 </div>
             </div>

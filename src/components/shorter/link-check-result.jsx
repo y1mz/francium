@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
+import LinkReportButton from "./link-report-button"
+
 
 function LinkCheckResult({ result }) {
+
     return (
         <div className="p-4 rounded-lg border border-white/30 bg-white/10 backdrop-blur-sm">
             <div className="flex flex-col gap-4">
@@ -20,7 +23,7 @@ function LinkCheckResult({ result }) {
                     <Separator className="bg-white/50 px-10"/>
                     <div className="flex gap-3">
                         <p className="whitespace-nowrap font-bold">Url: </p>
-                        <p className="truncate text-sm">{result.link}</p>
+                        <code className="line-clamp-1 text-sm rounded px-[0.3rem] py-[0.2rem] font-mono">{result.link}</code>
                     </div>
                     {result.metaImageUrl && <>
                         <Separator className="bg-white/50 px-10" />
@@ -30,7 +33,10 @@ function LinkCheckResult({ result }) {
                         </div>
                     </>}
                 </div>
-                <Button variant="outline" asChild><Link href={result.link}>Visit url</Link></Button>
+                <div className="flex gap-2 w-full">
+                    <LinkReportButton url={result.link} slug={result.slug}/>
+                    <Button variant="outline" className="flex-grow" asChild><Link href={result.link}>Visit url</Link></Button>
+                </div>
             </div>
         </div>
     )

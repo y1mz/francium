@@ -84,12 +84,13 @@ model ShortLinks {
 
 model LinkReports {
   id Int @id @default(autoincrement())
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
+  nonMemberUUID String?
 
   reportUrl ShortLinks @relation(fields: [reportUrlSlug], references: [slug], onDelete: Cascade)
   reportUrlSlug String
-  reportDesc String
+  reportDesc String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

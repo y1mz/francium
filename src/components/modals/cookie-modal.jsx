@@ -27,22 +27,19 @@ const CookiesModal = () => {
             setModalData(response)
             }
 
-        setIsLoading(true)
-        getModalContent()
-        setIsLoading(false)
-    }, [])
-
-    function saveUUID() {
         const cUUID = localStorage.getItem("localUUID")
-        if (!session && !cUUID) {
+        if (!cUUID && !session) {
             const UUID = generateUUID(15)
             localStorage.setItem("localUUID", UUID)
         }
-    }
+
+        setIsLoading(true)
+        getModalContent()
+        setIsLoading(false)
+    }, [isOpen])
 
     const handleAcceptCookies = () => {
         localStorage.setItem("cookiesAccepted", "True")
-        saveUUID()
         return onClose()
     }
 

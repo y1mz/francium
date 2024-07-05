@@ -7,6 +7,7 @@ import LoginModal from "@/components/modals/login-modal"
 import LoginReasonModal from "../modals/delete-link-modal"
 import UserSettingsModal from "@/components/modals/user-settings-modal"
 import CustomUrlModal from "../modals/create-custom-url-modal"
+import LinkReportModal from "../modals/link-report-modal"
 
 function ModalProvider() {
     const [isMounted, setIsMounted] = useState(false)
@@ -24,6 +25,7 @@ function ModalProvider() {
             <LoginReasonModal />
             <UserSettingsModal />
             <CustomUrlModal />
+            <LinkReportModal />
         </>
     )
 }
