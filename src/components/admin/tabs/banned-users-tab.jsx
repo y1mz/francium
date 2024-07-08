@@ -8,19 +8,23 @@ import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ShieldBan } from "lucide-react"
-import Link from "next/link"
 
 import { useModal } from "@/components/modals/hooks/modal-hook"
 
 function AdminBannedUsersTab({ users }) {
     const { onOpen } = useModal()
 
-    const EditUserButton = ({ id }) => {
+    const EditUserButton = ({ id, name, banId }) => {
+        const body = {
+            userId: id,
+            name: name,
+            banId: banId
+        }
         return (
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button size="icon" variant="ghost"
-                        onClick={() => {}}
+                        onClick={() => {onOpen("userBanDel", body)}}
                     >
                         <ShieldBan className="h-5 w-5 text-rose-600" />
                     </Button>
@@ -96,6 +100,8 @@ function AdminBannedUsersTab({ users }) {
                                 <div className="flex gap-1">
                                     <EditUserButton 
                                         id={item.id}
+                                        name={item.name}
+                                        banId={item.bans[0].id}
                                     />
                                 </div>
                             </TableCell>
