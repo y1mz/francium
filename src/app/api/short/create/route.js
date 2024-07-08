@@ -23,9 +23,15 @@ export async function POST(request){
                 email: session.user.email
             },
             include: {
-                links: true
+                links: true,
+                bans: true
             }
         })
+
+        if (user.bans.length > 0) {
+            console.log(`[SHORT_ROUTE][WARN] Banned user ${user.id} has tried to short an url.`)
+            return new NextResponse("You got banned", { status: 401 })
+        }
 
         // Run filter before going further
         const filterStatus = CheckUrl(link.split("/").slice(2,3)[0])

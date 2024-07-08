@@ -111,7 +111,7 @@ function AdminReportsTab({ reports }) {
 
     return (
         <div className="w-full px-5 overflow-x-scroll">
-            {reports.length === 0 ? (<p>Relax, no reports!</p>) : (<Content />)}
+            {reports.length === 0 ? (<p className="text-lg font-bold text-center">Relax, no reports!</p>) : (<Content />)}
         </div>
     )
 }

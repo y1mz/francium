@@ -1,62 +1,32 @@
 "use client"
 
 import {
-    Table, TableBody, TableCaption,
+    Table, TableBody,
     TableCell, TableHead, TableHeader,TableRow,
     } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Pen, ShieldAlert } from "lucide-react"
+import { ShieldBan } from "lucide-react"
 import Link from "next/link"
 
-import { useSession } from "next-auth/react"
 import { useModal } from "@/components/modals/hooks/modal-hook"
 
-function AdminUsersTab({ users }) {
-    const { data: session } = useSession()
+function AdminBannedUsersTab({ users }) {
     const { onOpen } = useModal()
-    let usersR
-    usersR = users.filter((user) => user.name !== session.user?.name)
 
     const EditUserButton = ({ id }) => {
         return (
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <Button size="icon" variant="ghost" asChild>
-                        <Link href={`/dashboard/edit/${id}`}>
-                            <Pen className="h-5 w-5" />
-                        </Link>
-                    </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                    <p>Edit user</p>
-                </TooltipContent>
-            </Tooltip>
-        )
-    }
-
-    const BanUserButton = ({ username, id, email, bans }) => {
-        const modalData = {
-            name: username,
-            id: id,
-            mail: email
-        }
-        const isButtonDisabled = bans.length > 0
-        return (
-            <Tooltip>
-                <TooltipTrigger asChild>
-                    <Button size="icon" variant="ghost" 
-                        onClick={() => onOpen("banUsr", modalData)}
-                        disabled={isButtonDisabled}
+                    <Button size="icon" variant="ghost"
+                        onClick={() => {}}
                     >
-                        <ShieldAlert className="h-5 w-5" />
+                        <ShieldBan className="h-5 w-5 text-rose-600" />
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                    <p>Ban user</p>
+                    <p>Unban user</p>
                 </TooltipContent>
             </Tooltip>
         )
@@ -64,12 +34,7 @@ function AdminUsersTab({ users }) {
 
     return (
         <>
-        <div className="max-w-sm hidden">
-            <Label htmlFor="userId">Search by id</Label>
-            <Input id="userId" type="text" placeholder="User ID" />
-        </div>
             <Table>
-                <TableCaption>Total users: {usersR.length}</TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[150px]">
@@ -85,16 +50,13 @@ function AdminUsersTab({ users }) {
                             E-mail
                         </TableHead>
                         <TableHead>
-                            Created at
+                            Links Count
                         </TableHead>
                         <TableHead>
-                            Links count
+                            Banned at
                         </TableHead>
                         <TableHead>
-                            Role
-                        </TableHead>
-                        <TableHead>
-                            Is Banned
+                            Ban reason
                         </TableHead>
                         <TableHead>
                             Actions
@@ -102,7 +64,7 @@ function AdminUsersTab({ users }) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {usersR.map((item) => (
+                    {users.map((item) => (
                         <TableRow key={item.id}>
                             <TableCell>
                                 {item.id}
@@ -122,27 +84,18 @@ function AdminUsersTab({ users }) {
                                 {item.email}
                             </TableCell>
                             <TableCell>
-                                {new Date(item.createdAt).toDateString()}
-                            </TableCell>
-                            <TableCell>
                                 {item.links.length}
                             </TableCell>
                             <TableCell>
-                                {item.role}
+                                {new Date(item.bans[0].bannedAt).toDateString()}
                             </TableCell>
                             <TableCell>
-                                {item.bans.length > 0 ? (<p>True</p>) : (<p>False</p>)}
+                                {item.bans[0].reason}
                             </TableCell>
                             <TableCell>
                                 <div className="flex gap-1">
                                     <EditUserButton 
                                         id={item.id}
-                                    />
-                                    <BanUserButton 
-                                        username={item.name} 
-                                        id={item.id} 
-                                        email={item.email}
-                                        bans = {item.bans}
                                     />
                                 </div>
                             </TableCell>
@@ -154,4 +107,4 @@ function AdminUsersTab({ users }) {
     )
 }
 
-export default AdminUsersTab
+export default AdminBannedUsersTab

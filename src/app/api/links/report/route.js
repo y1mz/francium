@@ -20,7 +20,7 @@ export async function POST(req) {
 
         const server = await db.linkReports.create({
             data: {
-                userId: session?.user.id,
+                userId: session.user?.id,
                 nonMemberUUID: nonMUUID,
                 reportUrlSlug: slug,
                 reportDesc: reason
