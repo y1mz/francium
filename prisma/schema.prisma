@@ -19,6 +19,7 @@ model User {
   role          String       @default("USER")
   accounts      Account[]
   sessions      Session[]
+  bans          UserBans[]
   links         ShortLinks[]
   reports       LinkReports[]
 
@@ -96,4 +97,17 @@ model LinkReports {
   updatedAt DateTime @updatedAt
 
   reportProcessed Boolean @default(false)
+}
+
+model UserBans {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  adminUserId String?
+
+  reason String
+  type String
+
+  bannedAt DateTime @default(now())
+  bannedUntil DateTime
 }

@@ -11,7 +11,7 @@ function LinkReportButton({ url, slug }) {
     }
 
     return (
-        <Button variant="destrucitve" onClick={() => onOpen("report", body)}>Report Url</Button>
+        <Button variant="destructive" onClick={() => onOpen("report", body)}>Report Url</Button>
     )
 }
 

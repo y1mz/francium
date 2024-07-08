@@ -6,6 +6,7 @@ import LinkShorterBox from "../../shorter/link-shorter"
 import HomeFAQ from "../home/home-faq-section"
 import InfoSection from "../home/info-section"
 import HeaderEffect from "../home/header-effect"
+import PageRooter from "@/components/body/page-footer"
 
 const bebas = Bebas_Neue({
     weight: '400',
@@ -30,6 +31,7 @@ function HomeContainer() {
                             items={items}
                         />
                         <HomeFAQ />
+                        <PageRooter />
                     </div>  
                 </div>
             </div>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import AboutHeader from "@/components/about/header"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import PageRooter from "../page-footer"
 
 function UrlExpiredContainer() {
     return (
@@ -14,6 +15,7 @@ function UrlExpiredContainer() {
                         <Link href={"/"}>Return homepage</Link>
                     </Button>
                 </div>
+                <PageRooter />
             </div>
     )
 }
@@ -43,6 +45,7 @@ function UrlReportedContainer({ url }) {
                     <Link href={"/"}>Return homepage</Link>
                 </Button>
             </div>
+            <PageRooter />
         </div>
     )
 }

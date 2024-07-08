@@ -6,6 +6,7 @@ import AboutHeader from "@/components/about/header"
 import LinkBox from "@/components/shorter/link-box"
 import LinkNewBox from "@/components/shorter/link-new-box"
 import { Separator } from "@/components/ui/separator"
+import PageRooter from "@/components/body/page-footer"
 
 async function MyLinksPage() {
     const session = await ServerSession()
@@ -51,6 +52,7 @@ async function MyLinksPage() {
                         ))}
                     </div>
             </div>
+            <PageRooter />
         </div>
     )
 }
