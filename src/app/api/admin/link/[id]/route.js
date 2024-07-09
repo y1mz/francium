@@ -4,7 +4,7 @@ import { ServerSession } from "@/lib/server-session"
 
 export async function PATCH(req, { params }) {
     const session = await ServerSession()
-    const linkId = params.id
+    const linkId = Number(params.id)
 
     if (!session) {
         return new NextResponse("Unauthorized", { status: 401 })
@@ -12,14 +12,15 @@ export async function PATCH(req, { params }) {
     if (session.user.role === "USER") {
         return new NextResponse("Unauthorized", { status: 401 })
     }
-
+    console.log(session)
     try {
         const { slug, reason } = await req.json()
-
-        const server = db.shortLinks.update({
+        const slugR = slug.split("/").slice(3,4)[0]
+        
+        const server = await db.shortLinks.update({
             where: {
                 id: linkId,
-                slug: slug
+                slug: slugR
             },
             data: {
                 active: false,
@@ -28,10 +29,11 @@ export async function PATCH(req, { params }) {
                 disabledAt: new Date()
             }
         })
+        console.log(server)
 
         return NextResponse.json(server)
     } catch (e) {
-        console.log()
+        console.log(e)
         return new NextResponse("Internal server error", { status: 500 })
     }
 }

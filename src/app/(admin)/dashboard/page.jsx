@@ -1,8 +1,8 @@
 import { ServerSession } from "@/lib/server-session"
 import { db } from "@/lib/db"
 
-import AdminWelcomeHeader from "@/components/admin/header"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import AdminWelcomeHeader from "@/components/admin/header"
 import AdminReportsTab from "@/components/admin/tabs/reports-tab"
 import AdminUsersTab from "@/components/admin/tabs/users-tab"
 import AdminLinksTab from "@/components/admin/tabs/links-tab"
@@ -43,7 +43,7 @@ async function DashboardPage() {
             createdAt: "desc"
         }
     })
-    console.log(shortLinks)
+
     return (
         <div>
             <AdminWelcomeHeader user={session.user} reports={reports}/>
@@ -52,7 +52,7 @@ async function DashboardPage() {
                     <TabsList>
                         <TabsTrigger value="reports">Link Reports</TabsTrigger>
                         <TabsTrigger value="users">Users</TabsTrigger>
-                        <TabsTrigger value="bannedUsers">Banned Users</TabsTrigger>
+                        <TabsTrigger value="bannedUsers" className={bannedUsers.length === 0 && "hidden"}>Banned Users</TabsTrigger>
                         <TabsTrigger value="links">Links</TabsTrigger>
                     </TabsList>
                     <TabsContent value="reports">

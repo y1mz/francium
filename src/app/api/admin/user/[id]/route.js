@@ -35,8 +35,20 @@ export async function DELETE(req, { params }) {
                 userId: userId
             }
         })
+        const removeDisabledUrls = await db.shortLinks.updateMany({
+            where: {
+                creatorId: userId,
+                disabledReason: "Author got banned"
+            },
+            data: {
+                active: true,
+                disabledReason: null,
+                disabledAt: null,
+                disabledBy: null
+            }
+        })
 
-        return NextResponse.json(server)
+        return NextResponse.json({ server, removeDisabledUrls })
 
     } catch (e) {
         console.log("[ADMIN_USER_BAN][ERROR]", e)
@@ -88,7 +100,21 @@ export async function PATCH(req, { params }) {
                 bannedUntil: new Date(banDate)
             }
         })
-        return NextResponse.json(server)
+        // Disable all the urls created by banned user.
+        const disableUrls = await db.shortLinks.updateMany({
+            where: {
+                creatorId: user.id,
+                disabledReason: null
+            },
+            data: {
+                active: false,
+                disabledReason: "Author got banned",
+                disabledAt: new Date(),
+                disabledBy: session.user.id
+            }
+        })
+
+        return NextResponse.json({ server, disableUrls })
 
     } catch (e) {
         console.log("[ADMIN_USER_BAN][ERROR]", e)

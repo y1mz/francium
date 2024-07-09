@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { Trash2 } from "lucide-react"
+import { Trash2, ShieldOff } from "lucide-react"
 
 import { useModal } from "@/components/modals/hooks/modal-hook"
 import Link from "next/link";
@@ -33,6 +33,27 @@ function AdminLinksTab({ links }) {
                 </TooltipTrigger>
                 <TooltipContent>
                     <p>Delete Link</p>
+                </TooltipContent>
+            </Tooltip>
+        )
+    }
+
+    const DisableUrlIcon = ({ id, slug }) => {
+        const body = {
+            id: id,
+            slug: slug
+        }
+        return (
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Button size="icon" variant="ghost"
+                        onClick={() => {onOpen("banLnk", body)}}
+                    >
+                        <ShieldOff className="h-5 w-5" />
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>Disable Link</p>
                 </TooltipContent>
             </Tooltip>
         )
@@ -103,6 +124,10 @@ function AdminLinksTab({ links }) {
                                         name={item.name} 
                                         slug={item.slug}
                                         createdAt={item.createdAt}
+                                    />
+                                    <DisableUrlIcon
+                                        id={item.id}
+                                        slug={item.slug}
                                     />
                                 </div>
                             </TableCell>

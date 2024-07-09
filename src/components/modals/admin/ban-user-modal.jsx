@@ -3,10 +3,10 @@
 import { Dialog, DialogContent, DialogFooter} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "../ui/textarea"
+import { Textarea } from "../../ui/textarea"
 import ModalError from "@/components/body/modal-error"
 
-import { useModal } from "./hooks/modal-hook"
+import { useModal } from "../hooks/modal-hook"
 import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"

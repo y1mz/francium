@@ -8,9 +8,10 @@ import LoginReasonModal from "../modals/delete-link-modal"
 import UserSettingsModal from "@/components/modals/user-settings-modal"
 import CustomUrlModal from "../modals/create-custom-url-modal"
 import LinkReportModal from "../modals/link-report-modal"
-import BanUserModal from "../modals/ban-user-modal"
-import UserBanDelete from "../modals/delete-report-modal"
-import AdminLinkDeleteModal from "../modals/admin-delete-link-modal"
+import BanUserModal from "../modals/admin/ban-user-modal"
+import UserBanDelete from "../modals/admin/delete-report-modal"
+import AdminLinkDeleteModal from "../modals/admin/admin-delete-link-modal"
+import DisableUrlModal from "../modals/admin/disable-url-modal"
 
 function ModalProvider() {
     const [isMounted, setIsMounted] = useState(false)
@@ -32,6 +33,7 @@ function ModalProvider() {
             <BanUserModal />
             <UserBanDelete />
             <AdminLinkDeleteModal />
+            <DisableUrlModal />
         </>
     )
 }
