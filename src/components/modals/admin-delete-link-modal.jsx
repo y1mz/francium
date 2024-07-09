@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button"
 import { useModal } from "./hooks/modal-hook"
 import { useSession } from "next-auth/react"
 
-const LinkDeleteModal = () => {
+const AdminLinkDeleteModal = () => {
     const { isOpen, onClose, type, data } = useModal()
     const { id, slug, name, createdAt } = data
-    const isModalOpen = isOpen && type === "linkDel"
+    const isModalOpen = isOpen && type === "AdminlinkDel"
     const { data: session } = useSession()
 
     let currentUrl = window.location.origin
@@ -20,10 +20,9 @@ const LinkDeleteModal = () => {
     }
 
     const handleDelete = async () => {
-        const response = await fetch("/api/short/delete", {
+        const response = await fetch(`/api/admin/link/${id}`, {
             method: "DELETE",
             body: JSON.stringify({
-                id: id,
                 slug: slug,
                 createdAt: createdAt
             })
@@ -56,4 +55,4 @@ const LinkDeleteModal = () => {
     )
 }
 
-export default LinkDeleteModal
+export default AdminLinkDeleteModal

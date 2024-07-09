@@ -73,7 +73,11 @@ model ShortLinks {
 
   createdAt DateTime  @default(now())
   expiresAt DateTime?
+
   active    Boolean   @default(true)
+  disabledReason String?
+  disabledBy String?
+  disabledAt DateTime?
 
   usage Int @default(0)
 

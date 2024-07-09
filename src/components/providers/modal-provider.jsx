@@ -10,6 +10,7 @@ import CustomUrlModal from "../modals/create-custom-url-modal"
 import LinkReportModal from "../modals/link-report-modal"
 import BanUserModal from "../modals/ban-user-modal"
 import UserBanDelete from "../modals/delete-report-modal"
+import AdminLinkDeleteModal from "../modals/admin-delete-link-modal"
 
 function ModalProvider() {
     const [isMounted, setIsMounted] = useState(false)
@@ -30,6 +31,7 @@ function ModalProvider() {
             <LinkReportModal />
             <BanUserModal />
             <UserBanDelete />
+            <AdminLinkDeleteModal />
         </>
     )
 }

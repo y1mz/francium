@@ -34,6 +34,16 @@ async function DashboardPage() {
     
     const bannedUsers = users.filter((user) => user.bans.length > 0)
 
+    const shortLinks = await db.shortLinks.findMany({
+        include: {
+            creator: true,
+            reports: true
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    })
+    console.log(shortLinks)
     return (
         <div>
             <AdminWelcomeHeader user={session.user} reports={reports}/>
@@ -55,7 +65,7 @@ async function DashboardPage() {
                         <AdminBannedUsersTab users={bannedUsers} />
                     </TabsContent>
                     <TabsContent value="links">
-                        <AdminLinksTab />
+                        <AdminLinksTab links={shortLinks}/>
                     </TabsContent>
                 </Tabs>
             </div>
