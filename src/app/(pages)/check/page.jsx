@@ -1,6 +1,12 @@
 import AboutHeader from "@/components/about/header"
 import LinkCheckerBox from "@/components/shorter/link-checker"
 import PageRooter from "@/components/body/page-footer"
+import conf from "/config/siteconfig.json"
+
+export const metadata = {
+    title: `Link Checkcer | ${conf.SiteName}`,
+    description: `Check and verify urls comes from ${conf.SiteUrl}`,
+}
 
 function CheckUrlPage() {
     return (

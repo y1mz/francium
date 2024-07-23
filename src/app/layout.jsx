@@ -12,17 +12,37 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: conf.SiteName,
   description: conf.SiteDescription,
+  keywords: [
+      "NextJS", "Link shortener", "Url", "link",
+      "shorten url", "make links shorter", "free",
+      "free link shortener", "tinyurl", "social media", "twitter link shortener",
+      "secure link shortener"
+  ],
+  referrer: 'origin-when-cross-origin',
+  metadataBase: new URL(
+      process.env.NEXTAUTH_URL
+  ),
+  openGraph: {
+      url: conf.SiteUrl,
+      siteName: conf.SiteName
+  }
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      {conf.Ackee.useAckee && <Script async src={`${conf.Ackee.AckeeUrl}/tracker.js`} data-ackee-server={conf.Ackee.AckeeUrl} data-ackee-domain-id={conf.Ackee.AckeeDomainId} />}
+      {conf.Ackee.useAckee &&
+          <Script
+            async src={`${conf.Ackee.AckeeUrl}/tracker.js`}
+            data-ackee-server={conf.Ackee.AckeeUrl}
+            data-ackee-domain-id={conf.Ackee.AckeeDomainId}
+          />
+      }
         <body className={`min-h-screen overflow-x-hidden bg-[#E1E5F4] dark:bg-[#080e1e] scroll-smooth ${inter.className}`}>
             <ServerSessionProvider>
                 <ThemesProvider
                     attribute="class"
-                    defaultTheme="dark"
+                    defaultTheme="system"
                     disableTransitionOnChange
                 >
                     <ModalProvider/>

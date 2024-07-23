@@ -2,6 +2,11 @@ import AboutHeader from "@/components/about/header"
 import PageRooter from "@/components/body/page-footer"
 import Markdown from "markdown-to-jsx"
 import { getPageContent } from "@/lib/getPageMetadata"
+import conf from "/config/siteconfig.json"
+
+export const metadata = {
+    title: `About | ${conf.SiteName}`
+}
 
 function AboutPage() {
     const pageContent = getPageContent("about")

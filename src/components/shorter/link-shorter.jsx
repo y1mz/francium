@@ -12,7 +12,6 @@ import LinkErrorComp from "@/components/shorter/link-error"
 
 function LinkShorterBox() {
     const { data: session } = useSession()
-    console.log(session)
     const { onOpen } = useModal()
     const { register
         , handleSubmit
