@@ -1,7 +1,7 @@
 {
     "SiteName": "Francium Project",
     "SiteDescription": "A simple link shortener that just works.",
-    "SiteUrl": "http://localhost:3000",
+    "SiteUrl": "localhost:3000",
     "Ackee" : {
         "useAckee": true,
         "AckeeUrl": "https://ackee.tbnmc.xyz",
