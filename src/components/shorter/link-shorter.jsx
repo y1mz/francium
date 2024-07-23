@@ -12,6 +12,7 @@ import LinkErrorComp from "@/components/shorter/link-error"
 
 function LinkShorterBox() {
     const { data: session } = useSession()
+    console.log(session)
     const { onOpen } = useModal()
     const { register
         , handleSubmit
@@ -87,10 +88,10 @@ function LinkShorterBox() {
             <div className="p-4 rounded-lg backdrop-blur-sm bg-white/10 border border-white/30 shadow-lg">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex gap-1">
                     <Input type="url" name="link" placeholder="Link to be shortened"
-                        {...register("link", { required: true })} required
+                        {...register("link", { required: true })} disabled={session.user.banned}
                     />
                     <Button variant="outline"
-                        type="submit" disabled={submitting}
+                        type="submit" disabled={submitting || session.user.banned}
                     >
                         Short!
                     </Button>

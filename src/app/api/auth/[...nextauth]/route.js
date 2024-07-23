@@ -50,10 +50,30 @@ export const authOptions = {
         })
     ],
     callbacks: {
-        session({ session, user }) {
-            session.user.role = user.role
+        async session({ session, user }) {
             session.user.id = user.id
+            session.user.role = user.role
+            session.user.banned = user.isBanned
+            
             return session
+        },
+        async signIn({ user, profile }) {
+            const adminMail = process.env.AdminMail
+
+            if (user.email === adminMail) {
+                await db.user.update({
+                    where: {
+                        id: user.id,
+                        email: user.email
+                    },
+                    data: {
+                        role: "ADMIN"
+                    }
+                })
+                console.log("Success")
+            }
+            console.log(user, profile)
+            return true
         }
     },
     pages: {

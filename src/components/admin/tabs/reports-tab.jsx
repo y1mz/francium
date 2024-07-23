@@ -29,7 +29,7 @@ function AdminReportsTab({ reports }) {
     const Content = () => {
         return (
             <>
-                <Table>
+                <Table className="overflow-x-scroll">
                     <TableCaption>A list of reported urls.</TableCaption>
                     <TableHeader>
                         <TableRow>
@@ -110,7 +110,7 @@ function AdminReportsTab({ reports }) {
     }
 
     return (
-        <div className="w-full px-5 overflow-x-scroll">
+        <div className="w-full px-5">
             {reports.length === 0 ? (<p className="text-lg font-bold text-center">Relax, no reports!</p>) : (<Content />)}
         </div>
     )

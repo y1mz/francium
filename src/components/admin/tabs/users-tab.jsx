@@ -9,32 +9,64 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Pen, ShieldAlert } from "lucide-react"
-import Link from "next/link"
+import { DropdownMenu, DropdownMenuTrigger,
+    DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
+import { Pen, ShieldAlert, User, UserCog, UserCheck } from "lucide-react"
 
 import { useSession } from "next-auth/react"
 import { useModal } from "@/components/modals/hooks/modal-hook"
+import { useRouter } from "next/navigation"
 
 function AdminUsersTab({ users }) {
     const { data: session } = useSession()
     const { onOpen } = useModal()
     let usersR
     usersR = users.filter((user) => user.name !== session.user?.name)
+    usersR = usersR.filter((user) => user.isBanned == false)
 
-    const EditUserButton = ({ id }) => {
+    const usrRoles = {
+        "ADMIN": (
+            <p className="flex text-red-500 items-center"><UserCog className="mr-1 h-4 w-4 text-red-500"/> Admin</p>
+        ),
+        "MOD": (
+            <p className="flex text-indigo-400 items-center"><UserCheck className="mr-1 h-4 w-4 text-indigo-400"/> Moderator</p>
+        ),
+        "USER": (
+            <p className="flex items-center"><User className="mr-1 h-4 w-4" /> User</p>
+        )
+    }
+
+    const ChangeUserRoleButton = ({ id, email, role ,children }) => {
+        const handleRoleUpdate = async (i, e, r) => {
+            const response = await fetch(`/api/admin/user/${i}/role`, {
+                method: "PATCH",
+                body: JSON.stringify({
+                    email: e,
+                    role: r
+                })
+            })
+            if (response.ok) {
+                window.location.reload()
+            }
+        }
         return (
-            <Tooltip>
-                <TooltipTrigger asChild>
-                    <Button size="icon" variant="ghost" asChild>
-                        <Link href={`/dashboard/edit/${id}`}>
-                            <Pen className="h-5 w-5" />
-                        </Link>
+            <DropdownMenu>
+                <DropdownMenuTrigger disabled={session.user.role !== "ADMIN"}>
+                    <Button variant="ghost" disabled={role !== "ADMIN"}>
+                        {children}
                     </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                    <p>Edit user</p>
-                </TooltipContent>
-            </Tooltip>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => handleRoleUpdate(id, email, "MOD")}>
+                        <UserCheck className="mr-auto h-4 w-4" />
+                        <p>Moderator</p>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleRoleUpdate(id, email, "USER")}>
+                        <User className="mr-auto h-4 w-4" />
+                        <p>User</p>
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
         )
     }
 
@@ -128,16 +160,15 @@ function AdminUsersTab({ users }) {
                                 {item.links.length}
                             </TableCell>
                             <TableCell>
-                                {item.role}
+                                <ChangeUserRoleButton id={item.id} email={item.email} role={item.role}>
+                                    {usrRoles[item.role]}
+                                </ChangeUserRoleButton>
                             </TableCell>
                             <TableCell>
                                 {item.bans.length > 0 ? (<p>True</p>) : (<p>False</p>)}
                             </TableCell>
                             <TableCell>
                                 <div className="flex gap-1">
-                                    <EditUserButton 
-                                        id={item.id}
-                                    />
                                     <BanUserButton 
                                         username={item.name} 
                                         id={item.id} 

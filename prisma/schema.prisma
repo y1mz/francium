@@ -11,12 +11,13 @@ datasource db {
 }
 
 model User {
-  id            String       @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?      @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
-  role          String       @default("USER")
+  role          String        @default("USER")
+  isBanned      Boolean       @default(false)
   accounts      Account[]
   sessions      Session[]
   bans          UserBans[]
@@ -74,10 +75,10 @@ model ShortLinks {
   createdAt DateTime  @default(now())
   expiresAt DateTime?
 
-  active    Boolean   @default(true)
+  active         Boolean   @default(true)
   disabledReason String?
-  disabledBy String?
-  disabledAt DateTime?
+  disabledBy     String?
+  disabledAt     DateTime?
 
   usage Int @default(0)
 
@@ -88,14 +89,14 @@ model ShortLinks {
 }
 
 model LinkReports {
-  id Int @id @default(autoincrement())
-  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String?
+  id            Int     @id @default(autoincrement())
+  user          User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String?
   nonMemberUUID String?
 
-  reportUrl ShortLinks @relation(fields: [reportUrlSlug], references: [slug], onDelete: Cascade)
+  reportUrl     ShortLinks @relation(fields: [reportUrlSlug], references: [slug], onDelete: Cascade)
   reportUrlSlug String
-  reportDesc String?
+  reportDesc    String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -104,14 +105,14 @@ model LinkReports {
 }
 
 model UserBans {
-  id Int @id @default(autoincrement())
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  id          Int     @id @default(autoincrement())
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String  @unique
   adminUserId String?
 
   reason String
-  type String
+  type   String
 
-  bannedAt DateTime @default(now())
+  bannedAt    DateTime @default(now())
   bannedUntil DateTime
 }

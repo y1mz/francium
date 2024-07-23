@@ -39,7 +39,7 @@ async function MyLinksPage() {
                 <h2 className="text-2xl font-bold py-1">Links you've shorted</h2>
                 <Separator className="bg-gray-700 dark:bg-white/20" />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        <LinkNewBox />
+                        {!session.user.banned && <LinkNewBox />}
                         {shortedLinks.map((link) => (
                             <LinkBox
                                 key={link.id}
