@@ -7,6 +7,7 @@ import AdminReportsTab from "@/components/admin/tabs/reports-tab"
 import AdminUsersTab from "@/components/admin/tabs/users-tab"
 import AdminLinksTab from "@/components/admin/tabs/links-tab"
 import AdminBannedUsersTab from "@/components/admin/tabs/banned-users-tab"
+import Link from "next/link"
 
 async function DashboardPage() {
     const session = await ServerSession()
@@ -51,9 +52,15 @@ async function DashboardPage() {
                 <Tabs defaultValue="reports" className="min-w-[800px]">
                     <TabsList>
                         <TabsTrigger value="reports">Link Reports</TabsTrigger>
-                        <TabsTrigger value="users">Users</TabsTrigger>
-                        <TabsTrigger value="bannedUsers" className={bannedUsers.length === 0 && "hidden"}>Banned Users</TabsTrigger>
-                        <TabsTrigger value="links">Links</TabsTrigger>
+                        <TabsTrigger value="users">
+                            Users
+                        </TabsTrigger>
+                        <TabsTrigger value="bannedUsers" className={bannedUsers.length === 0 && "hidden"}>
+                            Banned Users
+                        </TabsTrigger>
+                        <TabsTrigger value="links">
+                            Links
+                        </TabsTrigger>
                     </TabsList>
                     <TabsContent value="reports">
                         <AdminReportsTab reports={reports}/>

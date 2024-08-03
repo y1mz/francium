@@ -9,6 +9,7 @@
     },
     "HomePage": {
         "homeHeader": "Vexxit Link Shortener",
+        "EnableHomePageContent": true,
         "Accordions": [
             {
                 "title": "Accordion 1",

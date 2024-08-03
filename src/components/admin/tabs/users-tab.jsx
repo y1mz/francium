@@ -11,11 +11,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { DropdownMenu, DropdownMenuTrigger,
     DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { Pen, ShieldAlert, User, UserCog, UserCheck } from "lucide-react"
+import { ShieldAlert, User, UserCog, UserCheck } from "lucide-react"
 
 import { useSession } from "next-auth/react"
 import { useModal } from "@/components/modals/hooks/modal-hook"
-import { useRouter } from "next/navigation"
 
 function AdminUsersTab({ users }) {
     const { data: session } = useSession()
