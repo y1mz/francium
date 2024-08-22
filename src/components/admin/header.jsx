@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] })
 const Goodtext = () => {
     return (
         <div className={inter.className}>
-            <p className="text-lg text-green-300 dark:text-green-200">
+            <p className="text-lg text-[#009261] dark:text-green-200">
                 There is nothing to worry about, everything looks good!
             </p>
         </div>

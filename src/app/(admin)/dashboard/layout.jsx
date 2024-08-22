@@ -3,6 +3,8 @@ import { redirect } from "next/navigation"
 
 import AdminHeader from "@/components/admin/admin-header"
 
+import conf from "&/siteconfig.json"
+
 async function AdminLayout({ children }) {
     const server = await ServerSession()
     if (!server) {
@@ -13,7 +15,7 @@ async function AdminLayout({ children }) {
 
     return (
         <section className="container mx-auto w-full min-h-screen py-20">
-            <AdminHeader title="vexxit.xyz" />
+            <AdminHeader title={conf.SiteName} />
             {children}
         </section>
     )

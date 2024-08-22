@@ -35,7 +35,7 @@ function AdminLinksTab({ links }) {
     const pages = Array.from({ length: pageNumber }, (_, i) => i + 1)
 
     if (parseInt(page) > pageNumber) {
-        return redirect(url + `&p=${pageNumber}`)
+        return redirect(url + `&p=${Math.floor(pageNumber)}`)
     }
     if (parseInt(page) <= 0) {
         return redirect(url + "&p=1")
@@ -171,7 +171,7 @@ function AdminLinksTab({ links }) {
                         </Button>
                     </PaginationItem>
                     {pages.map((number) => (
-                        <PaginationItem>
+                        <PaginationItem key={number}>
                             <PaginationLink 
                                 href={url + `&p=${number}`}
                                 isActive={parseInt(page) == number}
