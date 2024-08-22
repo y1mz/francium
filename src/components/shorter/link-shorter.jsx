@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import LinkSuccess from "@/components/shorter/link-success"
 import LinkErrorComp from "@/components/shorter/link-error"
+import LinkBannedComp from "./link-banned"
 
 function LinkShorterBox() {
     const { data: session } = useSession()
@@ -101,6 +102,7 @@ function LinkShorterBox() {
 
     return (
         <div className="flex flex-col gap-1 md:px-10">
+            {session?.user?.banned && <LinkBannedComp /> }
             {isError && <LinkErrorComp e={isError} e_code={"500"}/>}
             {endRespone.url &&
                 <LinkSuccess

@@ -7,13 +7,41 @@ import {
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Trash2, ShieldOff } from "lucide-react"
+import {
+    Pagination, PaginationContent, PaginationEllipsis,
+    PaginationItem, PaginationLink,
+    PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 
 import { useModal } from "@/components/modals/hooks/modal-hook"
+import { redirect } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import Link from "next/link";
 
 function AdminLinksTab({ links }) {
     const { onOpen } = useModal()
+    const url = "/dashboard?page=links"
     const linksR = links.sort((a, b) => b.active - a.active)
+    const searchParams = useSearchParams()
+
+    // Add needed params to url on page load
+    if (!searchParams.has("p") && searchParams.get("page") == "links") {
+        return redirect(url + "&p=1")
+    }
+    const page = searchParams.get("p")
+
+    // Pagination
+    const pageNumber = links.length & 6 >= 1 ? links.length / 6 + 1 : links.length / 6 
+    console.log(pageNumber)
+    const pages = Array.from({ length: pageNumber }, (_, i) => i + 1)
+
+    if (parseInt(page) > pageNumber) {
+        return redirect(url + `&p=${pageNumber}`)
+    }
+    if (parseInt(page) <= 0) {
+        return redirect(url + "&p=1")
+    }
+
+    const pagedLinks = linksR.slice((page - 1) * 6, page * 6)
 
     const EditUserButton = ({ id, name, slug, createdAt}) => {
         const body = {
@@ -68,7 +96,7 @@ function AdminLinksTab({ links }) {
                         <TableHead className="w-[80px]">
                             Slug
                         </TableHead>
-                        <TableHead className="w-[100px]">
+                        <TableHead className="w-[100px] max-w-[120px]">
                             Full Url
                         </TableHead>
                         <TableHead className="w-[140px]">
@@ -92,12 +120,12 @@ function AdminLinksTab({ links }) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {linksR.map((item) => (
+                    {pagedLinks.map((item) => (
                         <TableRow key={item.id}>
                             <TableCell>
                                 {item.slug}
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="max-w-[120px]">
                                 <Link href={item.link} className="line-clamp-1 text-xs font-light hover:underline">
                                     {item.link}
                                 </Link>
@@ -135,6 +163,30 @@ function AdminLinksTab({ links }) {
                     ))}
                 </TableBody>
             </Table>
+            <Pagination>
+                <PaginationContent>
+                    <PaginationItem>
+                        <Button variant={parseInt(page) == 1 && "disabled"} asChild>
+                            <PaginationPrevious href={url + `&p=${parseInt(page) - 1}`} />
+                        </Button>
+                    </PaginationItem>
+                    {pages.map((number) => (
+                        <PaginationItem>
+                            <PaginationLink 
+                                href={url + `&p=${number}`}
+                                isActive={parseInt(page) == number}
+                            >
+                                {number}
+                            </PaginationLink>
+                        </PaginationItem>
+                    ))}
+                    <PaginationItem>
+                        <Button variant={parseInt(page) == Math.floor(pageNumber) && "disabled"} asChild>
+                            <PaginationNext href={url + `&p=${parseInt(page) + 1}`}/>
+                        </Button>
+                    </PaginationItem>
+                </PaginationContent>
+            </Pagination>
         </>
     )
 }

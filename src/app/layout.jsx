@@ -20,7 +20,7 @@ export const metadata = {
   ],
   referrer: 'origin-when-cross-origin',
   metadataBase: new URL(
-      "http://localhost:3000"
+    `https://${conf.SiteUrl}` ?? "http://localhost:3000"
   ),
   openGraph: {
       url: conf.SiteUrl,

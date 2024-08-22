@@ -1,5 +1,6 @@
 import { ServerSession } from "@/lib/server-session"
 import { db } from "@/lib/db"
+import { redirect } from "next/navigation"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import AdminWelcomeHeader from "@/components/admin/header"
@@ -9,8 +10,14 @@ import AdminLinksTab from "@/components/admin/tabs/links-tab"
 import AdminBannedUsersTab from "@/components/admin/tabs/banned-users-tab"
 import Link from "next/link"
 
-async function DashboardPage() {
+async function DashboardPage({ params, searchParams }) {
     const session = await ServerSession()
+
+    let page
+    page = searchParams.page
+    if (!page){
+        page = "reports"
+    }
 
     const reports = await db.linkReports.findMany({
         where: {
@@ -49,17 +56,27 @@ async function DashboardPage() {
         <div>
             <AdminWelcomeHeader user={session.user} reports={reports}/>
             <div className="px-5">
-                <Tabs defaultValue="reports" className="min-w-[800px]">
+                <Tabs defaultValue={page} className="min-w-[800px]">
                     <TabsList>
-                        <TabsTrigger value="reports">Link Reports</TabsTrigger>
-                        <TabsTrigger value="users">
-                            Users
+                        <TabsTrigger value="reports" asChild>
+                            <Link href="/dashboard?page=reports">
+                                Link Reports
+                            </Link>
                         </TabsTrigger>
-                        <TabsTrigger value="bannedUsers" className={bannedUsers.length === 0 && "hidden"}>
-                            Banned Users
+                        <TabsTrigger value="users" asChild>
+                            <Link href="/dashboard?page=users">
+                                Users
+                            </Link>
                         </TabsTrigger>
-                        <TabsTrigger value="links">
-                            Links
+                        <TabsTrigger value="bannedUsers" className={bannedUsers.length === 0 && "hidden"} asChild> 
+                            <Link href="/dashboard?page=bannedUsers">
+                                Banned Users
+                            </Link>
+                        </TabsTrigger>
+                        <TabsTrigger value="links" asChild>
+                            <Link href="/dashboard?page=links">
+                                Shorted Links
+                            </Link>
                         </TabsTrigger>
                     </TabsList>
                     <TabsContent value="reports">

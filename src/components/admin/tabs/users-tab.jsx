@@ -20,7 +20,7 @@ function AdminUsersTab({ users }) {
     const { data: session } = useSession()
     const { onOpen } = useModal()
     let usersR
-    usersR = users.filter((user) => user.name !== session.user?.name)
+    usersR = users.filter((user) => user.name !== session?.user?.name)
     usersR = usersR.filter((user) => user.isBanned == false)
 
     const usrRoles = {
@@ -50,7 +50,7 @@ function AdminUsersTab({ users }) {
         }
         return (
             <DropdownMenu>
-                <DropdownMenuTrigger disabled={session.user.role !== "ADMIN"}>
+                <DropdownMenuTrigger disabled={session?.user.role !== "ADMIN"}>
                     <Button variant="ghost" disabled={role !== "ADMIN"}>
                         {children}
                     </Button>
