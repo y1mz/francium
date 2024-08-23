@@ -30,17 +30,18 @@ function AdminLinksTab({ links }) {
     const page = searchParams.get("p")
 
     // Pagination
-    const pageNumber = links.length & 6 >= 1 ? links.length / 6 + 1 : links.length / 6 
+    const pageNumber = (links.length & 6) >= 1 ? (links.length / 6) + 1 : links.length / 6 
     console.log(pageNumber)
     const pages = Array.from({ length: pageNumber }, (_, i) => i + 1)
+    const pagess = pages.filter((number) => number <= 5)
 
-    if (parseInt(page) > pageNumber) {
+    if (parseInt(page) > Math.floor(pageNumber)) {
         return redirect(url + `&p=${Math.floor(pageNumber)}`)
     }
     if (parseInt(page) <= 0) {
         return redirect(url + "&p=1")
     }
-
+    
     const pagedLinks = linksR.slice((page - 1) * 6, page * 6)
 
     const EditUserButton = ({ id, name, slug, createdAt}) => {
@@ -170,7 +171,7 @@ function AdminLinksTab({ links }) {
                             <PaginationPrevious href={url + `&p=${parseInt(page) - 1}`} />
                         </Button>
                     </PaginationItem>
-                    {pages.map((number) => (
+                    {pagess.map((number) => (
                         <PaginationItem key={number}>
                             <PaginationLink 
                                 href={url + `&p=${number}`}
@@ -180,6 +181,25 @@ function AdminLinksTab({ links }) {
                             </PaginationLink>
                         </PaginationItem>
                     ))}
+                    {Math.floor(pageNumber) > 5 && 
+                    <>
+                        <PaginationItem>
+                            <PaginationEllipsis />
+                        </PaginationItem>
+                        {parseInt(page) >= 6 && 
+                            <>
+                                <PaginationItem>
+                                    <PaginationLink
+                                        href={url + `&p=${page}`}
+                                        isActive={true}
+                                    >
+                                        {parseInt(page)}
+                                    </PaginationLink>
+                                </PaginationItem>
+                            </>
+                        }
+                    </>
+                    }
                     <PaginationItem>
                         <Button variant={parseInt(page) == Math.floor(pageNumber) && "disabled"} asChild>
                             <PaginationNext href={url + `&p=${parseInt(page) + 1}`}/>
