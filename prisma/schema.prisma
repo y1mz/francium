@@ -12,20 +12,30 @@ datasource db {
 
 model User {
   id            String        @id @default(cuid())
-  name          String?
+  name          String?       @unique
   email         String?       @unique
   emailVerified DateTime?
   image         String?
   role          String        @default("USER")
   isBanned      Boolean       @default(false)
+  prefsId       String        @unique
+  prefs         UserPreferences[]
   accounts      Account[]
   sessions      Session[]
   bans          UserBans[]
   links         ShortLinks[]
   reports       LinkReports[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model UserPreferences {
+  id            String        @id @default(cuid())
+  usr           User          @relation(fields: [userId], references: [id])
+  userId        String        @unique
+
+  
 }
 
 model Account {
@@ -79,6 +89,7 @@ model ShortLinks {
   disabledReason String?
   disabledBy     String?
   disabledAt     DateTime?
+  isAuthorPublic Boolean?
 
   usage Int @default(0)
 

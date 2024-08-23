@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 
 import CookiesModal from "@/components/modals/cookie-modal"
 import LoginModal from "@/components/modals/login-modal"
-import LoginReasonModal from "../modals/delete-link-modal"
+import LoginReasonModal from "../modals/login-reason-modal"
 import UserSettingsModal from "@/components/modals/user-settings-modal"
 import CustomUrlModal from "../modals/create-custom-url-modal"
 import LinkReportModal from "../modals/link-report-modal"
