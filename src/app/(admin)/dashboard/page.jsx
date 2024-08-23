@@ -10,7 +10,7 @@ import AdminLinksTab from "@/components/admin/tabs/links-tab"
 import AdminBannedUsersTab from "@/components/admin/tabs/banned-users-tab"
 import Link from "next/link"
 
-async function DashboardPage({ params, searchParams }) {
+async function DashboardPage({ searchParams }) {
     const session = await ServerSession()
 
     let page

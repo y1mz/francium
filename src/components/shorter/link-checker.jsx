@@ -24,10 +24,17 @@ function LinkCheckerBox() {
                 setError(null)
             }
             setEndResponse({})
+
             try {
                 setSubmitting(true)
                 const link = data.link
                 const slug = link.split("/").slice(3,4)[0]
+                const domain = link.split("/").slice(2,3)[0]
+                const currDomain = window.location.origin.split("/").slice(2,3)[0]
+
+                if (currDomain !== domain) {
+                    throw new Error("Urls from other servers aren't supported.")
+                }
 
                 const response = await fetch(`/api/meta/${slug}`)
 
@@ -36,7 +43,6 @@ function LinkCheckerBox() {
                 }
 
                 const responseData = await response.json()
-                console.warn(responseData)
                 setEndResponse(responseData)
 
 

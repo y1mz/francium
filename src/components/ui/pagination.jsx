@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link"
 
 const Pagination = ({
   className,
@@ -35,7 +36,7 @@ const PaginationLink = ({
   size = "icon",
   ...props
 }) => (
-  <a
+  <Link
     aria-current={isActive ? "page" : undefined}
     className={cn(buttonVariants({
       variant: isActive ? "outline" : "ghost",

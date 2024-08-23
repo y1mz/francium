@@ -1,16 +1,25 @@
 "use client"
 
 import { useModal } from "@/components/modals/hooks/modal-hook"
+import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
     const { onOpen } = useModal()
+    const [copied, setCopied] = useState(false)
+
+    useEffect(() => {
+        setTimeout(() => {
+            setCopied(false)
+        }, 4000)
+    }, [copied])
 
     const handleCopy = async () => {
         const currentUrl = window.location.origin
         await navigator.clipboard.writeText(`${currentUrl}/${shortUrl}`)
+        setCopied(true)
     }
 
     const handleDelete = () => {
@@ -44,7 +53,7 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
                     <div className="flex justify-between items-end">
                         <Button variant="ghost2" className="text-rose-600" onClick={() => handleDelete()}>Delete</Button>
                         <div className="flex">
-                            <Button variant="ghost2" onClick={() => handleCopy()}>Copy Link</Button>
+                            {copied ? <Button className="bg-green-500 hover:bg-green-300">Copied!</Button> : <Button variant="ghost2" onClick={() => handleCopy()}>Copy Link</Button>}
                             <Button variant="ghost2" asChild><Link href={url}>Open Link</Link></Button>
                         </div>
                     </div>
