@@ -32,7 +32,7 @@ function InfoSection({ items }) {
 
     return (
         <div className="w-full mt-5 sm:mt-10 md:mt-16">
-            <div className="p-5 mx-auto justify-center text-center">
+            <div className="py-5 md:p-5 mx-auto justify-center text-center">
                 <div className="grid sm:grid-cols-2 gap-3">
                     {items.map((item) => (
                         <InfoItem 

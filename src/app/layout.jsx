@@ -38,7 +38,7 @@ export default function RootLayout({ children }) {
             data-ackee-domain-id={conf.Ackee.AckeeDomainId}
           />
       }
-        <body className={`min-h-screen overflow-x-hidden bg-[#E1E5F4] dark:bg-[#080e1e] scroll-smooth ${inter.className}`}>
+        <body className={`min-h-screen overflow-x-hidden bg-[#E1E5F4] dark:bg-[#080e1e] scroll-smooth ${inter.className} no-scrollbar`}>
             <ServerSessionProvider>
                 <ThemesProvider
                     attribute="class"

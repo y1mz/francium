@@ -9,7 +9,7 @@ import { DropdownMenu,
     from "@/components/ui/dropdown-menu"
 import Link from "next/link"
 
-import { LogOut, Cog, LayoutTemplate, LogIn, Dock, SquareCheckBig } from "lucide-react"
+import { LogOut, Cog, LayoutTemplate, LogIn, Dock, SquareCheckBig, Info } from "lucide-react"
 
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useModal } from "@/components/modals/hooks/modal-hook"
@@ -65,6 +65,13 @@ function UserButton() {
                         <Link href={"/mylinks"} className="flex">
                             <LayoutTemplate className="h-4 w-4" />
                             <p className="ml-2">My links</p>
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                        <Link href="/about" className="flex">
+                            <Info className="h-4 w-4" />
+                            <p className="ml-2">About</p>
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />

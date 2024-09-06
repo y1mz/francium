@@ -1,7 +1,10 @@
 {
     "SiteName": "Francium Project",
     "SiteDescription": "A simple link shortener that just works.",
-    "SiteUrl": "localhost:3000",
+    "SiteUrl": "localhost:3100",
+    "SiteKeywords": {
+
+    },
     "Ackee" : {
         "useAckee": true,
         "AckeeUrl": "https://ackee.tbnmc.xyz",
@@ -24,6 +27,11 @@
                 "description": "Accordion 3 test"
             }
         ]
+    },
+    "Auth": {
+        "EnableGithubAuth": true,
+        "EnableGoogleAuth": true,
+        "EnableDiscordAuth": true,
+        "EnableSignedOutUsers": true
     }
-
 }

@@ -12,13 +12,12 @@ datasource db {
 
 model User {
   id            String        @id @default(cuid())
-  name          String?       @unique
+  name          String        @unique
   email         String?       @unique
   emailVerified DateTime?
   image         String?
   role          String        @default("USER")
   isBanned      Boolean       @default(false)
-  prefsId       String        @unique
   prefs         UserPreferences[]
   accounts      Account[]
   sessions      Session[]
@@ -35,7 +34,13 @@ model UserPreferences {
   usr           User          @relation(fields: [userId], references: [id])
   userId        String        @unique
 
-  
+  showUsernameOnCheck         Boolean @default(false)
+  logErrorsForDevelopement    Boolean @default(true)
+
+  lastExportDate              DateTime?
+  lastImportDate              DateTime?
+
+  markForDeletion             Boolean @default(false)
 }
 
 model Account {
@@ -93,8 +98,9 @@ model ShortLinks {
 
   usage Int @default(0)
 
-  creator   User   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
-  creatorId String
+  creator   User?   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId String?
+  nonAuthId String?
 
   reports LinkReports[]
 }
@@ -126,4 +132,13 @@ model UserBans {
 
   bannedAt    DateTime @default(now())
   bannedUntil DateTime
+}
+
+model ErrorLogs {
+  id Int @id @default(autoincrement())
+  type String @default("Error")
+  place String?
+  message String?
+  date DateTime @default(now())
+  read Boolean @default(false)
 }

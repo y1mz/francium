@@ -33,7 +33,7 @@ function AdminLinksTab({ links }) {
     const pageNumber = (links.length & 6) >= 1 ? (links.length / 6) + 1 : links.length / 6 
     console.log(pageNumber)
     const pages = Array.from({ length: pageNumber }, (_, i) => i + 1)
-    const pagess = pages.filter((number) => number <= 5)
+    const pagess = pages.filter((number) => number < 5)
 
     if (parseInt(page) > Math.floor(pageNumber)) {
         return redirect(url + `&p=${Math.floor(pageNumber)}`)
@@ -183,10 +183,12 @@ function AdminLinksTab({ links }) {
                     ))}
                     {Math.floor(pageNumber) > 5 && 
                     <>
-                        <PaginationItem>
-                            <PaginationEllipsis />
-                        </PaginationItem>
-                        {parseInt(page) >= 6 && 
+                        {parseInt(page) !== 5 && (
+                            <PaginationItem>
+                                <PaginationEllipsis />
+                            </PaginationItem>
+                        )}
+                        {parseInt(page) >= 5 &&
                             <>
                                 <PaginationItem>
                                     <PaginationLink

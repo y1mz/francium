@@ -51,9 +51,17 @@ export const authOptions = {
     ],
     callbacks: {
         async session({ session, user }) {
+
+            const usrSettings = await db.userPreferences.findUnique({
+                where: {
+                    userId: user.id
+                }
+            }) 
+
             session.user.id = user.id
             session.user.role = user.role
             session.user.banned = user.isBanned
+            session.settings = {...usrSettings}
             
             return session
         },
@@ -70,7 +78,6 @@ export const authOptions = {
                         role: "ADMIN"
                     }
                 })
-                console.log("Success")
             }
             console.log(user, profile)
             return true

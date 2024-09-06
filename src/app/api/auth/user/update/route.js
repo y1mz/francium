@@ -19,8 +19,16 @@ export async function PATCH(req) {
                 email: email
             }
         })
+        const usernameCheck = await db.user.findFirst({
+            where: {
+                name: username
+            }
+        })
         if (emailCheck.email !== session?.user.email) {
             return new NextResponse("Email already registered", { status: 402 })
+        }
+        if (usernameCheck.name !== session?.user.name) {
+            return new NextResponse("Username already registered", { status: 403 })
         }
 
         const server = await db.user.update({

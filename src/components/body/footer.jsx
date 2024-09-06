@@ -3,9 +3,20 @@ import ModeToggle from "./header/theme-toggle"
 import UserButton from "./header/user-button"
 import { Button } from "../ui/button"
 
-import conf from "/config/siteconfig.json"
+function Footer({ SiteName, session }) {
 
-function Footer() {
+    const AboutButton = () => {
+
+        if (!session) {
+            return (
+                <Button variant="ghost" size="main_text" asChild>
+                    <Link href={"/about"}>
+                        About
+                    </Link>
+                </Button>
+            )
+        }
+    }
 
     return (
         <footer 
@@ -15,15 +26,11 @@ function Footer() {
             <div className="flex justify-between">
                 <Button variant="ghost" size="main_text" asChild>
                     <Link href="/">
-                        <p className="font-bold text-lg">{conf.SiteName}</p>
+                        <p className="font-bold text-lg">{SiteName}</p>
                     </Link>
                 </Button>
                 <div className="flex gap-1 text-center">
-                    <Button variant="ghost" size="main_text" asChild>
-                        <Link href={"/about"}>
-                            About
-                        </Link>
-                    </Button>
+                    <AboutButton />
                     <UserButton />
                     <ModeToggle />
                 </div>
