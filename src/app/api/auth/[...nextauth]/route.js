@@ -79,7 +79,6 @@ export const authOptions = {
                     }
                 })
             }
-            console.log(user, profile)
             return true
         }
     },
