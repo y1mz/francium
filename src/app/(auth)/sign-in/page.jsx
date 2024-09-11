@@ -11,9 +11,18 @@ function SignInPage() {
     const config = conf.Auth
 
     const searchParams = useSearchParams()
+    let callUrl
+    let searchParamsCallback = searchParams.get("callbackUrl")
+
+    if (!searchParamsCallback) {
+        callUrl = conf.SiteUrl
+    } else {
+        callUrl = searchParamsCallback
+    }
+
     useEffect(() => {
         const UrlStates = {
-            callbackUrl : searchParams.get("callbackUrl"),
+            callbackUrl : callUrl,
             configuration: config
         }
         

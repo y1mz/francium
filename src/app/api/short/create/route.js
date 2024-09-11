@@ -4,15 +4,17 @@ import { NextResponse } from "next/server"
 import { generateUUID } from "@/lib/generateUUID"
 import { CheckUrl } from "@/lib/checkUrl"
 import { getWebsiteMetadata } from "@/lib/getWebsiteMetadata"
+import { headers } from "next/headers"
 
 export async function POST(request){
     const session = await ServerSession()
+    let nonAuthId
 
     try {
         const { link } = await request.json()
 
         if (!session) {
-            return new NextResponse("Unauthorized", { status: 401 })
+            
         }
         if (!link) {
             return new NextResponse("link can't be empty", { status: 400 })

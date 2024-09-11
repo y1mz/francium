@@ -78,6 +78,11 @@ async function DashboardPage({ searchParams }) {
                                 Shorted Links
                             </Link>
                         </TabsTrigger>
+                        <TabsTrigger value="logs" asChild>
+                            <Link href="/dashboard?page=logs">
+                                Logs
+                            </Link>
+                        </TabsTrigger>
                     </TabsList>
                     <TabsContent value="reports">
                         <AdminReportsTab reports={reports}/>
@@ -90,6 +95,9 @@ async function DashboardPage({ searchParams }) {
                     </TabsContent>
                     <TabsContent value="links">
                         <AdminLinksTab links={shortLinks}/>
+                    </TabsContent>
+                    <TabsContent value="logs">
+                        <p>Logs will come there</p>
                     </TabsContent>
                 </Tabs>
             </div>

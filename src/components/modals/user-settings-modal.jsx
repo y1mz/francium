@@ -1,56 +1,124 @@
 "use client"
 
-import { Dialog, DialogContent,
-    DialogFooter } from "@/components/ui/dialog"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import ModalError from "@/components/body/modal-error"
 import { Checkbox } from "../ui/checkbox"
-import { Upload, Download, AlertCircle } from "lucide-react"
+import { Upload, Download, AlertCircle, CircleX } from "lucide-react"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
+import { Label } from "@/components/ui/label"
 
 import { useModal } from "./hooks/modal-hook"
 import { useSession } from "next-auth/react"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { useRouter } from "next/navigation"
+
 
 const UserSettingsModal = () => {
     const { isOpen, onClose, type } = useModal()
     const isModalOpen = isOpen && type === "usrSettings"
     const { data: session } = useSession()
-    console.log(session)
-    const { register
+    const [isButtonDisabled, setIsDisabled] = useState(false)
+    const { register,
+        watch
         , handleSubmit
         , formState: { errors },
-        setValue, setError , getValues, clearErrors } = useForm()
+        setValue,
+        setError ,
+        getValues,
+        clearErrors } = useForm(
+            {
+                defaultValues: {
+                    username: session?.user.name,
+                    email: session?.user.email
+                },
+                resetOptions: {
+                    keepDirtyValues: false
+                }
+            }
+    )
+    const router = useRouter()
 
     useEffect(() => {
+        // Set user details on start
         setValue("username", session?.user.name)
         setValue("email", session?.user.email)
+        // Clear errors
         clearErrors("email")
         clearErrors("username")
     }, [isModalOpen]);
 
-    const onSubmit = async (data) => {
-        // Prevent default values
-        const isUSame = data.username === session?.user.name
-        const isESame = data.email === session?.user.email
-        if ((isUSame + isESame) === 2) {
-            return
+    const usernameWatch = watch("username")
+    const emailWatch = watch("email")
+
+    useEffect(() => {
+        const isUnameSame = usernameWatch == session?.user.name
+        const fetchUsername = async (username) => {
+            const response = await fetch("/api/account/check/username", {
+                method: "POST",
+                body: JSON.stringify({
+                    userName: username
+                })
+            })
+            if (!response.ok) {
+                setError("username", { type: "focus", message: "Username already taken" })
+                setIsDisabled(true)
+            } else {
+                clearErrors("username")
+                setIsDisabled(false)
+            }
+        }
+        if (!isUnameSame) {
+            fetchUsername(usernameWatch)
         }
 
-        const feBody = JSON.stringify(data)
-        const response = await fetch("/api/auth/user/update", {
+    }, [usernameWatch])
+
+    useEffect(() => {
+        const isUnameSame = emailWatch == session?.user.email
+        const fetchUsername = async (email) => {
+            const response = await fetch("/api/account/check/email", {
+                method: "POST",
+                body: JSON.stringify({
+                    email: email
+                })
+            })
+            if (!response.ok) {
+                setError("email", { type: "focus", message: "Email already registered" })
+                setIsDisabled(true)
+            } else {
+                clearErrors("email")
+                setIsDisabled(false)
+            }
+        }
+        if (!isUnameSame) {
+            fetchUsername(emailWatch)
+        }
+
+    }, [emailWatch])
+
+    const onSubmit = async (data) => {
+         // Prevent default values
+         const isUSame = data.username === session?.user.name
+         const isESame = data.email === session?.user.email
+         if ((isUSame + isESame) === 2) {
+            return
+         }
+         // Prevent empty values
+         if (data.username.length < 1 || data.email.length < 1) {
+             return
+         }
+
+        const response = await fetch("/api/account/update/profile", {
             method: "PATCH",
-            body: feBody
+            body: JSON.stringify(data)
         })
         if (!response.ok) {
-            if (response.status === 402) {
-                setError("email", { type: "focus", message: "Email already registered under a different account."})
-            }
-            if (response.status === 403) {
-                setError("username", { type: "focus", message: "Username is already taken."})
+            if (response.status === 401) {
+                setError("email", { type: "focus", message: "401: Credentials already used."})
             }
         } else {
             window.location.reload()
@@ -65,10 +133,10 @@ const UserSettingsModal = () => {
                         <h2 className="text-2xl font-bold">
                             Settings
                         </h2>
-                        <Button variant="ghost"
+                        <Button variant="ghost" size="icon"
                             onClick={() => {onClose()}}
                         >
-                            Close
+                            <CircleX className="h-5 w-5" />
                         </Button>
                     </div>
                     <h3 className="text-xl font-bold ml-5">Profile settings</h3>
@@ -77,13 +145,13 @@ const UserSettingsModal = () => {
                             <div className="flex flex-col gap-2">
                                 <div className="flex">
                                     <Avatar className="h-16 w-16 mr-5">
-                                        <AvatarFallback>
-                                            T
+                                        <AvatarFallback className="text-2xl">
+                                            {session?.user.name.substring(0,1).toUpperCase()}
                                         </AvatarFallback>
                                         <AvatarImage src={session?.user.image}/>
                                     </Avatar>
                                     <div className="w-full">
-                                        <p className="font-bold">Username</p>
+                                        <Label htmlFor="username">Username</Label>
                                         <Input type="text" id="username" name="username"
                                                placeholder="Your fancy username"
                                                lassName="w-full" {...register("username")}
@@ -92,14 +160,17 @@ const UserSettingsModal = () => {
                                 </div>
                                 {errors.username && <ModalError message={errors.username.message}/>}
                                 <div>
-                                    <p className="font-bold whitespace-nowrap">E-mail:</p>
+                                    <Label htmlFor="email">Email</Label>
                                     <Input type="email" id="email" name="email" placeholder="Your email address"
                                             className="w-full" {...register("email")}
                                     />
                                 </div>
                                 {errors.email && <ModalError message={errors.email.message} /> }
                             </div>
-                            <Button type="submit" className="sm:w-1/3 ml-auto">Apply</Button>
+                            <Button type="submit" className="sm:w-1/3 ml-auto" disabled={isButtonDisabled}
+                            >
+                                Apply
+                            </Button>
                         </div>
                     </form>
                     <div className="ml-5">

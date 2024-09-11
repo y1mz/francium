@@ -46,7 +46,7 @@ function LoginModal() {
                             You already logged in
                         </DialogTitle>
                     </DialogHeader>
-                        <Button asChild>
+                        <Button onClick={() => onClose()} asChild>
                             <Link href={"/"}>Click here to go back to homepage.</Link>
                         </Button>
                 </DialogContent>

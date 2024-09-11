@@ -90,7 +90,7 @@ function AdminLinksTab({ links }) {
 
     return (
         <>
-            <Table>
+            <Table className="overflow-y-scroll no-scrollbar">
                 <TableCaption>Total links: {links.length}</TableCaption>
                 <TableHeader>
                     <TableRow>

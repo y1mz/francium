@@ -11,7 +11,8 @@ import {
     Pagination, PaginationContent, PaginationEllipsis,
     PaginationItem, PaginationLink,
     PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
-import {Button} from "@/components/ui/button";
+import {Button} from "@/components/ui/button"
+import LinksSearchButton from "@/components/shorter/links-search"
 
 async function MyLinksPage({ searchParams }) {
     // Get user session and redirect to "/" if no session present.
@@ -60,13 +61,16 @@ async function MyLinksPage({ searchParams }) {
         return redirect(url + "?p=1")
     }
 
-    const pagedLinks = links.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+    const pagedLinks = shortedLinks.slice((page - 1) * itemsPerPage, page * itemsPerPage)
 
     return (
         <div className="mx-auto max-w-[1100px] px-5 py-10 md:px-20">
             <AboutHeader title="My Links" />
             <div className="flex flex-col gap-2 py-5">
-                <h2 className="text-2xl font-bold py-1">Links you've shorted</h2>
+                <div className="flex flex-wrap sm:justify-between">
+                    <h2 className="text-2xl font-bold py-1">Links you've shorted</h2>
+                    <LinksSearchButton shortedLink={shortedLinks}/>
+                </div>
                 <Separator className="bg-gray-700 dark:bg-white/20" />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                         {!session.user.banned && <LinkNewBox />}

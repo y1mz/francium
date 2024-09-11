@@ -1,7 +1,7 @@
 {
     "SiteName": "Francium Project",
     "SiteDescription": "A simple link shortener that just works.",
-    "SiteUrl": "localhost:3100",
+    "SiteUrl": "localhost:8085",
     "SiteKeywords": {
 
     },

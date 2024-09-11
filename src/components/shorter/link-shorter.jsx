@@ -1,6 +1,6 @@
 "use client"
 
-import { useSession, signIn } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { useModal } from "@/components/modals/hooks/modal-hook"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -13,7 +13,6 @@ import LinkBannedComp from "./link-banned"
 
 function LinkShorterBox() {
     const { data: session } = useSession()
-    const { onOpen } = useModal()
     const { register
         , handleSubmit
         , formState: { errors } } = useForm()
@@ -24,27 +23,6 @@ function LinkShorterBox() {
     const [endRespone, setEndResponse] = useState({})
 
     const Content = () => {
-
-        if (!session) {
-            return (
-                <div className="flex flex-wrap gap-1">
-                    <Button
-                        className="w-2/3 flex-grow"
-                        variant="outline"
-                        onClick={() => signIn()}
-                    >
-                        You need to be signed in to continue
-                    </Button>
-                    <Button
-                        className="w-1/3 flex-grow"
-                        variant="outline"
-                        onClick={() => onOpen("reason")}
-                    >
-                        See why
-                    </Button>
-                </div>
-            )
-        }
 
         const onSubmit = async (data) => {
             if (isError) {
@@ -88,10 +66,10 @@ function LinkShorterBox() {
             <div className="p-4 rounded-lg backdrop-blur-sm bg-white/10 border border-white/30 shadow-lg">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex gap-1">
                     <Input type="url" name="link" placeholder="Link to be shortened"
-                        {...register("link", { required: true })} disabled={session.user.banned}
+                        {...register("link", { required: true })} disabled={session?.user.banned}
                     />
                     <Button variant="outline"
-                        type="submit" disabled={submitting || session.user.banned}
+                        type="submit" disabled={submitting || session?.user.banned}
                     >
                         Short!
                     </Button>

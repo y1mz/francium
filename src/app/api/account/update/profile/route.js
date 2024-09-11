@@ -14,22 +14,30 @@ export async function PATCH(req) {
             return new NextResponse("Username and email is required", { status: 401 })
         }
 
-        const emailCheck = await db.user.findUnique({
+        const emailCheck = await db.user.findFirst({
             where: {
                 email: email
             }
         })
-        const usernameCheck = await db.user.findFirst({
+
+        const usernameCheck = await db.user.findUnique({
             where: {
                 name: username
             }
         })
-        if (emailCheck.email !== session?.user.email) {
-            return new NextResponse("Email already registered", { status: 402 })
+
+        if (emailCheck) {
+            if (emailCheck.email !== session.user.email) {
+                return new NextResponse("Credentials already used", { status: 401 })
+            }
         }
-        if (usernameCheck.name !== session?.user.name) {
-            return new NextResponse("Username already registered", { status: 403 })
+        console.log("profile check")
+        if (usernameCheck) {
+            if (usernameCheck.name !== session.user.name) {
+                return new NextResponse("Credentials already used", { status: 401 })
+            }
         }
+        console.log("profile check")
 
         const server = await db.user.update({
             where: {
