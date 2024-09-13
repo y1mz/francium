@@ -11,13 +11,13 @@ datasource db {
 }
 
 model User {
-  id            String        @id @default(cuid())
-  name          String        @unique
-  email         String?       @unique
+  id            String            @id @default(cuid())
+  name          String            @unique
+  email         String?           @unique
   emailVerified DateTime?
   image         String?
-  role          String        @default("USER")
-  isBanned      Boolean       @default(false)
+  role          String            @default("USER")
+  isBanned      Boolean           @default(false)
   prefs         UserPreferences[]
   accounts      Account[]
   sessions      Session[]
@@ -25,22 +25,22 @@ model User {
   links         ShortLinks[]
   reports       LinkReports[]
 
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model UserPreferences {
-  id            String        @id @default(cuid())
-  usr           User          @relation(fields: [userId], references: [id])
-  userId        String        @unique
+  id     String @id @default(cuid())
+  usr    User   @relation(fields: [userId], references: [id])
+  userId String @unique
 
-  showUsernameOnCheck         Boolean @default(false)
-  logErrorsForDevelopement    Boolean @default(true)
+  showUsernameOnCheck      Boolean @default(false)
+  logErrorsForDevelopement Boolean @default(true)
 
-  lastExportDate              DateTime?
-  lastImportDate              DateTime?
+  lastExportDate DateTime?
+  lastImportDate DateTime?
 
-  markForDeletion             Boolean @default(false)
+  markForDeletion Boolean @default(false)
 }
 
 model Account {
@@ -135,10 +135,10 @@ model UserBans {
 }
 
 model ErrorLogs {
-  id Int @id @default(autoincrement())
-  type String @default("Error")
-  place String?
+  id      Int      @id @default(autoincrement())
+  type    String   @default("Error")
+  place   String?
   message String?
-  date DateTime @default(now())
-  read Boolean @default(false)
+  date    DateTime @default(now())
+  read    Boolean  @default(false)
 }

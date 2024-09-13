@@ -6,6 +6,7 @@ import Script from "next/script"
 import ThemesProvider from "@/components/providers/theme-provider"
 import ModalProvider from "@/components/providers/modal-provider"
 import ServerSessionProvider from "@/components/providers/session-provider"
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -49,6 +50,7 @@ export default function RootLayout({ children }) {
                     {children}
                 </ThemesProvider>
             </ServerSessionProvider>
+        <Toaster />
         </body>
     </html>
   )

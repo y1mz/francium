@@ -5,7 +5,8 @@ import { NextResponse } from "next/server"
 export async function PATCH(req) {
     const session = await ServerSession()
     try {
-        const { username, email } = await req.json()
+        const { username, email, logErrors, showProfile } = await req.json()
+        console.log(logErrors, showProfile)
 
         if (!session) {
             return new NextResponse("Unauthorized", { status: 400 })
@@ -47,7 +48,32 @@ export async function PATCH(req) {
             },
             data: {
                 name: username,
-                email: email
+                email: email,
+                prefs: {
+                    update: {
+                        where: {
+                            userId: session.user.id,
+                        },
+                        data: {
+                            showUsernameOnCheck : showProfile,
+                            logErrorsForDevelopement: logErrors
+                        }
+                    }
+                },
+                links: {
+                    updateMany: {
+                        where: {
+                            creatorId: session.user.id,
+                        },
+                        data: {
+                            isAuthorPublic: showProfile
+                        }
+                    }
+                }
+            },
+            include: {
+                prefs: true,
+                links: true
             }
         })
         return NextResponse.json(server)

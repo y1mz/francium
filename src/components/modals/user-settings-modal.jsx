@@ -1,6 +1,6 @@
 "use client"
 
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import {Dialog, DialogContent, DialogTitle} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
@@ -11,14 +11,14 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { Label } from "@/components/ui/label"
 
 import { useModal } from "./hooks/modal-hook"
+import { useToast } from "@/lib/hooks/use-toast"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { useRouter } from "next/navigation"
 
-
 const UserSettingsModal = () => {
-    const { isOpen, onClose, type } = useModal()
+    const { onOpen, isOpen, onClose, type } = useModal()
     const isModalOpen = isOpen && type === "usrSettings"
     const { data: session } = useSession()
     const [isButtonDisabled, setIsDisabled] = useState(false)
@@ -28,24 +28,34 @@ const UserSettingsModal = () => {
         , formState: { errors },
         setValue,
         setError ,
-        getValues,
+        getValues, control,
         clearErrors } = useForm(
             {
                 defaultValues: {
                     username: session?.user.name,
-                    email: session?.user.email
+                    email: session?.user.email,
+                    logErrors: true,
+                    showProfile: false
                 },
                 resetOptions: {
                     keepDirtyValues: false
                 }
             }
     )
+    const { toast } = useToast()
     const router = useRouter()
+
+    const handleClose = () => {
+        onClose()
+    }
 
     useEffect(() => {
         // Set user details on start
+
         setValue("username", session?.user.name)
         setValue("email", session?.user.email)
+        setValue("showProfile", session?.settings.showUsernameOnCheck)
+        setValue("logErrors", session?.settings.logErrorsForDevelopement)
         // Clear errors
         clearErrors("email")
         clearErrors("username")
@@ -101,16 +111,6 @@ const UserSettingsModal = () => {
     }, [emailWatch])
 
     const onSubmit = async (data) => {
-         // Prevent default values
-         const isUSame = data.username === session?.user.name
-         const isESame = data.email === session?.user.email
-         if ((isUSame + isESame) === 2) {
-            return
-         }
-         // Prevent empty values
-         if (data.username.length < 1 || data.email.length < 1) {
-             return
-         }
 
         const response = await fetch("/api/account/update/profile", {
             method: "PATCH",
@@ -120,14 +120,24 @@ const UserSettingsModal = () => {
             if (response.status === 401) {
                 setError("email", { type: "focus", message: "401: Credentials already used."})
             }
+            toast({
+                title: "Error",
+                description: "There was an error, please try again.",
+                variant: "destructive",
+            })
         } else {
+            toast({
+                title: "Settings updated successfully."
+            })
+            setTimeout(router.refresh, 3000)
             window.location.reload()
         }
     }
 
     return (
-        <Dialog open={isModalOpen} onOpenChange={() => onClose()}>
+        <Dialog open={isModalOpen} onOpenChange={() => handleClose()}>
             <DialogContent className="max-h-[450px] overflow-y-scroll no-scrollbar">
+                <DialogTitle className="hidden"></DialogTitle>
                 <div className="flex flex-col gap-3">
                     <div className="flex justify-between items-center">
                         <h2 className="text-2xl font-bold">
@@ -146,7 +156,7 @@ const UserSettingsModal = () => {
                                 <div className="flex">
                                     <Avatar className="h-16 w-16 mr-5">
                                         <AvatarFallback className="text-2xl">
-                                            {session?.user.name.substring(0,1).toUpperCase()}
+                                            {session?.user.name.substring(0, 1).toUpperCase()}
                                         </AvatarFallback>
                                         <AvatarImage src={session?.user.image}/>
                                     </Avatar>
@@ -154,7 +164,11 @@ const UserSettingsModal = () => {
                                         <Label htmlFor="username">Username</Label>
                                         <Input type="text" id="username" name="username"
                                                placeholder="Your fancy username"
-                                               lassName="w-full" {...register("username")}
+                                               lassName="w-full" {...register("username", {
+                                            required: "Username is required", minLength: {
+                                                value: 3, message: "Username must be at least 3 characters"
+                                            }
+                                        })}
                                         />
                                     </div>
                                 </div>
@@ -162,92 +176,61 @@ const UserSettingsModal = () => {
                                 <div>
                                     <Label htmlFor="email">Email</Label>
                                     <Input type="email" id="email" name="email" placeholder="Your email address"
-                                            className="w-full" {...register("email")}
+                                           className="w-full" {...register("email", {
+                                        required: "Email is required", minLength: {
+                                            value: 5, message: "Email must be at least 5 characters"
+                                        }
+                                    })}
                                     />
                                 </div>
-                                {errors.email && <ModalError message={errors.email.message} /> }
+                                {errors.email && <ModalError message={errors.email.message}/>}
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-bold">
+                                    Privacy settings
+                                </h3>
+
+                                <div className="flex gap-1 mt-2">
+                                    <Controller
+                                        control={control}
+                                        name="showProfile"
+                                        render={({field}) => (
+                                            <Checkbox
+                                                id="showProfile"
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        )}
+                                    />
+                                    <label htmlFor="showProfile"
+                                           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                        Show your profile on link checker.
+                                    </label>
+                                </div>
+                                <div className="flex gap-1 mt-2">
+                                    <Controller
+                                        control={control}
+                                        name="logErrors"
+                                        render={({field}) => (
+                                            <Checkbox
+                                                id="logErrors"
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        )}
+                                    />
+                                    <label htmlFor="logErrors"
+                                           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                        Log application errors for developement.
+                                    </label>
+                                </div>
                             </div>
                             <Button type="submit" className="sm:w-1/3 ml-auto" disabled={isButtonDisabled}
                             >
-                                Apply
+                                Save Changes
                             </Button>
                         </div>
                     </form>
-                    <div className="ml-5">
-                        <h3 className="text-xl font-bold">
-                            Privacy settings
-                        </h3>
-                        <div className="flex gap-1 mt-2">
-                            <Checkbox id="showUser" />
-                            <label htmlFor="showUser" 
-                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    Show profile on link checker.
-                            </label>
-                        </div>
-                        <div className="flex gap-1 mt-2">
-                            <Checkbox id="logErrors" />
-                            <label htmlFor="logErrors" 
-                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    Log application errors for developement.
-                            </label>
-                        </div>
-                    </div>
-                    <div className="ml-5 mt-5">
-                        <h3 className="text-xl font-bold">
-                            Data management
-                        </h3>
-                        <span className="text-sm text-muted-foreground mb-4">
-                            Import or export your data in JSON format.
-                        </span>
-                        <div className="mt-2">
-                            <h4 className="font-bold text-lg">Import data</h4>
-                            <span className="text-sm text-muted-foreground">
-                                Import your data from an exported JSON file
-                            </span>
-                            <Alert className="my-2">
-                                <AlertCircle className="h-4 w-4" />
-                                <AlertTitle>Warning!</AlertTitle>
-                                <AlertDescription>
-                                    Importing data from other
-                                    servers will overwrite your existing data such as short links,
-                                    settings and collections.
-                                </AlertDescription>
-                            </Alert>
-                            <div className="flex items-center space-x-2">
-                                <Input
-                                    id="import-json" type="file" accept=".json"
-                                    className="w-full"
-                                />
-                                <Button
-                                    onClick={() => {}} disabled={false}
-                                >
-                                    <Upload className="mr-2 h-4 w-4" />
-                                    Import
-                                </Button>
-                            </div>
-                        </div>
-                        <div className="mt-2">
-                            <h4 className="font-bold text-lg">Export data</h4>
-                            <span className="text-sm text-muted-foreground">
-                                Download a copy of your account data as a JSON file.
-                            </span>
-                            <div className="mt-2">
-                                <Button>
-                                    <Download className="mr-2 h-4 w-4" />
-                                    Export
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ml-5 mt-5">
-                        <h3 className="text-xl font-bold text-red-400">
-                            Danger zone
-                        </h3>
-                        <span className="text-sm text-muted-foreground">
-                                Dangerous place for deleting your account and data.
-                        </span>
-                        <Button variant="destructive" className="mt-2">Delete Account</Button>
-                    </div>
                 </div>
             </DialogContent>
         </Dialog>
