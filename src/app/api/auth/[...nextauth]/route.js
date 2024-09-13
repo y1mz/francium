@@ -56,7 +56,15 @@ export const authOptions = {
                 where: {
                     userId: user.id
                 }
-            }) 
+            })
+
+            if (!usrSettings) {
+                await db.userPreferences.create({
+                    data: {
+                        userId: user.id
+                    }
+                })
+            }
 
             session.user.id = user.id
             session.user.role = user.role
