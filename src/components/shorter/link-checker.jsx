@@ -16,6 +16,7 @@ function LinkCheckerBox() {
     const [submitting, setSubmitting] = useState(false)
     const [isError, setError] = useState()
     const [endRespone, setEndResponse] = useState({})
+    const [endAuthorResponse, setAuthorResponse] = useState({})
 
     const Content = () => {
 
@@ -45,6 +46,11 @@ function LinkCheckerBox() {
                 const responseData = await response.json()
                 setEndResponse(responseData)
 
+                if (responseData.isAuthorPublic) {
+                    const res = await fetch(`/api/meta/${slug}/author`)
+                    const fullRes = await res.json()
+                    setAuthorResponse(fullRes)
+                }
 
             } catch (e) {
                 setError(e)
@@ -78,7 +84,7 @@ function LinkCheckerBox() {
             {isError && <LinkCheckError e_code={isError} />}
             <Content />
             <div className="py-2">
-                {endRespone.id && <LinkCheckResult result={endRespone} />}
+                {endRespone.id && <LinkCheckResult result={endRespone} author={endAuthorResponse} />}
             </div>
         </div>
     )
