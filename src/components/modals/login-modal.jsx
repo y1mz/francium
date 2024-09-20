@@ -71,7 +71,7 @@ function LoginModal() {
                             <ImGithub className="text-lg mr-2"/> Continue with Github
                         </Button>
                     }
-                    {configuration.EnableDiscordAuth && 
+                    {configuration?.EnableDiscordAuth &&
                         <Button
                             className="bg-indigo-600 hover:bg-indigo-800 text-white items-center"
                             onClick={() => handleDiscordLogin()}
