@@ -46,7 +46,7 @@ export async function POST(request){
         let lastShort = user.links?.reverse()[0]
         const postDifference = (new Date() - lastShort?.createdAt) / 1000
 
-        if (postDifference < 5.0) {
+        if (postDifference < 10.0) {
             console.log(`[WARN][SHORT_ROUTE] User (${user?.name}) acted so quickly.`)
             return new NextResponse("Please try again 5 seconds later.", { status: 401 })
         }
@@ -106,7 +106,7 @@ export async function POST(request){
         return NextResponse.json(response)
 
     } catch (e) {
-        console.log("[SHORT_ROUTE][ERROR]", e)
+        console.log("[SHORT_ROUTE][ERROR]", e.message)
         return new NextResponse("Internal Server Error", { status: 500 })
     }
 }

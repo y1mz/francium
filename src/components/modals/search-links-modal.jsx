@@ -33,12 +33,16 @@ function SearchLinksModal() {
                     <CommandGroup heading="Shorted Links">
                         {links.map((link, index) => (
                             <CommandItem key={link.id} className="flex justify-between text-sm">
-                                <span className="line-clamp-1 pr-5">{link.name.split(" ").slice(0, 5).join(" ")}
-                                    {link.name.split(" ").length > 5 && <span>...</span>}</span>
+                                {link.name ? (
+                                    <span className="line-clamp-1 pr-5">{link.name.split(" ").slice(0, 5).join(" ")}
+                                        {link.name.split(" ").length > 5 && <span>...</span>}</span>
+                                ) : (
+                                    <span className="line-clamp-1 pr-5">{link.link}</span>
+                                )}
                                 <div className="flex gap-2">
                                     <Tooltip>
                                         <TooltipTrigger asChild>
-                                            <Button variant="ghost" size="icon" onClick={() => handleCopy(link.slug)}>
+                                        <Button variant="ghost" size="icon" onClick={() => handleCopy(link.slug)}>
                                                 <Copy className="h-4 w-4" />
                                             </Button>
                                         </TooltipTrigger>
