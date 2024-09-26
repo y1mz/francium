@@ -134,11 +134,12 @@ model UserBans {
   bannedUntil DateTime
 }
 
-model ErrorLogs {
-  id      Int      @id @default(autoincrement())
-  type    String   @default("Error")
-  place   String?
-  message String?
-  date    DateTime @default(now())
-  read    Boolean  @default(false)
+model Announcements {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+  isActive    Boolean  @default(true)
+  title       String
+  description String
+  url         String?
 }

@@ -48,7 +48,10 @@ async function MyLinksPage({ searchParams }) {
     const page = searchParams.p
     const itemsPerPage = 8
 
-    const pagesNumber = (links.length % itemsPerPage) >= 1 ? Math.floor((links.length / itemsPerPage) + 1) : links.length / itemsPerPage
+    let pagesNumber = (links.length % itemsPerPage) >= 1 ? Math.floor((links.length / itemsPerPage) + 1) : links.length / itemsPerPage
+    if (Math.floor(pagesNumber) === 0) {
+        pagesNumber = Math.floor(pagesNumber) + 1
+    }
 
     const pages = Array.from({ length: pagesNumber }, (_, i) => i + 1)
     const pagess = pages.filter((number) => number < 5)

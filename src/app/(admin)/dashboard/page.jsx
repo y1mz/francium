@@ -8,6 +8,7 @@ import AdminReportsTab from "@/components/admin/tabs/reports-tab"
 import AdminUsersTab from "@/components/admin/tabs/users-tab"
 import AdminLinksTab from "@/components/admin/tabs/links-tab"
 import AdminBannedUsersTab from "@/components/admin/tabs/banned-users-tab"
+import AnnouncementManagerTab from "@/components/admin/tabs/announcement-tab"
 import Link from "next/link"
 
 async function DashboardPage({ searchParams }) {
@@ -52,6 +53,12 @@ async function DashboardPage({ searchParams }) {
         }
     })
 
+    const announcements = await db.announcements.findFirst({
+        where: {
+            isActive: true
+        }
+    })
+
     return (
         <div>
             <AdminWelcomeHeader user={session.user} reports={reports}/>
@@ -78,9 +85,9 @@ async function DashboardPage({ searchParams }) {
                                 Shorted Links
                             </Link>
                         </TabsTrigger>
-                        <TabsTrigger value="logs" asChild>
-                            <Link href="/dashboard?page=logs">
-                                Logs
+                        <TabsTrigger value="announcements" asChild>
+                            <Link href="/dashboard?page=announcements">
+                                Announcements
                             </Link>
                         </TabsTrigger>
                     </TabsList>
@@ -96,8 +103,8 @@ async function DashboardPage({ searchParams }) {
                     <TabsContent value="links">
                         <AdminLinksTab links={shortLinks}/>
                     </TabsContent>
-                    <TabsContent value="logs">
-                        <p>Logs will come there</p>
+                    <TabsContent value="announcements">
+                        <AnnouncementManagerTab currAnnouncement={announcements}/>
                     </TabsContent>
                 </Tabs>
             </div>

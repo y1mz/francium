@@ -32,7 +32,7 @@ function PageRooter() {
                             Source Code
                         </TooltipContent>
                     </Tooltip>
-                    <p className="font-bold text-sm text-stone-400">{appVer}</p>
+                    <p className="font-bold text-sm text-black/60 dark:text-white/40">{appVer}</p>
                 </div>
                 <p>Francium by <a href="https://www.yyilmaz.com.tr" className="hover:underline font-bold">Batuhan Y. Yılmaz</a></p>
             </div>

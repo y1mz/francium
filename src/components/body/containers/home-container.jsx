@@ -6,10 +6,13 @@ import HomeFAQ from "../home/home-faq-section"
 import InfoSection from "../home/info-section"
 import HeaderEffect from "../home/header-effect"
 import PageRooter from "@/components/body/page-footer"
+import AnnouncementAlert from "@/components/body/announcement-alert";
 
 function HomeContainer() {
+
     return (
         <div className="container w-full mx-auto flex flex-col mb-20 py-5 sm:py-28">
+            <AnnouncementAlert />
             <div className="relative">
                 <div
                     className="absolute top-0 left-20 w-48 h-48 sm:w-72 md:h-72 bg-purple-300 dark:bg-purple-400/90 rounded-full  mix-blend blur-2xl opacity-70"/>
