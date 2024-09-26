@@ -24,6 +24,27 @@ function LinkShorterBox() {
 
     const Content = () => {
 
+        if (!session) {
+            return (
+                <div className="flex flex-wrap gap-1">
+                    <Button
+                        className="w-2/3 flex-grow"
+                        variant="outline"
+                        onClick={() => signIn()}
+                    >
+                        You need to be signed in to continue
+                    </Button>
+                    <Button
+                        className="w-1/3 flex-grow"
+                        variant="outline"
+                        onClick={() => onOpen("reason")}
+                    >
+                        See why
+                    </Button>
+                </div>
+            )
+        }
+
         const onSubmit = async (data) => {
             if (isError) {
                 setError(null)
