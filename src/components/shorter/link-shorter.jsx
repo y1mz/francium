@@ -1,6 +1,6 @@
 "use client"
 
-import { useSession } from "next-auth/react"
+import { useSession, signIn } from "next-auth/react"
 import { useModal } from "@/components/modals/hooks/modal-hook"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -16,6 +16,7 @@ function LinkShorterBox() {
     const { register
         , handleSubmit
         , formState: { errors } } = useForm()
+    const { onOpen } = useModal()
 
     const [link, setLink] = useState("")
     const [submitting, setSubmitting] = useState(false)
