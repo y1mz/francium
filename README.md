@@ -15,6 +15,11 @@ A simple and self-hostable open source link shortener and collector written in N
 
 **Back-end**: NextJS 14, Bun
 
+## Screenshots
+- Screenshots came from https://vexxit.xyz
+![Homepage](https://github.com/B4tuhanY1lmaz/francium/blob/main/images/screencapture-vexxit-xyz-2024-09-28-19_22_07.png?raw=true)
+![User settings](https://github.com/B4tuhanY1lmaz/francium/blob/main/images/screencapture-vexxit-xyz-2024-09-28-19_22_47.png?raw=true)
+![User shorted links](https://github.com/B4tuhanY1lmaz/francium/blob/main/images/screencapture-vexxit-xyz-2024-09-28-19_22_47.png?raw=true)
 
 ## Environment Variables
 
