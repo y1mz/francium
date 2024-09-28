@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link"
-import Image from "next/image"
 import LinkReportButton from "./link-report-button"
 
 
@@ -44,8 +43,7 @@ function LinkCheckResult({ result, author }) {
                         <Separator className="bg-white/50 px-10" />
                         <div className="flex flex-col gap-2">
                             <p className="font-bold">OpenGraph Image:</p>
-                            <Image
-                                height={600} width={1200}
+                            <img
                                 src={result.metaImageUrl}
                                 alt={`OpenGraph Image for ${result.metaName}`} className="rounded-lg"
                             />

@@ -6,9 +6,9 @@
 
     },
     "Ackee" : {
-        "useAckee": true,
-        "AckeeUrl": "https://ackee.tbnmc.xyz",
-        "AckeeDomainId": "41dccfab-655d-49cb-8902-6bfc0e6da3a2"
+        "useAckee": false,
+        "AckeeUrl": "",
+        "AckeeDomainId": ""
     },
     "HomePage": {
         "homeHeader": "Vexxit Link Shortener",
@@ -31,6 +31,6 @@
     "Auth": {
         "EnableGithubAuth": true,
         "EnableGoogleAuth": true,
-        "EnableDiscordAuth": true,
+        "EnableDiscordAuth": true
     }
 }
