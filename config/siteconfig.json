@@ -32,6 +32,5 @@
         "EnableGithubAuth": true,
         "EnableGoogleAuth": true,
         "EnableDiscordAuth": true,
-        "EnableSignedOutUsers": true
     }
 }

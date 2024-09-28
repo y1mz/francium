@@ -37,7 +37,7 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
         <div
             className="relative rounded-lg bg-white/10 hover:bg-white/20  shadow-lg hover:shadow-none tansition duration-200 h-48 px-12 md:px-0"
         >
-            <div className="flex flex-col p-5">
+            <div className="flex flex-col px-0 py-5 md:px-5">
                     {title ? (
                         <>
                             <h2 className="text-xl font-bold my-0">{title.split(" ").slice(0, 5).join(" ")}{title.split(" ").length > 5 && "..."}</h2>
