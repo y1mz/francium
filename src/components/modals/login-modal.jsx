@@ -58,7 +58,7 @@ function LoginModal() {
                         </DialogTitle>
                     </DialogHeader>
                     <Button
-                        className="bg-white items-center"
+                        className="bg-green-800 dark:bg-white items-center"
                         onClick={() => handleGoogleLogin()}
                     >
                         <FcGoogle className="text-lg mr-2"/> Continue with Google

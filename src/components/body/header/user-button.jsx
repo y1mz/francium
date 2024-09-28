@@ -68,13 +68,6 @@ function UserButton() {
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                        <Link href="/about" className="flex">
-                            <Info className="h-4 w-4" />
-                            <p className="ml-2">About</p>
-                        </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => signOut()}>
                         <LogOut className="text-red-500 h-4 w-4" />
                         <p className="text-red-500 ml-2">Sign Out</p>

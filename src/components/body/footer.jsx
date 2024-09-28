@@ -2,20 +2,18 @@ import Link from "next/link"
 import ModeToggle from "./header/theme-toggle"
 import UserButton from "./header/user-button"
 import { Button } from "../ui/button"
+import { Info } from "lucide-react"
 
-function Footer({ SiteName, session }) {
+function Footer({ SiteName }) {
 
     const AboutButton = () => {
-
-        if (!session) {
-            return (
-                <Button variant="ghost" size="main_text" asChild>
-                    <Link href={"/about"}>
-                        About
-                    </Link>
-                </Button>
-            )
-        }
+        return (
+            <Button variant="ghost" size="main" asChild>
+                <Link href={"/about"}>
+                    <Info className="h-5 w-5" />
+                </Link>
+            </Button>
+        )
     }
 
     return (

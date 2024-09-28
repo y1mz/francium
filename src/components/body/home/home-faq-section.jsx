@@ -12,7 +12,7 @@ function HomeFAQ() {
                 <Accordion type="single" collapsible className="w-full">
                     {faoq.map((faq) => (
                         <AccordionItem value={faq.title} key={faq.title}>
-                            <AccordionTrigger>{faq.title}</AccordionTrigger>
+                            <AccordionTrigger className="text-left">{faq.title}</AccordionTrigger>
                             <AccordionContent>
                                 {faq.description}
                             </AccordionContent>
