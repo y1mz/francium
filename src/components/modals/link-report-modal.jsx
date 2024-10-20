@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import ModalError from "@/components/body/modal-error"
 import { Textarea } from "../ui/textarea"
-import LinkReportSuccess from "../shorter/link-report-success"
+import LinkReportSuccess from "@/components/shorter/checker/link-report-success"
 
 import { useModal } from "./hooks/modal-hook"
 import { useSession } from "next-auth/react"

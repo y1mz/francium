@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import LinkCheckError from "@/components/shorter/link-check-error"
-import LinkCheckResult from "@/components/shorter/link-check-result"
+import LinkCheckError from "@/components/shorter/checker/link-check-error"
+import LinkCheckResult from "@/components/shorter/checker/link-check-result"
 
 function LinkCheckerBox() {
     const { register

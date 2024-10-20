@@ -1,7 +1,7 @@
 "use client"
 
-import { useModal } from "../modals/hooks/modal-hook"
-import { Button } from "../ui/button"
+import { useModal } from "@/components/modals/hooks/modal-hook"
+import { Button } from "@/components/ui/button"
 
 function LinkReportButton({ url, slug }) {
     const { onOpen } = useModal()

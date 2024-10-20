@@ -4,6 +4,9 @@ import { useModal } from "@/components/modals/hooks/modal-hook"
 import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent,
+    DropdownMenuTrigger, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
+import { Ellipsis, Trash2, PenTool, CircleMinus } from "lucide-react"
 import Link from "next/link"
 
 function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
@@ -51,10 +54,34 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
                 </div>
                 <div className="absolute bottom-0 inset-x-0 p-4">
                     <div className="flex justify-between items-end">
-                        <Button variant="ghost2" className="text-rose-600" onClick={() => handleDelete()}>Delete</Button>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger>
+                                <Button variant="ghost" size="icon">
+                                    <Ellipsis className="h-6 w-6" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem>
+                                    <PenTool className="h-4 w-4 mr-2" />
+                                    Rename Url
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                    <CircleMinus className="h-4 w-4 mr-2" />
+                                    Disable Url
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    className="text-rose-600 dark:text-rose-800"
+                                    onClick={() => handleDelete()}
+                                >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Delete Url
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                         <div className="flex">
-                            {copied ? <Button className="bg-green-500 hover:bg-green-300">Copied!</Button> : <Button variant="ghost2" onClick={() => handleCopy()}>Copy Link</Button>}
-                            <Button variant="ghost2" asChild><Link href={url}>Open Link</Link></Button>
+                            {copied ? <Button className="bg-green-500 hover:bg-green-300">Copied!</Button> : <Button variant="ghost2" onClick={() => handleCopy()}>Copy Url</Button>}
+                            <Button variant="ghost2" asChild><Link href={url} target="_blank">Open Url</Link></Button>
                         </div>
                     </div>
             </div>
