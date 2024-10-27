@@ -6,7 +6,7 @@ import AboutHeader from "@/components/about/header"
 import LinkBox from "@/components/shorter/link-box"
 import LinkNewBox from "@/components/shorter/link-new-box"
 import { Separator } from "@/components/ui/separator"
-import PageRooter from "@/components/body/page-footer"
+
 import {
     Pagination, PaginationContent, PaginationEllipsis,
     PaginationItem, PaginationLink,
@@ -136,7 +136,6 @@ async function MyLinksPage({ searchParams }) {
                     </PaginationContent>
                 </Pagination>
             </div>
-            <PageRooter />
         </div>
     )
 }

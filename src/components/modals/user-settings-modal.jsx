@@ -112,6 +112,10 @@ const UserSettingsModal = () => {
 
     const onSubmit = async (data) => {
 
+        async function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
         const response = await fetch("/api/account/update/profile", {
             method: "PATCH",
             body: JSON.stringify(data)
@@ -129,8 +133,8 @@ const UserSettingsModal = () => {
             toast({
                 title: "Settings updated successfully."
             })
-            setTimeout(router.refresh, 3000)
-            window.location.reload()
+            // Wait a second before refreshing the page
+            await sleep(1000).then(() => window.location.reload())
         }
     }
 

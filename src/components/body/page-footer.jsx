@@ -1,9 +1,15 @@
+"use server"
+
 import { Github, Info, SquareCheckBig } from "lucide-react"
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import Link from "next/link"
 
+import { exec } from "child_process"
+
 function PageRooter() {
-    const appVer = "v1.0.0"
+    const appVer = "v1.0.1"
+    const codeName = "oneone"
+
     return (
         <footer className="w-full py-5">
             <div className="mx-auto text-center">
@@ -32,7 +38,14 @@ function PageRooter() {
                             Source Code
                         </TooltipContent>
                     </Tooltip>
-                    <p className="font-bold text-sm text-black/60 dark:text-white/40">{appVer}</p>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <p className="font-bold text-sm text-black/60 dark:text-white/40 hover:underline">{appVer}</p>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            #{codeName} - {appVer}
+                        </TooltipContent>
+                    </Tooltip>
                 </div>
                 <p>Francium by <a href="https://www.yyilmaz.com.tr" className="hover:underline font-bold">Batuhan Y. Yılmaz</a></p>
             </div>

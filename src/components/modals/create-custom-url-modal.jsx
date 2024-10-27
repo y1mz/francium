@@ -1,29 +1,40 @@
 "use client"
 
 import { Dialog, DialogContent, DialogTitle,
-    DialogFooter, DialogHeader} from "@/components/ui/dialog"
+    DialogFooter, DialogHeader } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import ModalError from "@/components/body/modal-error"
 
 import { useModal } from "./hooks/modal-hook"
 import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
-import { useRouter } from "next/navigation"
+import { useToast } from "@/lib/hooks/use-toast"
 
 const CustomUrlModal = () => {
     const { isOpen, onClose, type } = useModal()
     const isModalOpen = isOpen && type === "newUrl"
-    const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm()
+    const { register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        setError,
+        clearErrors } = useForm()
+    const { toast } = useToast()
+
+    useEffect(() => {
+        clearErrors()
+        setError("uLink", "Test error")
+    }, [isModalOpen])
 
     const onSubmit = async (data) => {
         try {
-            const response = await fetch("/api/short/create", {
+            const response = await fetch("/api/short/create/custom", {
                 method: 'POST',
                 body: JSON.stringify({
-                    link: data.uLink
+                    link: data.uLink,
+                    keyword: data.keyword
                 })
             })
             if (!response.ok) {
@@ -38,8 +49,11 @@ const CustomUrlModal = () => {
             window.location.reload()
 
         } catch (e) {
-            console.log("[SHORT_LINK_PUBLISH]", e.message)
-            setError("uLink", { type: "focus", message: e.message})
+            toast({
+                title: "Error",
+                description: "There was an error, please try again.",
+                variant: "destructive",
+            })
         }
     }
 
@@ -47,19 +61,39 @@ const CustomUrlModal = () => {
         <Dialog open={isModalOpen} onOpenChange={() => onClose()}>
             <DialogContent>
                 <div className="flex flex-col gap-4">
-                    <h2 className="text-2xl font-bold">
-                        New Short Url
-                    </h2>
+                    <div>
+                        <h2 className="text-2xl font-bold">
+                            Create Short Url
+                        </h2>
+                        <p className="text-sm text-muted-foreground">
+                            Short your long urls with custom keywords.
+                        </p>
+                    </div>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col gap-4">
-                            <Input type="text" id="uLink" name="uLink" placeholder="Link to be shortened" {...register("uLink", { required: true })} />
-                            {errors.uLink && <ModalError message={errors.uLink.message} />}
-                            <Button type="submit" disabled={isSubmitting}>Short!</Button>
+                            <div>
+                                <Label htmlFor="uLink">Long Url</Label>
+                                <Input type="url" id="uLink" name="uLink"
+                                       placeholder="Link to be shortened" {...register("uLink", {required: true})} />
+                                {errors.uLink && <p className="text-sm text-red-600">{errors.uLink.message}</p>}
+                            </div>
+                            <div>
+                                <Label htmlFor="uLinkKeyword">Url keyword (optional)</Label>
+                                <p className="text-sm text-muted-foreground">
+                                    Create short urls with custom keywords.
+                                </p>
+                                <Input type="text" id="uLinkKeyword" name="uLink"
+                                       placeholder="Example: short, custom ..." {...register("uLinkKeyword", {  required: false, minLength: 3, maxLength:10 })} />
+                                {errors.uLinkKeyword && <p className="text-sm text-red-600">{errors.uLinkKeyword.message}</p>}
+                            </div>
+                            <div className="flex gap-2 mt-2 justify-end">
+                                <Button variant="ghost" onClick={() => onClose()}>Close</Button>
+                                <Button type="submit" className="md:w-1/3" disabled={isSubmitting}>Short!</Button>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <DialogFooter className="mt-2">
-                    <Button variant="ghost" onClick={() => onClose()}>Close</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

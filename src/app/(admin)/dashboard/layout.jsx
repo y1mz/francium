@@ -1,7 +1,7 @@
 import { ServerSession } from "@/lib/server-session"
 import { redirect } from "next/navigation"
 
-import AdminHeader from "@/components/admin/admin-header"
+import Footer from "@/components/body/footer"
 
 import conf from "&/siteconfig.json"
 
@@ -15,7 +15,7 @@ async function AdminLayout({ children }) {
 
     return (
         <section className="container mx-auto w-full min-h-screen py-20">
-            <AdminHeader title={conf.SiteName} />
+            <Footer SiteName={conf.SiteName} />
             {children}
         </section>
     )

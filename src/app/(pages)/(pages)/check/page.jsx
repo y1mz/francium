@@ -1,6 +1,6 @@
 import AboutHeader from "@/components/about/header"
-import LinkCheckerBox from "@/components/shorter/link-checker"
-import PageRooter from "@/components/body/page-footer"
+import LinkCheckerBox from "@/components/shorter/checker/link-checker"
+
 import conf from "/config/siteconfig.json"
 
 export const metadata = {
@@ -17,7 +17,6 @@ function CheckUrlPage() {
             <div className="flex flex-col py-10">
                 <LinkCheckerBox />
             </div>
-            <PageRooter />
         </div>
     )
 }
