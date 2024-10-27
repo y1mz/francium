@@ -2,6 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+.animated-background {
+  background-size: 400%;
+
+  -webkit-animation: animation 10s ease infinite;
+  -moz-animation: animation 10s ease infinite;
+  animation: animation 10s ease infinite;
+}
+
+@keyframes animation {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animated-card {
+  -webkit-animation: card 0.3s ease;
+  -moz-animation: card 0.3s ease ;
+  animation: card 0.3s ease ;
+}
+
+@keyframes card {
+  0% {
+    scale: .65;
+  }
+  100% {
+    scale: 1.0;
+  }
+}
+
 @layer utilities {
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
