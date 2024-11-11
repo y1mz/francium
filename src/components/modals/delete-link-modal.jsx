@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button"
 
 import { useModal } from "./hooks/modal-hook"
 import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 const LinkDeleteModal = () => {
     const { isOpen, onClose, type, data } = useModal()
     const { id, slug, name, createdAt } = data
     const isModalOpen = isOpen && type === "linkDel"
     const { data: session } = useSession()
+    const router = useRouter()
 
     let currentUrl = window.location.origin
 
@@ -29,7 +31,7 @@ const LinkDeleteModal = () => {
             })
         })
         if (response.ok) {
-            window.location.reload()
+            router.refresh()
             return onClose()
         }
     }

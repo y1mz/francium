@@ -14,19 +14,30 @@ import { useForm } from "react-hook-form"
 import { useToast } from "@/lib/hooks/use-toast"
 
 const CustomUrlModal = () => {
-    const { isOpen, onClose, type } = useModal()
+    const { onOpen, isOpen, onClose, type } = useModal()
+    const { data: session } = useSession()
     const isModalOpen = isOpen && type === "newUrl"
     const { register,
         handleSubmit,
         formState: { errors, isSubmitting },
         setError,
-        clearErrors } = useForm()
+        clearErrors, reset } = useForm()
     const { toast } = useToast()
 
     useEffect(() => {
         clearErrors()
-        setError("uLink", "Test error")
+        reset()
+
+        if (!session) {
+            return onClose()
+        }
+
     }, [isModalOpen])
+
+    const handleClose = () => {
+        reset()
+        return onClose()
+    }
 
     const onSubmit = async (data) => {
         try {
@@ -34,7 +45,7 @@ const CustomUrlModal = () => {
                 method: 'POST',
                 body: JSON.stringify({
                     link: data.uLink,
-                    keyword: data.keyword
+                    keyword: data.uLinkKeyword
                 })
             })
             if (!response.ok) {
@@ -44,11 +55,14 @@ const CustomUrlModal = () => {
                     throw new Error(`Submitting Error: ${response.statusText}`)
                 }
             }
-
-            onClose()
-            window.location.reload()
+            const resBody = await response.json()
+            // Create a new modal called "custom-url-success-modal.jsx" and open it up when it finishes
+            onOpen("newUrlSuc", { shortUrlD: resBody })
 
         } catch (e) {
+
+            // Create a error logging api and implement it over there.
+
             toast({
                 title: "Error",
                 description: "There was an error, please try again.",
@@ -58,7 +72,7 @@ const CustomUrlModal = () => {
     }
 
     return (
-        <Dialog open={isModalOpen} onOpenChange={() => onClose()}>
+        <Dialog open={isModalOpen} onOpenChange={() => handleClose()}>
             <DialogContent>
                 <div className="flex flex-col gap-4">
                     <div>

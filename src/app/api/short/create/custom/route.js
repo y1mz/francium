@@ -2,6 +2,7 @@ import { db } from "@/lib/db"
 import { ServerSession } from "@/lib/server-session"
 import { NextResponse } from "next/server"
 import { generateUUID } from "@/lib/generateUUID"
+import { getWebsiteMetadata } from "@/lib/getWebsiteMetadata"
 import { CheckUrl } from "@/lib/checkUrl"
 
 export async function POST(request){
@@ -9,12 +10,7 @@ export async function POST(request){
 
     try {
         const body = await request.json()
-        const { link } = body
-        const contents = {
-            title: body.title,
-            custUrl: body.url,
-            expDate: body.expDate,
-        }
+        const { link, keyword } = body
 
         if (!session) {
             return new NextResponse("Unauthorized", { status: 401 })
@@ -42,18 +38,15 @@ export async function POST(request){
             return new NextResponse("Tried to short a banned Url", { status: 402 })
         }
 
-        // Prevent user from dossing
-        // let lastShort = user.links?.reverse()[0]
-        // const postDifference = (new Date() - lastShort?.createdAt) / 1000
-
-        // if (postDifference < 5.0) {
-        //     console.log(`[WARN][SHORT_ROUTE] User (${user?.name}) acted so quickly.`)
-        //     return new NextResponse("Please try again 5 seconds later.", { status: 401 })
-        // }
+        let webMetadata = await getWebsiteMetadata(link)
 
         // Database task
-        let UUID, expDate, UrlTitle, slug
-        UUID = generateUUID(5)
+        let UUID, expDate, slug
+        if (!keyword) {
+            UUID = generateUUID(5)
+        } else {
+            UUID = keyword
+        }
 
         // Create new UUID if the current one already exists
         let existingUUID = await db.shortLinks.findUnique({
@@ -66,40 +59,13 @@ export async function POST(request){
             UUID = generateUUID(5)
         }
 
-        // Fetch the metadata of url
-        // const webMetadata = await getMetaData(link)
-
-        // Bunch of if else statements for custom urls
-        if (contents.expDate) {
-            expDate = contents.expDate
-        } else {
-            expDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
-        }
-
-        if (contents.title) {
-            UrlTitle = contents.title
-        } else {
-            UrlTitle = link
-        }
-
-        if (contents.custUrl) {
-            const uLength = contents.custUrl?.length
-            // Return 401 if custom url is too long
-            if (uLength > 10) {
-                console.log(`[SHORT_ROUTE][CURRENT URL][ERROR] Custom url (${contents.custUrl}) is too long. It needs to be shorter than 10 characters.`)
-                return new NextResponse("Custom url is too long. It needs to be shorter than 10 characters.", { status: 401 })
-            }
-
-            slug = contents.custUrl
-        } else {
-            slug = UUID
-        }
+        expDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
 
         const server = async () => {
-            await db.shortLinks.create({
+            const createAction = await db.shortLinks.create({
                 data: {
-                    name: UrlTitle,
-                    slug: slug,
+                    name: webMetadata.title,
+                    slug: UUID,
                     link: link,
                     metaName: webMetadata.title,
                     metaDesc: webMetadata.description,
@@ -109,13 +75,7 @@ export async function POST(request){
                     creatorId: user?.id
                 }
             })
-            const srv = await db.shortLinks.findUnique({
-                where: {
-                    slug: UUID,
-                    link: link
-                }
-            })
-            return srv
+            return createAction
         }
 
         // Return the database response
@@ -126,6 +86,7 @@ export async function POST(request){
             title: serResult.name,
             desc: serResult.metaDesc,
             img: serResult.metaImageUrl,
+            metaName: serResult.metaName
         }
         return NextResponse.json(response)
 

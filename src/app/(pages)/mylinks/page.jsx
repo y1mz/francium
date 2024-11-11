@@ -41,11 +41,12 @@ async function MyLinksPage({ searchParams }) {
     })
 
     // Pagination
+    const { p }  = await searchParams
     const url = "/mylinks"
-    if (!searchParams.p) {
+    if (!p) {
         return redirect(url + "?p=1")
     }
-    const page = searchParams.p
+    const page = p
     const itemsPerPage = 8
 
     let pagesNumber = (links.length % itemsPerPage) >= 1 ? Math.floor((links.length / itemsPerPage) + 1) : links.length / itemsPerPage

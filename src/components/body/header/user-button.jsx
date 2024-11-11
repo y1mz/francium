@@ -7,6 +7,7 @@ import { DropdownMenu,
     DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
     DropdownMenuLabel }
     from "@/components/ui/dropdown-menu"
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import Link from "next/link"
 
 import { LogOut, Cog, LayoutTemplate, LogIn, Dock, SquareCheckBig, Info } from "lucide-react"
@@ -22,13 +23,20 @@ function UserButton() {
         const userNameFirst = session.user.name.substring(0,1).toUpperCase()
         return (
             <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="main">
-                        <Avatar className="h-8 w-8">
-                            <AvatarImage src={session.user.image} />
-                            <AvatarFallback className="h-8 w-8 items-center">{session.user.name.substring(0,1).toUpperCase()}</AvatarFallback>
-                        </Avatar>
-                    </Button>
+                <DropdownMenuTrigger>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button variant="ghost" size="main">
+                                <Avatar className="h-7 w-7">
+                                    <AvatarImage src={session.user.image} />
+                                    <AvatarFallback className="h-8 w-8 items-center">{session.user.name.substring(0,1).toUpperCase()}</AvatarFallback>
+                                </Avatar>
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            User menu
+                        </TooltipContent>
+                    </Tooltip>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuLabel>
@@ -78,9 +86,16 @@ function UserButton() {
     }
 
     return (
-        <Button variant="ghost" size="main" onClick={() => signIn()}>
-            <LogIn className="h-5 w-5" />
-        </Button>
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <Button variant="ghost" size="main" onClick={() => signIn()}>
+                    <LogIn className="h-5 w-5" />
+                </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+                Sign In
+            </TooltipContent>
+        </Tooltip>
     )
 }
 

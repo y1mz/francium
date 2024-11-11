@@ -40,7 +40,9 @@ model UserPreferences {
   lastExportDate DateTime?
   lastImportDate DateTime?
 
-  markForDeletion Boolean @default(false)
+  isNewUser            Boolean @default(true)
+  markForDeletion      Boolean @default(false)
+  isOnboardingComplete Boolean @default(false)
 }
 
 model Account {

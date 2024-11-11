@@ -13,7 +13,8 @@ function AnnouncementAlert() {
     const [alertData, setAlertData] = useState({
         "alertTitle": "",
         "alertDescription": "",
-        "alertUrl": ""
+        "alertUrl": "",
+        "alertId": ""
     })
 
     useEffect(() => {
@@ -24,11 +25,17 @@ function AnnouncementAlert() {
                 return null
             } else {
                 const data = await response.json()
-                setAlertData({
-                    "alertTitle": data.title,
-                    "alertDescription": data.description,
-                    "alertUrl": data.url,
-                })
+                const readAnnouncement = window.localStorage.getItem("lastReadAnnuncementId")
+
+                if (readAnnouncement !== data.id) {
+                    setAlertData({
+                        "alertTitle": data.title,
+                        "alertDescription": data.description,
+                        "alertUrl": data.url,
+                        "alertId": data.id
+                    })
+                }
+
                 setTimeout(() => setIsVisible(true), 1000)
             }
         }
@@ -36,6 +43,12 @@ function AnnouncementAlert() {
 
         setTimeout(() => setIsVisible(false), 20000)
     }, [])
+
+    const handleClose = () => {
+        window.localStorage.setItem("LastReadAnnouncementId", alertData.alertId)
+        setIsVisible(false)
+    }
+
     return (
         <div className="w-full z-20 md:-mt-20 mb-20">
             <div
@@ -52,7 +65,7 @@ function AnnouncementAlert() {
                     </AlertDescription>
                     <Button variant="ghost" size="icon"
                             className="absolute top-2 right-2 h-6 w-6"
-                            onClick={() => setIsVisible(false)}
+                            onClick={() => handleClose()}
                     >
                         <XCircle className="h-4 w-4" />
                     </Button>

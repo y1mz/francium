@@ -1,7 +1,7 @@
 "use client"
 
 import { useSession, signIn } from "next-auth/react"
-import {redirect, useSearchParams} from "next/navigation"
+import { redirect, useSearchParams } from "next/navigation"
 
 import { CardFooter, Card, CardContent,
     CardTitle, CardHeader } from "@/components/ui/card"
