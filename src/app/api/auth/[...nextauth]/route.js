@@ -94,10 +94,10 @@ export const authOptions = {
         signIn: '/sign-in',
         signOut: '/sign-out',
         // error: '/error',
-        // newUser: '/sign-in/new
+        newUser: '/sign-in/new'
     }
 }
 
-const handler = NextAuth(authOptions)
+export const { auth, handlers, signIn, signOut } = NextAuth(authOptions)
 
-export { handler as GET, handler as POST }
+export const { GET, POST } = handlers

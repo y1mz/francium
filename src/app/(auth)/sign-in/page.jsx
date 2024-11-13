@@ -31,15 +31,15 @@ function SignInPage() {
     }
 
     const handleDiscordLogin = () => {
-        signIn("discord", { callbackUrl: callUrl }).then(redirect(callUrl))
+        signIn("discord", { callbackUrl: callUrl })
     }
 
     const handleGoogleLogin = () => {
-        signIn("google", { callbackUrl: callUrl }).then(redirect(callUrl))
+        signIn("google", { callbackUrl: callUrl })
     }
 
     const handleGithubLogin = () => {
-        signIn("github", { callbackUrl: callUrl }).then(redirect(callUrl))
+        signIn("github", { callbackUrl: callUrl })
     }
 
     return (
