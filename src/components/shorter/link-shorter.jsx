@@ -25,46 +25,39 @@ function LinkShorterBox() {
 
     const Content = () => {
 
-        if (!session) {
-            return (
-                <div className="flex flex-wrap gap-1">
-                    <Button
-                        className="w-2/3 flex-grow"
-                        variant="outline"
-                        onClick={() => signIn()}
-                    >
-                        You need to be signed in to continue
-                    </Button>
-                    <Button
-                        className="w-1/3 flex-grow"
-                        variant="outline"
-                        onClick={() => onOpen("reason")}
-                    >
-                        See why
-                    </Button>
-                </div>
-            )
-        }
-
         const onSubmit = async (data) => {
+            let response
+
             if (isError) {
                 setError(null)
             }
             if (endRespone.url) {
                 setEndResponse({})
             }
+
             try {
                 setSubmitting(true)
-
-                const response = await fetch("/api/short/create", {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        link: data.link
+                if (!session) {
+                    response = await fetch("/api/short/create/nologin", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            link: data.link
+                        }),
+                        headers: {
+                            "nonLoginUUID": window.localStorage.getItem("localUUID")
+                        }
                     })
-                })
+                } else {
+                    response = await fetch("/api/short/create", {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            link: data.link
+                        })
+                    })
 
-                if (!response.ok) {
-                    throw new Error(`Submitting Error: ${response.statusText}`)
+                    if (!response.ok) {
+                        throw new Error(`Submitting Error: ${response.statusText}`)
+                    }
                 }
 
                 const responseData = await response.json()
@@ -85,7 +78,7 @@ function LinkShorterBox() {
         }
 
         return (
-            <div className="p-4 rounded-lg backdrop-blur-sm bg-white/10 border border-white/30 shadow-lg">
+            <div className="p-4 rounded-lg backdrop-blur-sm bg-white/10 border border-white/30 shadow-lg hover:shadow-sm transition-all duration-200">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex gap-1">
                     <Input type="url" name="link" placeholder="Link to be shortened"
                         {...register("link", { required: true })} disabled={session?.user.banned}
