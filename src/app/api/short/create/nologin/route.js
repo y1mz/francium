@@ -31,7 +31,6 @@ export async function POST(request) {
                 nonAuthId: nonLoginMemberUUID
             }
         })
-        console.log(nonLoginMemberLinks.length)
 
         if (nonLoginMemberLinks.length >= 10) {
             return new NextResponse("Link limit has reached, please log-in to continue.", { status: 401 })

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import ModalError from "@/components/body/modal-error"
 
-import { useModal } from "./hooks/modal-hook"
+import { useModal } from "../hooks/modal-hook"
 import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"

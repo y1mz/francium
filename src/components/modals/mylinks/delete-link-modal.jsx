@@ -4,7 +4,7 @@ import { Dialog, DialogContent,
     DialogFooter} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 
-import { useModal } from "./hooks/modal-hook"
+import { useModal } from "../hooks/modal-hook"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 

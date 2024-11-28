@@ -7,7 +7,7 @@ import ModalError from "@/components/body/modal-error"
 import Link from "next/link"
 import { Copy, Check } from "lucide-react"
 
-import { useModal } from "./hooks/modal-hook"
+import { useModal } from "../hooks/modal-hook"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/lib/hooks/use-toast"
 import { useState } from "react"

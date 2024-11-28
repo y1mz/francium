@@ -67,7 +67,7 @@ async function DashboardPage({ searchParams }) {
                     <TabsList>
                         <TabsTrigger value="reports" asChild>
                             <Link href="/dashboard?page=reports">
-                                Link Reports
+                                Reports
                             </Link>
                         </TabsTrigger>
                         <TabsTrigger value="users" asChild>

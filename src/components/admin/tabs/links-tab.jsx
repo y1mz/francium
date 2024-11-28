@@ -57,11 +57,15 @@ function AdminLinksTab({ links }) {
             }
             return (
                 <Tooltip>
-                    <TooltipTrigger asChild>
+                    <TooltipTrigger>
                         <Button size="icon" variant="ghost"
-                                onClick={() => {onOpen("AdminlinkDel", body)}}
+                                asChild
                         >
-                            <Trash2 className="h-5 w-5 text-rose-600" />
+                            <div
+                                onClick={() => {onOpen("AdminlinkDel", body)}}
+                            >
+                                <Trash2 className="h-5 w-5 text-rose-600" />
+                            </div>
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -80,9 +84,13 @@ function AdminLinksTab({ links }) {
                 <Tooltip>
                     <TooltipTrigger asChild>
                         <Button size="icon" variant="ghost"
-                                onClick={() => {onOpen("banLnk", body)}}
+                                asChild
                         >
-                            <ShieldOff className="h-5 w-5" />
+                            <div
+                                onClick={() => {onOpen("banLnk", body)}}
+                            >
+                                <ShieldOff className="h-5 w-5" />
+                            </div>
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -94,27 +102,30 @@ function AdminLinksTab({ links }) {
 
         return (
             <>
-                <Table className="overflow-y-scroll no-scrollbar">
+                <Table className="overflow-x-scroll no-scrollbar">
                     <TableCaption>Total links: {links.length}</TableCaption>
                     <TableHeader>
                         <TableRow>
                             <TableHead className="w-[80px]">
                                 Slug
                             </TableHead>
-                            <TableHead className="w-[100px] max-w-[120px]">
+                            <TableHead className="w-[200px]">
                                 Full Url
                             </TableHead>
                             <TableHead className="w-[140px]">
                                 Url title
                             </TableHead>
-                            <TableHead className="w-[150px]">
+                            <TableHead className="w-[170px]">
                                 Creator username
                             </TableHead>
-                            <TableHead>
+                            <TableHead className="w-[150px]">
                                 Created at
                             </TableHead>
-                            <TableHead>
-                                Report count
+                            <TableHead className="w-[90px]">
+                                Reports
+                            </TableHead>
+                            <TableHead className="w-[90px]">
+                                Usage
                             </TableHead>
                             <TableHead>
                                 Is Active
@@ -139,13 +150,16 @@ function AdminLinksTab({ links }) {
                                     {item.name}
                                 </TableCell>
                                 <TableCell>
-                                    {item.creator.name}
+                                    {item.creator?.name ? item.creator.name : item.nonAuthId}
                                 </TableCell>
                                 <TableCell>
                                     {new Date(item.createdAt).toDateString()}
                                 </TableCell>
                                 <TableCell>
                                     {item.reports.length}
+                                </TableCell>
+                                <TableCell>
+                                    {item.usage}
                                 </TableCell>
                                 <TableCell>
                                     {item.active.toString()}
@@ -187,7 +201,7 @@ function AdminLinksTab({ links }) {
                         ))}
                         {Math.floor(pageNumber) > 5 &&
                             <>
-                                {parseInt(page) !== 5 && (
+                                {(parseInt(page) !== 5) && (
                                     <PaginationItem>
                                         <PaginationEllipsis />
                                     </PaginationItem>

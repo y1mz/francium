@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Globe, Copy } from "lucide-react"
 
 import Link from "next/link"
-import { useModal } from "./hooks/modal-hook"
+import { useModal } from "../hooks/modal-hook"
 
 function SearchLinksModal() {
     const { isOpen, onClose, type, data } = useModal()
