@@ -21,6 +21,13 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
         }, 4000)
     }, [copied])
 
+    const urlData = {
+        id: LinkId,
+        name: title,
+        slug: shortUrl,
+        createdAt: cDate
+    }
+
     const handleCopy = async () => {
         const currentUrl = window.location.origin
         await navigator.clipboard.writeText(`${currentUrl}/${shortUrl}`)
@@ -70,7 +77,7 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
                             </Tooltip>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => onOpen("renameUrl", urlData)}>
                                 <PenTool className="h-4 w-4 mr-2" />
                                 Rename Url
                             </DropdownMenuItem>
