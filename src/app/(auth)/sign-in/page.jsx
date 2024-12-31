@@ -47,13 +47,13 @@ function SignInPage() {
             className="flex justify-center items-center inset-0 h-dvh mx-auto w-full"
         >
             <div className={`max-w-md w-full`}>
-                <Card className="max-w-md w-full mx-auto animated-card">
+                <Card className="max-w-md w-full mx-auto animated-card rounded-2xl">
                     <div className="p-6">
                         <h2 className="font-bold text-2xl">
-                            Login or Sign Up
+                            Sign in
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                            Login or Sign up with your preferred provider.
+                            Sign in with your preferred provider.
                         </p>
                     </div>
                     <CardContent>
