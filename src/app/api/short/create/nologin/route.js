@@ -33,7 +33,7 @@ export async function POST(request) {
         })
 
         if (nonLoginMemberLinks.length >= 10) {
-            return new NextResponse("Link limit has reached, please log-in to continue.", { status: 401 })
+            return new NextResponse("Link limit has reached, please log-in to continue.", { status: 403 })
         }
 
         // Run filter before going further

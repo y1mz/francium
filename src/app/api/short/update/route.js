@@ -25,7 +25,6 @@ export async function PATCH(req) {
                 creatorId: session.user?.id
             }
         })
-        console.log(currentUrl)
 
         if (!currentUrl) {
             return new NextResponse("Url Not Found", { status: 404 })
@@ -43,7 +42,6 @@ export async function PATCH(req) {
                 name: newTitle
             }
         })
-        console.log(server)
 
         return NextResponse.json(server)
 

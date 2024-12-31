@@ -14,7 +14,7 @@ function LinkCheckResult({ result, author }) {
                 <div className="flex flex-col gap-2">
                     <div className="flex gap-3">
                         <p className="whitespace-nowrap font-bold">Name: </p>
-                        <p className="truncate text-sm">{result.name}</p>
+                        <p className="truncate text-sm">{result.metaName}</p>
                     </div>
                     <Separator className="bg-white/50 px-10"/>
                     <div className="flex gap-3">

@@ -7,7 +7,7 @@ import Link from "next/link"
 import { exec } from "child_process"
 
 function PageRooter() {
-    const appVer = "v1.0.1"
+    const appVer = "v1.0.5"
     const codeName = "oneone"
 
     return (
