@@ -25,7 +25,7 @@ function MainPageLayout({ children }) {
     return (
         <section className="py-10">
             {children}
-            <Footer SiteName={conf.SiteName} session={session}/>
+            <Footer SiteName={conf.SiteName} />
         </section>
     )
 }

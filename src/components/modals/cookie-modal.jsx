@@ -34,7 +34,9 @@ const CookiesModal = () => {
         }
 
         setIsLoading(true)
-        getModalContent()
+        if (isModalOpen) {
+            getModalContent()
+        }
         setIsLoading(false)
     }, [isOpen])
 

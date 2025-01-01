@@ -1,6 +1,3 @@
-import config from "../../../../config/siteconfig.json"
-import items from "../../../../config/infoSection.json"
-
 import LinkShorterBox from "../../shorter/link-shorter"
 import HomeFAQ from "../home/home-faq-section"
 import InfoSection from "../home/info-section"
@@ -8,7 +5,8 @@ import HeaderEffect from "../home/header-effect"
 import PageRooter from "@/components/body/page-footer"
 import AnnouncementAlert from "@/components/body/announcement-alert";
 
-function HomeContainer() {
+function HomeContainer({ config }) {
+    const items = config.HomePage.InfoSection
 
     return (
         <div className="container w-full mx-auto flex flex-col mb-20 py-5 sm:py-28">
@@ -21,9 +19,9 @@ function HomeContainer() {
                 <div
                     className="absolute top-6 left:36 md:left-44 md:w-72 w-48 h-48 sm:h-72 bg-pink-300 dark:bg-pink-400/90 rounded-full mix-blend blur-2xl opacity-60"/>
                 <div className="absolute mx-auto w-full">
-                    <div className="flex flex-col gap-5 mb-44">
-                        <HeaderEffect text="Vexxit Link Shortener"/>
-                        <p className="text-center font-semibold text-lg pb-10">{config.SiteDescription}</p>
+                    <div className="mb-44">
+                        <HeaderEffect text={config.HomePage.homeHeader}/>
+                        <p className="text-center font-semibold text-lg mb-12 mt-2">{config.SiteDescription}</p>
                         <LinkShorterBox/>
                     </div>
                     {config.HomePage.EnableHomePageContent && (
@@ -31,8 +29,8 @@ function HomeContainer() {
                             <InfoSection
                                 items={items}
                             />
-                            <HomeFAQ/>
-                            <PageRooter/>
+                            <HomeFAQ conf={config} />
+                            <PageRooter />
                         </div>
                     )}
                 </div>

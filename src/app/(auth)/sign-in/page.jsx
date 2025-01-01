@@ -1,13 +1,16 @@
 import { ServerSession } from "@/lib/server-session"
 import { redirect } from "next/navigation"
-import conf from "&/siteconfig.json"
+import { readConfig } from "@/lib/readConfig"
 
 import SignInCard from "@/components/auth/sign-in-card"
 
+// Make sure this page gets updated.
+export const dynamic = "force-dynamic"
 
 async function SignInPage({ searchParams }) {
     const session = await ServerSession()
     const { callbackUrl } = await searchParams
+    const conf = readConfig()
 
     let searchParamsCallback = callbackUrl
 

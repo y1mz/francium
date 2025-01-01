@@ -1,10 +1,8 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
-import faq from "../../../../config/faqSection.json"
-import conf from "../../../../config/siteconfig.json"
-
-function HomeFAQ() {
+function HomeFAQ({ conf }) {
     const faoq = conf.HomePage.Accordions
+
     return (
         <div className="py-5 md:p-5">
             <div className="px-8 md:px-20 py-5 border border-white/20 backdrop-blur-sm bg-white/10 rounded-lg shadow-lg">

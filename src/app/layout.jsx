@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import conf from "/config/siteconfig.json"
+import { readConfig } from "@/lib/readConfig"
 
 import Script from "next/script"
 import ThemesProvider from "@/components/providers/theme-provider"
@@ -9,6 +9,9 @@ import ServerSessionProvider from "@/components/providers/session-provider"
 import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] });
+
+const conf = readConfig()
+export const dynamic = "force-dynamic"
 
 export const metadata = {
   title: conf.SiteName,
@@ -30,7 +33,8 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  return (
+    const conf = readConfig()
+    return (
     <html lang="en" suppressHydrationWarning>
       {conf.Ackee.useAckee &&
           <Script
@@ -39,7 +43,7 @@ export default function RootLayout({ children }) {
             data-ackee-domain-id={conf.Ackee.AckeeDomainId}
           />
       }
-        <body className={`min-h-screen overflow-x-hidden bg-[#E1E5F4] dark:bg-[#080e1e] scroll-smooth ${inter.className}`}>
+        <body className={`overflow-x-hidden bg-[#E1E5F4] dark:bg-[#080e1e] scroll-smooth ${inter.className}`}>
             <ServerSessionProvider>
                 <ThemesProvider
                     attribute="class"
