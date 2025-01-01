@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 8085",
+    "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
     "filters": "node src/lib/getFilters.js"
@@ -30,7 +30,7 @@
     "cheerio": "^1.0.0-rc.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "cmdk": "1.0.0",
+    "cmdk": "^1.0.4",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.396.0",
     "markdown-to-jsx": "^7.4.7",
