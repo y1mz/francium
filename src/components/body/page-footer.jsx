@@ -4,9 +4,12 @@ import { Github, Info, SquareCheckBig } from "lucide-react"
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import Link from "next/link"
 
-import { exec } from "child_process"
+import fs from "fs"
+import path from "path"
 
 function PageRooter() {
+    const jsonPlace = path.resolve("package.json")
+    const jsonContent = JSON.parse(fs.readFileSync(jsonPlace, "utf8"))
     const appVer = "v1.0.5"
     const codeName = "oneone"
 
@@ -43,7 +46,7 @@ function PageRooter() {
                             <p className="font-bold text-sm text-black/60 dark:text-white/40 hover:underline">{appVer}</p>
                         </TooltipTrigger>
                         <TooltipContent>
-                            #{codeName} - {appVer}
+                            #{jsonContent.codename} - {jsonContent.version}
                         </TooltipContent>
                     </Tooltip>
                 </div>

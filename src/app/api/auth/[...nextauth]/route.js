@@ -94,7 +94,7 @@ export const authOptions = {
         signIn: '/sign-in',
         signOut: '/sign-out',
         // error: '/error',
-        newUser: '/sign-in/new'
+        newUser: '/sign-in/onboarding'
     }
 }
 

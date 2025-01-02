@@ -1,7 +1,6 @@
 "use client"
 
-import { useSession, signIn } from "next-auth/react"
-import { useModal } from "@/components/modals/hooks/modal-hook"
+import { useSession } from "next-auth/react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useToast } from "@/lib/hooks/use-toast"
@@ -10,23 +9,16 @@ import { Clipboard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import LinkSuccess from "@/components/shorter/link-success"
-import LinkErrorComp from "@/components/shorter/link-error"
 import LinkBannedComp from "./link-banned"
-import LinkLimitReached from "@/components/shorter/link-limit-reached"
 
 function LinkShorterBox() {
     const { data: session } = useSession()
     const { register
         , handleSubmit, setValue
-        , formState: { errors } } = useForm()
-    const { onOpen } = useModal()
+        , formState: { errors, isSubmitting } } = useForm()
     const { toast } = useToast()
 
-    const [link, setLink] = useState("")
-    const [submitting, setSubmitting] = useState(false)
-    const [isError, setError] = useState()
     const [endRespone, setEndResponse] = useState({})
-    const [isLimit, setIsLimit] = useState(false)
 
     const Content = () => {
 
@@ -39,16 +31,9 @@ function LinkShorterBox() {
 
         const onSubmit = async (data) => {
             let response
-
-            if (isError) {
-                setError(null)
-            }
-            if (endRespone.url) {
-                setEndResponse({})
-            }
+            setEndResponse({})
 
             try {
-                setSubmitting(true)
                 if (!session) {
                     response = await fetch("/api/short/create/nologin", {
                         method: "POST",
@@ -83,13 +68,19 @@ function LinkShorterBox() {
 
             } catch (e) {
                 if (response.status === 403) {
-                    setIsLimit(true)
+                    toast({
+                        title: "Limit reached",
+                        description: "You've reached your weekly limit, please sign-in to continue.",
+                        variant: "destructive",
+                    })
                 } else {
-                    setError(e.message)
+                    toast({
+                        title: "There was an error",
+                        description: "There was an error, please try again.",
+                        variant: "destructive",
+                    })
                     console.log("[SHORT_LINK_PUBLISH]", e)
                 }
-            } finally {
-                setSubmitting(false)
             }
         }
 
@@ -97,13 +88,13 @@ function LinkShorterBox() {
             <div className="p-4 rounded-lg backdrop-blur-sm bg-white/10 border border-white/30 shadow-lg hover:shadow-sm transition-all duration-200">
                 <form onSubmit={handleSubmit(onSubmit)} className="w-full flex gap-1">
                     <Input type="url" name="link" placeholder="Link to be shortened"
-                        {...register("link", { required: true })} disabled={session?.user.banned}
+                        {...register("link", { required: true })} disabled={session?.user.banned || isSubmitting }
                     />
                     <Button variant="outline" size="icon" onClick={() => handlePaste()} className="hidden md:flex">
                         <Clipboard className="w-4 h-4"/>
                     </Button>
                     <Button variant="outline"
-                        type="submit" disabled={submitting || session?.user.banned}
+                        type="submit" disabled={isSubmitting || session?.user.banned}
                     >
                         Short!
                     </Button>
@@ -113,10 +104,8 @@ function LinkShorterBox() {
     }
 
     return (
-        <div className="flex flex-col gap-1 md:px-10">
+        <div className="flex flex-col gap-1 md:mx-8">
             {session?.user?.banned && <LinkBannedComp /> }
-            {isError && <LinkErrorComp e={isError} e_code={"500"}/>}
-            {isLimit && <LinkLimitReached />}
             {endRespone.url &&
                 <LinkSuccess
                     title={endRespone.title}

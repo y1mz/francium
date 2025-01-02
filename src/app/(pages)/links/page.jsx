@@ -42,7 +42,7 @@ async function MyLinksPage({ searchParams }) {
 
     // Pagination
     const { p }  = await searchParams
-    const url = "/mylinks"
+    const url = "/links"
     if (!p) {
         return redirect(url + "?p=1")
     }

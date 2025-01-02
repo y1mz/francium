@@ -56,6 +56,11 @@
     "Auth": {
         "EnableGithubAuth": true,
         "EnableGoogleAuth": true,
-        "EnableDiscordAuth": true
+        "EnableDiscordAuth": true,
+        "UnSignedShorts": {
+            "Enable": true,
+            "WeeklyLimit": 20
+        },
+        "EnableOnboarding": true
     }
 }

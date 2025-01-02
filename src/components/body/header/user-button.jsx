@@ -70,7 +70,7 @@ function UserButton() {
                         <p className="ml-2">Settings</p>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link href={"/mylinks"} className="flex">
+                        <Link href={"/links"} className="flex">
                             <LayoutTemplate className="h-4 w-4" />
                             <p className="ml-2">My links</p>
                         </Link>

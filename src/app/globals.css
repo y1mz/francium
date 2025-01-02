@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Onboarding page */
+.slide-container {
+  animation-duration: 0.5s;
+}
+
+.slide-container.next {
+  animation-name: slideInNext;
+}
+
+.slide-container.prev {
+  animation-name: slideInPrev;
+}
+
+@keyframes slideInNext {
+  from {
+    transform: translateX(90%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInPrev {
+  from {
+    transform: translateX(-90%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Login and onboarding background */
 .animated-background {
   background-size: 400%;
 
@@ -21,6 +53,7 @@
   }
 }
 
+/* Login card animation */
 .animated-card {
   -webkit-animation: card 0.3s ease;
   -moz-animation: card 0.3s ease ;
@@ -45,7 +78,7 @@
   .no-scrollbar {
       -ms-overflow-style: none;  /* IE and Edge */
       scrollbar-width: none;  /* Firefox */
-}
+  }
 }
 
 @layer base {
