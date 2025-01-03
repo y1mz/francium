@@ -40,7 +40,7 @@ export const authOptions = {
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
             profile(profile) {
                 return {
-                    id: profile.id,
+                    id: String(profile.id),
                     name: profile.name,
                     email: profile.email,
                     image: profile.avatar_url,
@@ -59,7 +59,7 @@ export const authOptions = {
             })
 
             if (!usrSettings) {
-                await db.userPreferences.create({
+                 await db.userPreferences.create({
                     data: {
                         userId: user.id
                     }
@@ -75,17 +75,27 @@ export const authOptions = {
         },
         async signIn({ user, profile }) {
             const adminMail = process.env.AdminMail
+            const admins = await db.user.findMany({
+                where: {
+                    role: "ADMIN"
+                }
+            })
 
-            if (user.email === adminMail) {
-                await db.user.update({
-                    where: {
-                        id: user.id,
-                        email: user.email
-                    },
-                    data: {
-                        role: "ADMIN"
-                    }
-                })
+            try {
+                if (user.email === adminMail && (admins.length === 0)) {
+                    await db.user.update({
+                        where: {
+                            id: user.id,
+                            email: user.email
+                        },
+                        data: {
+                            role: "ADMIN"
+                        }
+                    })
+                }
+            } catch (e) {
+                console.log("[ADMIN_UPDATE_ROLE][WARN]", `Failed to set the user ${user.email} as Admin, please try again.`)
+                return true
             }
             return true
         }

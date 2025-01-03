@@ -31,7 +31,7 @@ model User {
 
 model UserPreferences {
   id     String @id @default(cuid())
-  usr    User   @relation(fields: [userId], references: [id])
+  usr    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 
   showUsernameOnCheck      Boolean @default(false)
