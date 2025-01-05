@@ -4,7 +4,7 @@ import { redirect } from "next/navigation"
 
 import AboutHeader from "@/components/about/header"
 import LinkBox from "@/components/shorter/link-box"
-import LinkNewBox from "@/components/shorter/link-new-box"
+import LinkNewButton from "@/components/shorter/link-new-button"
 import { Separator } from "@/components/ui/separator"
 
 import {
@@ -47,7 +47,7 @@ async function MyLinksPage({ searchParams }) {
         return redirect(url + "?p=1")
     }
     const page = p
-    const itemsPerPage = 8
+    const itemsPerPage = 9
 
     let pagesNumber = (links.length % itemsPerPage) >= 1 ? Math.floor((links.length / itemsPerPage) + 1) : links.length / itemsPerPage
     if (Math.floor(pagesNumber) === 0) {
@@ -73,11 +73,13 @@ async function MyLinksPage({ searchParams }) {
             <div className="flex flex-col gap-2 py-5">
                 <div className="flex flex-wrap sm:justify-between">
                     <h2 className="text-2xl font-bold py-1">Links you've shorted</h2>
-                    <LinksSearchButton shortedLink={shortedLinks}/>
+                    <div className="flex gap-1">
+                        <LinkNewButton />
+                        <LinksSearchButton shortedLink={shortedLinks}/>
+                    </div>
                 </div>
                 <Separator className="bg-gray-700 dark:bg-white/20" />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {!session.user.banned && <LinkNewBox />}
                         {pagedLinks.map((link) => (
                             <LinkBox
                                 key={link.id}
