@@ -27,7 +27,7 @@ function Footer({ SiteName }) {
     return (
         <footer 
             className="bg-white/40 dark:bg-white/10 backdrop-blur-2xl shadow-2xl rounded-xl mx-auto
-            px-5 w-[350px] md:w-[500px] py-5 fixed inset-x-0 bottom-4 z-20"
+            px-5 w-[300px] sm:w-[350px] md:w-[500px] py-5 fixed inset-x-0 bottom-4 z-20"
         >
             <div className="flex justify-between">
                 <Tooltip>
