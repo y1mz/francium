@@ -9,28 +9,29 @@ function HomeContainer({ config }) {
     const items = config.HomePage.InfoSection
 
     return (
-        <div className="container w-full mx-auto flex flex-col mb-20 py-5 sm:py-28">
-            <AnnouncementAlert />
-            <div className="relative h-screen">
-                <div
-                    className="absolute top-0 left-20 w-48 h-48 sm:w-72 md:h-72 bg-purple-300 dark:bg-purple-400/90 rounded-full  mix-blend blur-2xl opacity-70"/>
-                <div
-                    className="absolute top-0 right-20 md:w-72 w-48 h-48 sm:h-72 bg-yellow-300 dark:bg-yellow-400/90 rounded-full mix-blend blur-2xl opacity-70"/>
-                <div
-                    className="absolute top-6 left:36 md:left-44 md:w-72 w-48 h-48 sm:h-72 bg-pink-300 dark:bg-pink-400/90 rounded-full mix-blend blur-2xl opacity-60"/>
-                <div className="absolute mx-auto w-full">
-                    <div className="mb-44">
-                        <HeaderEffect text={config.HomePage.homeHeader}/>
-                        <p className="text-center font-semibold text-lg mb-12 mt-2">{config.SiteDescription}</p>
-                        <LinkShorterBox/>
-                    </div>
-                    {config.HomePage.EnableHomePageContent && (
-                        <div className="mb-20">
-                            <InfoSection
-                                items={items}
+        <div className="w-full mx-auto flex flex-col mb-20">
+            <div>
+                <div className="w-screen min-h-[85vh] overflow-x-hidden
+                bg-gradient-to-br from-purple-300 to-indigo-300 dark:from-purple-900 dark:to-indigo-800
+                    rounded-b-2xl shadow-lg
+                ">
+                    <div className="max-w-[768px] mx-auto sm:pt-20">
+                        <div className="p-5 sm:px-16 sm:pt-10">
+                            <AnnouncementAlert/>
+                            <HeaderEffect
+                                text={config.SiteName}
                             />
-                            <HomeFAQ conf={config} />
-                            <PageRooter />
+                            <p className="text-center font-semibold text-lg sm:mb-12 mb-2 mt-2">{config.SiteDescription}</p>
+                            <LinkShorterBox/>
+                        </div>
+                    </div>
+                </div>
+                <div className="container mx-auto max-w-[768px]">
+                    {config.HomePage.EnableHomePageContent && (
+                        <div className="px-5">
+                            <InfoSection items={items}/>
+                            <HomeFAQ conf={config}/>
+                            <PageRooter/>
                         </div>
                     )}
                 </div>

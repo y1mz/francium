@@ -23,7 +23,7 @@ function MainPageLayout({ children }) {
     }, []);
 
     return (
-        <section className="py-10">
+        <section className="pb-10">
             {children}
             <Footer SiteName={conf.SiteName} />
         </section>

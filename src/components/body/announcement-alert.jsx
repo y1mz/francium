@@ -50,7 +50,7 @@ function AnnouncementAlert() {
     }
 
     return (
-        <div className="w-full z-20 md:-mt-20 mb-20">
+        <div className="z-20 md:-mt-20 md:mb-20 mb-5 mx-auto px-5">
             <div
                 className={cn(`transform transition-all duration-500 ease-out h-0`,
                     isVisible ? ' translate-y-0 opacity-100 h-10' : '-translate-y-full opacity-0'

@@ -11,6 +11,7 @@ function GetPagesContent() {
     for (let i = 0; i < files.length; i++) {
         contents[i] = {
             page: i + 1,
+            type: "Markdown",
             MarkContent: matter(fs.readFileSync(path.join(path.resolve("config/onboarding"), files[i]), 'utf8')).content,
         }
     }

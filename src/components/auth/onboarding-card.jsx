@@ -5,7 +5,8 @@ import { CardFooter, Card, CardContent,
 import { Button } from "@/components/ui/button"
 import Markdown from "markdown-to-jsx"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import { redirect } from "next/navigation"
 
 function OnBoardingCard({ pages }) {
 
@@ -27,6 +28,10 @@ function OnBoardingCard({ pages }) {
             setCurrentPage(currentPage - 1)
             setAnimationKey(animationKey + 1)
         }
+    }
+
+    const finishOnboarding = () => {
+        redirect("/")
     }
 
     return (
@@ -58,9 +63,15 @@ function OnBoardingCard({ pages }) {
                 <Button variant="ghost" onClick={() => prevPage()} disabled={currentPage == 0}>
                     Previous
                 </Button>
-                <Button onClick={() => nextPage()} disabled={currentPage == pages.length - 1}>
-                    Next
-                </Button>
+                {(currentPage == pages.length - 1 ) ? (
+                    <Button onClick={() => finishOnboarding()}>
+                        Finish
+                    </Button>
+                ) : (
+                    <Button onClick={() => nextPage()} disabled={currentPage == pages.length - 1}>
+                        Next
+                    </Button>
+                )}
             </CardFooter>
         </Card>
     )

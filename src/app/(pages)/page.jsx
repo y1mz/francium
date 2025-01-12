@@ -9,7 +9,7 @@ function Home() {
     const config = readConfig()
   return (
     <main>
-      <div className="container mx-auto max-w-[768px]">
+      <div className="mx-auto">
         <HomeContainer
             config={config}
         />
