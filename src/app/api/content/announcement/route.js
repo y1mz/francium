@@ -17,7 +17,7 @@ export async function GET() {
         })
 
         if (!server) {
-            return new NextResponse("Nothing", { status: 404 })
+            return new NextResponse("Nothing", { status: 202 })
         } else {
             return NextResponse.json(server)
         }

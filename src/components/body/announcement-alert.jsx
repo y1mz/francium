@@ -20,7 +20,7 @@ function AnnouncementAlert() {
     useEffect(() => {
         const fetchAlertData = async () => {
             const response = await fetch("/api/content/announcement")
-            if (!response.ok) {
+            if (response.status === 202) {
                 setIsVisible(false)
                 return null
             } else {

@@ -1,16 +1,13 @@
 "use client"
 
-import AboutHeader from "@/components/about/header"
 import LinkBox from "@/components/shorter/link-box"
-import LinkNewButton from "@/components/shorter/link-new-button"
-import { Separator } from "@/components/ui/separator"
+import LinksHeader from "@/components/body/links-header"
 
 import {
     Pagination, PaginationContent, PaginationEllipsis,
     PaginationItem, PaginationLink,
     PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { Button } from "@/components/ui/button"
-import LinksSearchButton from "@/components/shorter/links-search"
 import { redirect } from "next/navigation"
 
 function LinkContainer({ links, p }) {
@@ -50,84 +47,78 @@ function LinkContainer({ links, p }) {
     const pagedLinks = shortedLinks.slice((page - 1) * itemsPerPage, page * itemsPerPage)
 
     return (
-        <div className="mx-auto max-w-[1100px] px-5 py-10 md:px-20">
-            <AboutHeader title="My Links" />
-            <div className="flex flex-col gap-2 py-5">
-                <div className="flex flex-wrap sm:justify-between">
-                    <h2 className="text-2xl font-bold py-1">Links you've shorted</h2>
-                    <div className="flex gap-1">
-                        <LinkNewButton />
-                        <LinksSearchButton shortedLink={shortedLinks}/>
-                    </div>
-                </div>
-                <Separator className="bg-gray-700 dark:bg-white/20" />
-                {!links.length ? (
-                    <p className="text-lg font-semibold text-center mt-5">
-                        Nothing here yet
-                    </p>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {pagedLinks.map((link) => (
-                            <LinkBox
-                                key={link.id}
-                                LinkId={link.id}
-                                title={link.name}
-                                url={link.link}
-                                shortUrl={link.slug}
-                                cDate={link.createdAt}
-                            />
-                        ))}
-                    </div>
-                )}
-            </div>
-            <div>
-                {links.length > itemsPerPage && (
-                    <Pagination>
-                        <PaginationContent>
-                            <PaginationItem>
-                                <Button variant={page == 1 && "disabled"} asChild>
-                                    <PaginationPrevious href={url + `?p=${parseInt(page) - 1}`}/>
-                                </Button>
-                            </PaginationItem>
-                            {pagess.map((number) => (
-                                <PaginationItem key={number}>
-                                    <PaginationLink
-                                        href={url + `?p=${number}`}
-                                        isActive={page == number}
-                                    >
-                                        {number}
-                                    </PaginationLink>
-                                </PaginationItem>
+        <div className="pb-10">
+            <LinksHeader shortLinks={shortedLinks} title="Short Links" />
+            <div className="pb-12 px-5">
+                <div className="flex flex-col gap-2 py-5">
+                    {!links.length ? (
+                        <p className="text-lg font-semibold text-center mt-5">
+                            Nothing here yet
+                        </p>
+                    ) : (
+                        <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            {pagedLinks.map((link) => (
+                                <LinkBox
+                                    key={link.id}
+                                    LinkId={link.id}
+                                    title={link.name}
+                                    url={link.link}
+                                    shortUrl={link.slug}
+                                    cDate={link.createdAt}
+                                />
                             ))}
-                            {pagesNumber > 5 &&
-                                <>
-                                    {parseInt(page) !== 5 && (
-                                        <PaginationItem>
-                                            <PaginationEllipsis />
-                                        </PaginationItem>
-                                    )}
-                                    {parseInt(page) >= 5 &&
-                                        <>
+                        </div>
+                    )}
+                </div>
+                <div>
+                    {links.length > itemsPerPage && (
+                        <Pagination>
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <Button variant={page == 1 && "disabled"} asChild>
+                                        <PaginationPrevious href={url + `?p=${parseInt(page) - 1}`}/>
+                                    </Button>
+                                </PaginationItem>
+                                {pagess.map((number) => (
+                                    <PaginationItem key={number}>
+                                        <PaginationLink
+                                            href={url + `?p=${number}`}
+                                            isActive={page == number}
+                                        >
+                                            {number}
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                ))}
+                                {pagesNumber > 5 &&
+                                    <>
+                                        {parseInt(page) !== 5 && (
                                             <PaginationItem>
-                                                <PaginationLink
-                                                    href={url + `?p=${page}`}
-                                                    isActive={true}
-                                                >
-                                                    {parseInt(page)}
-                                                </PaginationLink>
+                                                <PaginationEllipsis/>
                                             </PaginationItem>
-                                        </>
-                                    }
-                                </>
-                            }
-                            <PaginationItem>
-                                <Button variant={parseInt(page) == pagesNumber && "disabled"} asChild>
-                                    <PaginationNext href={url + `?p=${parseInt(page) + 1}`}/>
-                                </Button>
-                            </PaginationItem>
-                        </PaginationContent>
-                    </Pagination>
-                )}
+                                        )}
+                                        {parseInt(page) >= 5 &&
+                                            <>
+                                                <PaginationItem>
+                                                    <PaginationLink
+                                                        href={url + `?p=${page}`}
+                                                        isActive={true}
+                                                    >
+                                                        {parseInt(page)}
+                                                    </PaginationLink>
+                                                </PaginationItem>
+                                            </>
+                                        }
+                                    </>
+                                }
+                                <PaginationItem>
+                                    <Button variant={parseInt(page) == pagesNumber && "disabled"} asChild>
+                                        <PaginationNext href={url + `?p=${parseInt(page) + 1}`}/>
+                                    </Button>
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    )}
+                </div>
             </div>
         </div>
     )

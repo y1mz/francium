@@ -10,11 +10,11 @@ export const metadata = {
 
 function CheckUrlPage() {
     return (
-        <div className="mx-auto max-w-[768px] px-5 py-10">
+        <div>
             <AboutHeader
                 title="Check short-urls"
             />
-            <div className="flex flex-col py-10">
+            <div className="flex flex-col mx-auto max-w-[768px] px-5 py-10">
                 <LinkCheckerBox />
             </div>
         </div>

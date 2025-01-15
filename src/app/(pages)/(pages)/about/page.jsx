@@ -12,9 +12,9 @@ function AboutPage() {
     const pageContent = getPageContent("about")
 
     return (
-        <div className="mx-auto max-w-[768px] px-5 pb-10">
+        <div>
             <AboutHeader title="About" />
-            <div>
+            <div className="mx-auto max-w-[768px] px-5 pb-10">
                 <article className="prose dark:prose-invert md:prose-lg lg:prose-xl">
                     <Markdown>{pageContent.content}</Markdown>
                 </article>
