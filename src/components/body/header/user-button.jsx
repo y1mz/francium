@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu,
     DropdownMenuContent,
@@ -25,13 +25,11 @@ function UserButton() {
             <DropdownMenu>
                 <DropdownMenuTrigger>
                     <Tooltip>
-                        <TooltipTrigger>
-                            <Button variant="ghost" size="main">
-                                <Avatar className="h-7 w-7">
-                                    <AvatarImage src={session.user.image} />
-                                    <AvatarFallback className="h-8 w-8 items-center">{session.user.name.substring(0,1).toUpperCase()}</AvatarFallback>
-                                </Avatar>
-                            </Button>
+                        <TooltipTrigger className={buttonVariants({ variant: "ghost", size: "main" })}>
+                            <Avatar className="h-7 w-7 items-center">
+                                <AvatarImage src={session.user.image} />
+                                <AvatarFallback className="h-8 w-8 items-center">{session.user.name.substring(0,1).toUpperCase()}</AvatarFallback>
+                            </Avatar>
                         </TooltipTrigger>
                         <TooltipContent>
                             User menu

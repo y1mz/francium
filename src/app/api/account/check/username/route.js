@@ -10,14 +10,14 @@ export async function POST(req) {
         return new NextResponse("Unauthorized", { status: 400 })
     }
 
-    const server = await db.user.findUnique({
+    const server = await db.user.findMany({
         where: {
             name: userName
         }
     })
 
-    if (server) {
-        return new NextResponse("Username Exists", { status: 401 })
+    if (server.filter((item) => item.name === userName).length > 0) {
+        return new NextResponse("Username Exists", { status: 201 })
     } else {
         return new NextResponse("Username avaliable", { status: 200 })
     }

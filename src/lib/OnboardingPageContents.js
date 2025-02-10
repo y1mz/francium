@@ -4,7 +4,13 @@ import matter from 'gray-matter'
 
 function GetPagesContent() {
     const dir = fs.readdirSync(path.resolve("config/onboarding"))
-    const files = dir.filter((file) => file.endsWith(".md"))
+    let files = dir.filter((file) => file.endsWith(".md"))
+    files = files.sort((a, b) => {
+      const numberA = parseInt(a.split(".")[0])
+      const numberB = parseInt(b.split(".")[0])
+
+      return numberA - numberB
+    })
 
     let contents = []
 

@@ -4,15 +4,18 @@ import { CardFooter, Card, CardContent,
     CardTitle, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Markdown from "markdown-to-jsx"
+import OnboardingUserNameCard from "./onboarding-username"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { redirect } from "next/navigation"
+import { useOnboarding } from "@/lib/hooks/onboarding-complete-hook"
 
 function OnBoardingCard({ pages }) {
 
     const [currentPage, setCurrentPage] = useState(0)
     const [position, setCurrentPosition] = useState("next")
     const [animationKey, setAnimationKey] = useState(0)
+    const { isComplete } = useOnboarding()
 
     const nextPage = () => {
         if (currentPage < pages.length - 1) {
@@ -31,7 +34,10 @@ function OnBoardingCard({ pages }) {
     }
 
     const finishOnboarding = () => {
-        redirect("/")
+      console.log(isComplete)
+        if (isComplete) {
+          redirect("/")
+        }
     }
 
     return (
@@ -50,6 +56,9 @@ function OnBoardingCard({ pages }) {
                                         props: {
                                             className: "font-semibold"
                                         }
+                                    },
+                                    UsernameSelector: {
+                                      component: OnboardingUserNameCard
                                     }
                                 }
                             }}
@@ -64,7 +73,7 @@ function OnBoardingCard({ pages }) {
                     Previous
                 </Button>
                 {(currentPage == pages.length - 1 ) ? (
-                    <Button onClick={() => finishOnboarding()}>
+                    <Button onClick={() => finishOnboarding()} disabled={!isComplete}>
                         Finish
                     </Button>
                 ) : (

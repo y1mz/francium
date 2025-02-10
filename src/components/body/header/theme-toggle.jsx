@@ -4,7 +4,7 @@ import { Moon, Sun, Dock } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useSession } from "next-auth/react"
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,

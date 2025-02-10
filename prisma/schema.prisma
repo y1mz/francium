@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id            String            @id @default(cuid())
-  name          String            @unique
+  name          String
   email         String?           @unique
   emailVerified DateTime?
   image         String?
@@ -40,9 +40,10 @@ model UserPreferences {
   lastExportDate DateTime?
   lastImportDate DateTime?
 
-  isNewUser            Boolean @default(true)
-  markForDeletion      Boolean @default(false)
   isOnboardingComplete Boolean @default(false)
+  markForDeletion      Boolean @default(false)
+
+  lastUpdated DateTime @default(now()) @updatedAt
 }
 
 model Account {

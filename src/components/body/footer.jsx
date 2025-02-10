@@ -4,6 +4,7 @@ import UserButton from "./header/user-button"
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { Button } from "../ui/button"
 import { Info, Home } from "lucide-react"
+import { buttonVariants } from "../ui/button"
 
 function Footer({ SiteName }) {
 
@@ -11,11 +12,9 @@ function Footer({ SiteName }) {
         return (
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <Button variant="ghost" size="main" asChild>
-                        <Link href={"/about"}>
-                            <Info className="h-5 w-5" />
-                        </Link>
-                    </Button>
+                    <Link href={"/about"} className={buttonVariants({ variant: "ghost", size: "main" })}>
+                        <Info className="h-5 w-5" />
+                    </Link>
                 </TooltipTrigger>
                 <TooltipContent>
                     About
@@ -28,11 +27,9 @@ function Footer({ SiteName }) {
         return (
             <Tooltip>
                 <TooltipTrigger>
-                    <Button variant="ghost" size="main_text" asChild>
-                        <Link href="/">
-                            <p className="font-bold text-lg">{SiteName}</p>
-                        </Link>
-                    </Button>
+                    <Link href="/" className={buttonVariants({ variant: "ghost", size: "main_text"})}>
+                        <p className="font-bold text-lg">{SiteName}</p>
+                    </Link>
                 </TooltipTrigger>
                 <TooltipContent>
                     {SiteName}
@@ -45,11 +42,9 @@ function Footer({ SiteName }) {
         return (
             <Tooltip>
                 <TooltipTrigger>
-                    <Button variant="ghost" size="main_text" asChild>
-                        <Link href="/">
-                            <Home className="h-5 w-5" />
-                        </Link>
-                    </Button>
+                    <Link href="/" className={buttonVariants({ variant: "ghost", size: "main_text" })}>
+                        <Home className="h-5 w-5" />
+                    </Link>
                 </TooltipTrigger>
                 <TooltipContent>
                     {SiteName}

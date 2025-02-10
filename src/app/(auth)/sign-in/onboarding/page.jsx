@@ -12,7 +12,7 @@ async function NewUserPage() {
 
     // Return not found if page is disabled on settings
     if (!conf.Auth.EnableOnboarding) {
-        return notFound()
+        return redirect("/")
     }
 
     // Redirect to homepage if onboarding has completed or user haven't logged in yet.
