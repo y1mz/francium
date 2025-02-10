@@ -50,7 +50,7 @@ function OnboardingUserNameCard() {
 
       if (!checkU) {
         return
-      } else  {
+      } else {
         const response = await fetch("/api/account/onboarding", {
           method: "PATCH",
           body: JSON.stringify(postData)

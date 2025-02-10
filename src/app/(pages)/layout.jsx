@@ -1,31 +1,17 @@
-"use client"
+import { readConfig } from "@/lib/readConfig"
 
-import { useEffect } from "react"
-import { useModal } from "@/components/modals/hooks/modal-hook"
-import { useSession } from "next-auth/react"
-import conf from "/config/siteconfig.json"
-
+import MainPageCookieProvider from "@/components/providers/cookie-provider"
 import Footer from "@/components/body/footer"
 
 function MainPageLayout({ children }) {
-    const { onOpen } = useModal()
-    const { data: session } = useSession()
-
-    let cA;
-    useEffect(() => {
-
-        cA = localStorage.getItem("cookiesAccepted")
-        if (window.location.pathname === "/") {
-            if (!cA) {
-                return onOpen("cookies")
-            }
-        }
-    }, []);
+    const conf = readConfig()
 
     return (
         <section className="pb-10">
-            {children}
-            <Footer SiteName={conf.SiteName} />
+            <MainPageCookieProvider>
+                {children}
+                <Footer SiteName={conf.SiteName} />
+            </MainPageCookieProvider>
         </section>
     )
 }
