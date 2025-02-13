@@ -2,11 +2,10 @@ import Link from "next/link"
 import ModeToggle from "./header/theme-toggle"
 import UserButton from "./header/user-button"
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
-import { Button } from "../ui/button"
 import { Info, Home } from "lucide-react"
 import { buttonVariants } from "../ui/button"
 
-function Footer({ SiteName }) {
+function Footer({ conf }) {
 
     const AboutButton = () => {
         return (
@@ -28,11 +27,11 @@ function Footer({ SiteName }) {
             <Tooltip>
                 <TooltipTrigger>
                     <Link href="/" className={buttonVariants({ variant: "ghost", size: "main_text"})}>
-                        <p className="font-bold text-lg">{SiteName}</p>
+                        <p className="font-bold text-lg">{conf?.SiteName}</p>
                     </Link>
                 </TooltipTrigger>
                 <TooltipContent>
-                    {SiteName}
+                    {conf?.SiteName}
                 </TooltipContent>
             </Tooltip>
         )
@@ -47,7 +46,7 @@ function Footer({ SiteName }) {
                     </Link>
                 </TooltipTrigger>
                 <TooltipContent>
-                    {SiteName}
+                    {conf?.SiteName}
                 </TooltipContent>
             </Tooltip>
         )

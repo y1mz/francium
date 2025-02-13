@@ -3,7 +3,7 @@ import HomeFAQ from "../home/home-faq-section"
 import InfoSection from "../home/info-section"
 import HeaderEffect from "../home/header-effect"
 import PageRooter from "@/components/body/page-footer"
-import AnnouncementAlert from "@/components/body/announcement-alert";
+import AnnouncementAlert from "@/components/body/announcement-alert"
 
 function HomeContainer({ config }) {
     const items = config.HomePage.InfoSection

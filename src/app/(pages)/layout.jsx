@@ -1,17 +1,16 @@
+import Footer from "@/components/body/footer"
+import CookiesBanner from "@/components/body/cookie-banner"
+
 import { readConfig } from "@/lib/readConfig"
 
-import MainPageCookieProvider from "@/components/providers/cookie-provider"
-import Footer from "@/components/body/footer"
-
 function MainPageLayout({ children }) {
-    const conf = readConfig()
+    const config = readConfig()
 
     return (
         <section className="pb-10">
-            <MainPageCookieProvider>
-                {children}
-                <Footer SiteName={conf.SiteName} />
-            </MainPageCookieProvider>
+            {children}
+            <CookiesBanner />
+            <Footer conf={config} />
         </section>
     )
 }
