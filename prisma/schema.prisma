@@ -94,6 +94,7 @@ model ShortLinks {
   expiresAt DateTime?
 
   active         Boolean   @default(true)
+  usageLimit     Int?
   disabledReason String?
   disabledBy     String?
   disabledAt     DateTime?

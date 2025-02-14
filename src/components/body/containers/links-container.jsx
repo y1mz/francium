@@ -8,9 +8,12 @@ import {
     PaginationItem, PaginationLink,
     PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { redirect } from "next/navigation"
+import { useState, useEffect } from "react"
 
 function LinkContainer({ links, p }) {
+    const [searchResults, setSearchResults] = useState({})
 
     const shortedLinks = links.sort((a, b) => {
         let dateA = new Date(a.createdAt)
@@ -65,6 +68,7 @@ function LinkContainer({ links, p }) {
                                     url={link.link}
                                     shortUrl={link.slug}
                                     cDate={link.createdAt}
+                                    active={link.active}
                                 />
                             ))}
                         </div>

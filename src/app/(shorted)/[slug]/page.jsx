@@ -2,10 +2,11 @@ import { db } from '@/lib/db'
 import { redirect } from "next/navigation"
 import { notFound } from "next/navigation"
 
-import { UrlExpiredContainer, UrlReportedContainer } from '@/components/body/containers/redirecting-container'
+import UrlReportedContainer from '@/components/body/containers/redirecting-container'
+import UrlExpiredContainer from "@/components/body/containers/redirect/urk-expired-container"
 
 async function RedirectPage({ params }) {
-    const slug = params.slug
+    const { slug } = await params
     const currentDate = new Date()
 
     const redirectUrl = await db.shortLinks.findUnique({
@@ -21,11 +22,19 @@ async function RedirectPage({ params }) {
         return notFound()
     }
 
-    if (redirectUrl.active === false) {
-        return notFound()
+    if (!redirectUrl.active) {
+        return (
+            <UrlExpiredContainer />
+        )
     }
 
-    if (redirectUrl && redirectUrl.expiresAt >= currentDate) {
+    if (redirectUrl.usageLimit && redirectUrl.usageLimit <= redirectUrl.usage) {
+        return (
+            <UrlExpiredContainer />
+        )
+    }
+
+    if (redirectUrl.expiresAt >= currentDate) {
         let reported = redirectUrl.reports
         let usageA
         usageA = redirectUrl.usage + 1
@@ -40,8 +49,9 @@ async function RedirectPage({ params }) {
         })
 
         if (reported.length > 0) {
+            let redirectUU = redirectUrl.link
             return (
-                <UrlReportedContainer url={redirectUrl.link} />
+                <UrlReportedContainer url={redirectUU} />
             )
         }
 

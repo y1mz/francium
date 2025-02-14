@@ -13,6 +13,7 @@ import LinkDeleteModal from "@/components/modals/mylinks/delete-link-modal"
 import SearchLinksModal from "@/components/modals/mylinks/search-links-modal"
 import CustomUrlSuccessModal from "@/components/modals/mylinks/create-url-success-modal"
 import RenameUrlModal from "@/components/modals/mylinks/rename-url-modal"
+import LinkDisableModal from "@/components/modals/mylinks/disable-url-modal"
 
 function ModalProvider() {
     const [isMounted, setIsMounted] = useState(false)
@@ -36,6 +37,7 @@ function ModalProvider() {
             <SearchLinksModal />
             <CustomUrlSuccessModal />
             <RenameUrlModal />
+            <LinkDisableModal />
         </>
     )
 }

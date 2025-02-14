@@ -2,16 +2,17 @@
 
 import { useModal } from "@/components/modals/hooks/modal-hook"
 import { useEffect, useState } from "react"
+import { cn } from "@/lib/utils"
 
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent,
     DropdownMenuTrigger, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub,
     DropdownMenuSubTrigger, DropdownMenuSubContent } from "@/components/ui/dropdown-menu"
-import { Ellipsis, Trash2, PenTool, CircleMinus, LibraryBig } from "lucide-react"
+import { Ellipsis, Trash2, PenTool, CircleMinus, LibraryBig, CirclePlay } from "lucide-react"
 import Link from "next/link"
-import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
+function LinkBox({ LinkId, title, url, shortUrl, cDate, active }) {
     const { onOpen } = useModal()
     const [copied, setCopied] = useState(false)
 
@@ -46,14 +47,14 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
     }
 
     return (
-        (<div
+        <div
             className="relative rounded-lg bg-white/10 hover:bg-white/20  shadow-lg hover:shadow-none tansition duration-200 h-48 px-12 md:px-0"
         >
             <div className="flex flex-col px-0 py-5 md:px-5">
                     {title ? (
                         <>
-                            <h2 className="text-xl font-bold my-0">{title.split(/[- ]+/).slice(0, 4).join(" ")}{title.split(" ").length > 5 && "..."}</h2>
-                            <span className="font-light text-sm truncate">{url}</span>
+                            <h2 className={cn("text-xl font-bold my-0", !active && "text-muted-foreground")}>{title.split(/[- ]+/).slice(0, 4).join(" ")}{title.split(" ").length > 5 && "..."}</h2>
+                            <span className={cn("font-light text-sm truncate", !active && "text-muted-foreground")}>{url}</span>
                         </>
                     ) : (
                         <h2 className="text-xl font-bold my-0 line-clamp-3">
@@ -91,10 +92,17 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
                                 </DropdownMenuSubContent>
                             </DropdownMenuSub>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                                <CircleMinus className="h-4 w-4 mr-2" />
-                                Disable Url
-                            </DropdownMenuItem>
+                            {active ? (
+                                <DropdownMenuItem onClick={() => onOpen("linkDisable", urlData)}>
+                                    <CircleMinus className="h-4 w-4 mr-2" />
+                                    Disable Url
+                                </DropdownMenuItem>
+                            ): (
+                                <DropdownMenuItem>
+                                    <CirclePlay className="h-4 w-4 mr-2" />
+                                    Activate Url
+                                </DropdownMenuItem>
+                            )}
                             <DropdownMenuItem
                                 className="text-rose-600 dark:text-rose-800"
                                 onClick={() => handleDelete()}
@@ -105,12 +113,12 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate }) {
                         </DropdownMenuContent>
                     </DropdownMenu>
                     <div className="flex">
-                        {copied ? <Button className="bg-green-500 hover:bg-green-300">Copied!</Button> : <Button variant="ghost2" onClick={() => handleCopy()}>Copy Url</Button>}
+                        {copied ? <Button className="bg-green-500 hover:bg-green-300">Copied!</Button> : <Button disabled={!active} variant="ghost2" onClick={() => handleCopy()}>Copy Url</Button>}
                         <Button variant="ghost2" asChild><Link href={url} target="_blank">Open Url</Link></Button>
                     </div>
                 </div>
         </div>
-        </div>)
+        </div>
     );
 }
 
