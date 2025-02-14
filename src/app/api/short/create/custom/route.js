@@ -10,7 +10,7 @@ export async function POST(request){
 
     try {
         const body = await request.json()
-        const { link, keyword } = body
+        const { link, keyword, usageLimit, CustomExpDate } = body
 
         if (!session) {
             return new NextResponse("Unauthorized", { status: 401 })
@@ -59,7 +59,9 @@ export async function POST(request){
             UUID = generateUUID(5)
         }
 
-        expDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+        expDate = CustomExpDate.length > 0 ? (new Date(new Date().setMonth(new Date().getMonth() + parseInt(CustomExpDate)))) : null
+        let uusage = usageLimit.length > 0 ? parseInt(usageLimit) : null
+
 
         const server = async () => {
             const createAction = await db.shortLinks.create({
@@ -72,6 +74,7 @@ export async function POST(request){
                     metaIconUrl: webMetadata.icon,
                     metaImageUrl: webMetadata.image,
                     expiresAt: expDate,
+                    usageLimit: uusage,
                     creatorId: user?.id
                 }
             })

@@ -3,6 +3,8 @@
 import { useModal } from "@/components/modals/hooks/modal-hook"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
+import { toast } from "@/lib/hooks/use-toast"
+import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent,
@@ -10,11 +12,12 @@ import { DropdownMenu, DropdownMenuContent,
     DropdownMenuSubTrigger, DropdownMenuSubContent } from "@/components/ui/dropdown-menu"
 import { Ellipsis, Trash2, PenTool, CircleMinus, LibraryBig, CirclePlay } from "lucide-react"
 import Link from "next/link"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 function LinkBox({ LinkId, title, url, shortUrl, cDate, active }) {
     const { onOpen } = useModal()
     const [copied, setCopied] = useState(false)
+    const router = useRouter()
 
     useEffect(() => {
         setTimeout(() => {
@@ -44,6 +47,28 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active }) {
             createdAt: cDate
         }
         onOpen("linkDel", linkData)
+    }
+
+    const handleActivate = async () => {
+        const response = await fetch("/api/short/disable", {
+            method: "POST",
+            body: JSON.stringify(urlData)
+        })
+
+        if (response.ok) {
+            router.refresh()
+            toast({
+                title: "URL successfully activated!"
+            })
+        }
+
+        if (!response.ok) {
+            toast({
+                title: "There was an error",
+                description: "Server had an error while processing the request, please try again",
+                variant: "destructive"
+            })
+        }
     }
 
     return (
@@ -98,7 +123,7 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active }) {
                                     Disable Url
                                 </DropdownMenuItem>
                             ): (
-                                <DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleActivate()}>
                                     <CirclePlay className="h-4 w-4 mr-2" />
                                     Activate Url
                                 </DropdownMenuItem>
