@@ -14,6 +14,7 @@ import { LogOut, Cog, LayoutTemplate, LogIn, Dock, SquareCheckBig, Info } from "
 
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useModal } from "@/components/modals/hooks/modal-hook"
+import { cn } from "@/lib/utils";
 
 function UserButton() {
     const { data: session } = useSession()
@@ -24,17 +25,24 @@ function UserButton() {
         return (
             <DropdownMenu>
                 <DropdownMenuTrigger>
-                    <Tooltip>
-                        <TooltipTrigger className={buttonVariants({ variant: "ghost", size: "main" })}>
-                            <Avatar className="h-7 w-7 items-center">
-                                <AvatarImage src={session.user.image} />
-                                <AvatarFallback className="h-8 w-8 items-center">{session.user.name.substring(0,1).toUpperCase()}</AvatarFallback>
-                            </Avatar>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            User menu
-                        </TooltipContent>
-                    </Tooltip>
+                    <Button className="relative group" variant="ghost" size="main">
+                        <Avatar className="h-7 w-7 items-center">
+                            <AvatarImage src={session.user.image}/>
+                            <AvatarFallback
+                                className="h-8 w-8 items-center">{session.user.name.substring(0, 1).toUpperCase()}</AvatarFallback>
+                        </Avatar>
+                        <span
+                            className={cn(
+                                "absolute -top-10 left-1/2 -translate-x-1/2",
+                                "px-3 py-2 rounded text-sm",
+                                "bg-popover text-popover-foreground",
+                                "opacity-0 group-hover:opacity-100",
+                                "transition-opacity whitespace-nowrap pointer-events-none"
+                            )}
+                        >
+                            User Menu
+                        </span>
+                    </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuLabel>
