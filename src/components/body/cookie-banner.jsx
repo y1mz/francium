@@ -38,8 +38,8 @@ function CookiesBanner() {
 
     return (
         <div
-            className="fixed bottom-20 md:bottom-4 inset-x-4 md:left-auto md:max-w-[400px] p-6 dark:bg-gray-900 bg-white
-            shadow-lg rounded-lg animate-in slide-in-from-bottom-5 duration-300"
+            className="fixed bottom-24 md:bottom-4 inset-x-4 md:left-auto md:max-w-[400px] p-6 dark:bg-gray-900 bg-white
+            shadow-lg rounded-lg animate-in slide-in-from-bottom-12 duration-300"
         >
             <div className="flex flex-col gap-3">
                 <h3 className="font-semibold text-xl">Cookies</h3>

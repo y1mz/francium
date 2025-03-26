@@ -6,7 +6,7 @@ import LinkNewButton from "@/components/shorter/link-new-button"
 function LinksHeader({ shortLinks, title }) {
 
     return (
-        <div className="
+        <header className="
             w-screen min-h-[40vh]
             bg-gradient-to-br from-purple-300 to-indigo-300
             dark:from-purple-900 dark:to-indigo-800 rounded-b-2xl shadow-lg
@@ -24,7 +24,7 @@ function LinksHeader({ shortLinks, title }) {
                     <LinksSearchButton shortedLink={shortLinks}/>
                 </div>
             </div>
-        </div>
+        </header>
     )
 }
 

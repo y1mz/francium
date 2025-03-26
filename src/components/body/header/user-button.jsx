@@ -7,7 +7,6 @@ import { DropdownMenu,
     DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
     DropdownMenuLabel }
     from "@/components/ui/dropdown-menu"
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import Link from "next/link"
 
 import { LogOut, Cog, LayoutTemplate, LogIn, Dock, SquareCheckBig, Info } from "lucide-react"
@@ -24,7 +23,7 @@ function UserButton() {
         const userNameFirst = session.user.name.substring(0,1).toUpperCase()
         return (
             <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger asChild>
                     <Button className="relative group" variant="ghost" size="main">
                         <Avatar className="h-7 w-7 items-center">
                             <AvatarImage src={session.user.image}/>
@@ -92,16 +91,20 @@ function UserButton() {
     }
 
     return (
-        <Tooltip>
-            <TooltipTrigger asChild>
-                <Button variant="ghost" size="main" onClick={() => signIn()}>
-                    <LogIn className="h-5 w-5" />
-                </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-                Sign In
-            </TooltipContent>
-        </Tooltip>
+        <Button className="relative group active:scale-95" variant="ghost" size="main" onClick={() => signIn()}>
+            <LogIn className="h-5 w-5"/>
+            <span
+                className={cn(
+                    "absolute -top-10 left-1/2 -translate-x-1/2",
+                    "px-3 py-2 rounded text-sm",
+                    "bg-popover text-popover-foreground",
+                    "opacity-0 group-hover:opacity-100",
+                    "transition-opacity whitespace-nowrap pointer-events-none"
+                )}
+            >
+                Sign-in / Sign-up
+            </span>
+        </Button>
     )
 }
 
