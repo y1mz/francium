@@ -62,53 +62,35 @@ const UserSettingsModal = () => {
     }, [isModalOpen]);
 
     const usernameWatch = watch("username")
-    const emailWatch = watch("email")
 
     useEffect(() => {
-        const isUnameSame = usernameWatch == session?.user.name
-        const fetchUsername = async (username) => {
-            const response = await fetch("/api/account/check/username", {
-                method: "POST",
-                body: JSON.stringify({
-                    userName: username
+        let timeoutId
+
+        timeoutId = setTimeout(() => {
+            const isUnameSame = usernameWatch == session?.user.name
+            const fetchUsername = async (username) => {
+                const response = await fetch("/api/account/check/username", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        userName: username
+                    })
                 })
-            })
-            if (!response.ok) {
-                setError("username", { type: "focus", message: "Username already taken" })
-                setIsDisabled(true)
-            } else {
-                clearErrors("username")
-                setIsDisabled(false)
+                if (response.ok && response.status === 201) {
+                    setError("username", { type: "focus", message: "Username already taken" })
+                    setIsDisabled(true)
+                } else {
+                    clearErrors("username")
+                    setIsDisabled(false)
+                }
             }
-        }
-        if (!isUnameSame) {
-            fetchUsername(usernameWatch)
-        }
+            if (!isUnameSame && usernameWatch.length >= 0) {
+                fetchUsername(usernameWatch)
+            }
+        }, 800)
+
+        return () => clearTimeout(timeoutId)
 
     }, [usernameWatch])
-
-    useEffect(() => {
-        const isUnameSame = emailWatch == session?.user.email
-        const fetchUsername = async (email) => {
-            const response = await fetch("/api/account/check/email", {
-                method: "POST",
-                body: JSON.stringify({
-                    email: email
-                })
-            })
-            if (!response.ok) {
-                setError("email", { type: "focus", message: "Email already registered" })
-                setIsDisabled(true)
-            } else {
-                clearErrors("email")
-                setIsDisabled(false)
-            }
-        }
-        if (!isUnameSame) {
-            fetchUsername(emailWatch)
-        }
-
-    }, [emailWatch])
 
     const onSubmit = async (data) => {
 
@@ -180,11 +162,11 @@ const UserSettingsModal = () => {
                                 <div>
                                     <Label htmlFor="email">Email</Label>
                                     <Input type="email" id="email" name="email" placeholder="Your email address"
-                                           className="w-full" {...register("email", {
-                                        required: "Email is required", minLength: {
+                                           className="w-full" {...register("email", { minLength: {
                                             value: 5, message: "Email must be at least 5 characters"
                                         }
                                     })}
+                                        disabled={true}
                                     />
                                 </div>
                                 {errors.email && <ModalError message={errors.email.message}/>}

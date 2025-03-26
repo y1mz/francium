@@ -27,18 +27,11 @@ export async function PATCH(req) {
             }
         })
 
-        if (emailCheck) {
-            if (emailCheck.email !== session.user.email) {
-                return new NextResponse("Credentials already used", { status: 401 })
-            }
-        }
-        console.log("profile check")
         if (usernameCheck) {
             if (usernameCheck.name !== session.user.name) {
                 return new NextResponse("Credentials already used", { status: 401 })
             }
         }
-        console.log("profile check")
 
         const server = await db.user.update({
             where: {
@@ -48,7 +41,6 @@ export async function PATCH(req) {
             },
             data: {
                 name: username,
-                email: email,
                 prefs: {
                     update: {
                         where: {
