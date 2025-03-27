@@ -19,13 +19,13 @@ async function SignInPage({ searchParams }) {
     }
 
     return (
-        <div
+        <main
             className="flex justify-center items-center inset-0 h-dvh mx-auto w-full"
         >
             <div className={`max-w-md w-full`}>
                 <SignInCard conf={conf} callbackUrl={searchParamsCallback} />
             </div>
-        </div>
+        </main>
     )
 }
 

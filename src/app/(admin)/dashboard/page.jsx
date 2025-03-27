@@ -60,7 +60,7 @@ async function DashboardPage({ searchParams }) {
     })
 
     return (
-        <div>
+        <main>
             <AdminWelcomeHeader user={session.user} reports={reports}/>
             <div className="px-5">
                 <Tabs defaultValue={page} className="min-w-[800px]">
@@ -108,7 +108,7 @@ async function DashboardPage({ searchParams }) {
                     </TabsContent>
                 </Tabs>
             </div>
-        </div>
+        </main>
     )
 }
 
