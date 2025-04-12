@@ -11,9 +11,9 @@ function HomeContainer({ config }) {
     return (
         <div className="w-full mx-auto flex flex-col mb-20">
             <div>
-                <div className="w-screen min-h-[85vh] overflow-x-hidden
+                <div className="w-screen min-h-[70vh] md:min-h-[85vh] overflow-x-hidden
                 bg-gradient-to-br from-purple-300 to-indigo-300 dark:from-purple-900 dark:to-indigo-800
-                    rounded-b-2xl shadow-lg
+                    rounded-b-2xl shadow-lg transition-all duration-100
                 ">
                     <div className="max-w-[768px] mx-auto sm:pt-20">
                         <div className="p-5 sm:px-16 sm:pt-10">

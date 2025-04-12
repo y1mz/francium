@@ -49,6 +49,30 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active }) {
         onOpen("linkDel", linkData)
     }
 
+    const handleDisable = async () => {
+        const response = await fetch("/api/short/disable", {
+            method: "PATCH",
+            body: JSON.stringify({
+                id: LinkId,
+                slug: shortUrl,
+                createdAt: cDate
+            })
+        })
+        if (!response.ok) {
+            toast({
+                title: "Something went wrong",
+                description: "We encountered an error. Please try again",
+                type: "destructive"
+            })
+            router.refresh()
+        } else {
+            toast({
+                title: "URL successfully disabled"
+            })
+            router.refresh()
+        }
+    }
+
     const handleActivate = async () => {
         const response = await fetch("/api/short/disable", {
             method: "POST",
@@ -118,7 +142,7 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active }) {
                             </DropdownMenuSub>
                             <DropdownMenuSeparator />
                             {active ? (
-                                <DropdownMenuItem onClick={() => onOpen("linkDisable", urlData)}>
+                                <DropdownMenuItem onClick={() => handleDisable()}>
                                     <CircleMinus className="h-4 w-4 mr-2" />
                                     Disable Url
                                 </DropdownMenuItem>
