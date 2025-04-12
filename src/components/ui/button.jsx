@@ -19,7 +19,8 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         ghost2: "hover:backdrop-blur-md hover:bg-white/20",
         link: "text-primary underline-offset-4 hover:underline",
-        disabled: "pointer-events-none"
+        disabled: "pointer-events-none",
+        sidebar: "inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors text-secondary-foreground hover:bg-secondary/80 px-4 py-2 w-full justify-start h-10 mb-1"
       },
       size: {
         default: "h-10 px-4 py-2",
