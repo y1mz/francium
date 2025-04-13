@@ -180,13 +180,29 @@ function SettingsSidebar() {
                 </div>
                 <div className="space-y-2">
                     <p className="text-sm font-medium text-muted-foreground px-4 truncate">Data</p>
-                    <Button variant="sidebar">
-                        <CloudDownload className="h-5 w-5 mr-3" />
-                        Export Data
+                    <Button variant="sidebar"
+                            className={cn(currentPath === "/settings/data/export" && "bg-secondary shadow-sm")}
+                            onClick={() => {
+                                handleRedirect("/settings/data/export")
+                            }}
+                            asChild
+                    >
+                        <Link href="/settings/data/export">
+                            <CloudDownload className="h-5 w-5 mr-3" />
+                            Export Data
+                        </Link>
                     </Button>
-                    <Button variant="sidebar">
-                        <CloudUpload className="h-5 w-5 mr-3" />
-                        Import Data
+                    <Button variant="sidebar"
+                            className={cn(currentPath === "/settings/data/import" && "bg-secondary shadow-sm")}
+                            onClick={() => {
+                                handleRedirect("/settings/data/import")
+                            }}
+                            asChild
+                    >
+                        <Link href="/settings/data/import">
+                            <CloudUpload className="h-5 w-5 mr-3" />
+                            Import Data
+                        </Link>
                     </Button>
                 </div>
             </div>

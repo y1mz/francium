@@ -1,9 +1,43 @@
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbSeparator
+} from "@/components/ui/breadcrumb"
+import { House } from "lucide-react"
 
 function ProfileSettingsPage() {
     return (
-        <h1>
-            Data import page
-        </h1>
+        <div className="space-y-5 px-5 py-5 md:px-10">
+            <nav>
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink href="/">
+                                <House className="h-4 w-4"/>
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator/>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink href="/settings">
+                                Settings
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator/>
+                        <BreadcrumbItem>
+                            Data
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator/>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink href="/settings/data/export">
+                                Import
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
+            </nav>
+        </div>
     )
 }
 

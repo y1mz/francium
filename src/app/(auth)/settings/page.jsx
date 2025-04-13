@@ -3,8 +3,9 @@ import { DropdownMenu, DropdownMenuContent,
     DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
+import { Breadcrumb, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbList, BreadcrumbItem } from "@/components/ui/breadcrumb"
 
-import { Sun, Moon, Dock, ChevronDown } from "lucide-react"
+import { Sun, Moon, Dock, ChevronDown, House } from "lucide-react"
 
 import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
@@ -75,7 +76,21 @@ function SettingsPage() {
     return (
         <div className="space-y-5 px-5 py-5 md:px-10">
             <nav>
-
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink href="/">
+                                <House className="h-4 w-4" />
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbLink href={"/settings"}>
+                                Settings
+                            </BreadcrumbLink>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
             </nav>
             <section className="space-y-6">
                 <h1 className="font-bold text-3xl md:text-4xl">Site Settings</h1>
@@ -83,7 +98,7 @@ function SettingsPage() {
                 <div className="space-y-4 px-2">
                     <div>
                         <h2 className="font-semibold text-2xl">Appearance</h2>
-                        <span></span>
+                        <p className="text-xs text-muted-foreground">Change how website looks and feels to your liking</p>
                     </div>
                     <div className="flex gap-4 items-center px-2">
                         <p className="text-gray-700 dark:text-gray-300 font-medium">Theme: </p>
@@ -105,9 +120,9 @@ function SettingsPage() {
                     </div>
                 </div>
                 <div className="space-y-4 px-2">
-                    <div className="flex gap-4 items-center">
+                    <div className="gap-4 items-center">
                         <h2 className="font-semibold text-2xl">Client</h2>
-                        <p></p>
+                        <p className="text-xs text-muted-foreground">Manage client-side settings.</p>
                     </div>
                     <div className="flex gap-4 px-2">
                         <p className="text-gray-700 dark:text-gray-300 font-medium flex flex-col">
