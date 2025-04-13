@@ -12,12 +12,15 @@ import { ChevronsUpDown, LogOut, LayoutTemplate,
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 
 function SettingsSidebar() {
     const [isMobile, setMobile] = useState(false)
+    const [currentPath, setCurrentPath] = useState(window.location.pathname)
     const { data: session } = useSession()
+    const router = useRouter()
 
     useEffect(() => {
 
@@ -31,6 +34,11 @@ function SettingsSidebar() {
 
         window.addEventListener("resize", handleResize)
     });
+
+    const handleRedirect = (url) => {
+        setCurrentPath(url)
+        router.push(url)
+    }
 
     const LogoButton = () => {
         return (
@@ -119,25 +127,55 @@ function SettingsSidebar() {
     }
 
     const MenuElements = () => {
+        "use client"
         return (
             <div className="flex flex-col space-y-3">
-                <Button variant="sidebar">
-                    <Cog className="h-5 w-5 mr-3" />
-                    General
+                <Button variant="sidebar" className={cn(currentPath === "/settings" && "bg-secondary shadow-sm")}
+                    onClick={() => {
+                        handleRedirect("/settings")
+                    }}
+                        asChild
+                >
+                    <Link href={"/settings"}>
+                        <Cog className="h-5 w-5 mr-3" />
+                        General
+                    </Link>
                 </Button>
                 <div className="space-y-2">
                     <p className="text-sm font-medium text-muted-foreground px-4 truncate">Account</p>
-                    <Button variant="sidebar">
-                        <CircleUser className="h-5 w-5 mr-3" />
-                        Profile Settings
+                    <Button variant="sidebar" className={cn(currentPath === "/settings/profile" && "bg-secondary shadow-sm")}
+                        onClick={() => {
+                            handleRedirect("/settings/profile")
+                        }}
+                            asChild
+                    >
+                        <Link href={"/settings/profile"}>
+                            <CircleUser className="h-5 w-5 mr-3" />
+                            Profile Settings
+                        </Link>
                     </Button>
-                    <Button variant="sidebar">
-                        <AtSign className="h-5 w-5 mr-3" />
-                        Account Settings
+                    <Button variant="sidebar"
+                            className={cn(currentPath === "/settings/account" && "bg-secondary shadow-sm")}
+                            onClick={() => {
+                                handleRedirect("/settings/account")
+                            }}
+                            asChild
+                    >
+                        <Link href={"/settings/account"}>
+                            <AtSign className="h-5 w-5 mr-3" />
+                            Account Settings
+                        </Link>
                     </Button>
-                    <Button variant="sidebar">
-                        <Shield className="h-5 w-5 mr-3" />
-                        Privacy Settings
+                    <Button variant="sidebar"
+                            className={cn(currentPath === "/settings/privacy" && "bg-secondary shadow-sm")}
+                            onClick={() => {
+                                handleRedirect("/settings/privacy")
+                            }}
+                    >
+                        <Link href={"/settings/privacy"} className="flex">
+                            <Shield className="h-5 w-5 mr-3" />
+                            Privacy Settings
+                        </Link>
                     </Button>
                 </div>
                 <div className="space-y-2">

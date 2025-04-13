@@ -70,9 +70,11 @@ function UserButton() {
                             <p className="ml-2">Link checker</p>
                         </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onOpen("usrSettings")}>
-                        <Cog className="h-4 w-4" />
-                        <p className="ml-2">Settings</p>
+                    <DropdownMenuItem asChild>
+                        <Link href={"/settings"}>
+                            <Cog className="h-4 w-4" />
+                            <p className="ml-2">Settings</p>
+                        </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link href={"/links"}>

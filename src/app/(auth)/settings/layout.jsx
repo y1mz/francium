@@ -1,6 +1,8 @@
 import { ServerSession } from "@/lib/server-session"
 import { redirect } from "next/navigation"
 
+import SettingsSidebar from "@/components/settings/settings-sidebar"
+
 async function SettingsLayout({ children }) {
     const session = await ServerSession()
 
@@ -9,8 +11,11 @@ async function SettingsLayout({ children }) {
     }
 
     return (
-        <main className="bg-[#E1E5F4] dark:bg-[#080e1e]">
-            {children}
+        <main className="bg-[#E1E5F4] dark:bg-[#080e1e] flex w-full h-[100vh] transition-all duration-300 overflow-y-hidden">
+            <SettingsSidebar />
+            <div className="w-full overflow-y-scroll">
+                {children}
+            </div>
         </main>
     )
 }
