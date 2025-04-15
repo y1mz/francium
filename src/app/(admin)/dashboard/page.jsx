@@ -81,7 +81,7 @@ async function DashboardPage({ searchParams }) {
                             </Link>
                         </TabsTrigger>
                         <TabsTrigger value="links" asChild>
-                            <Link href="/dashboard?page=links">
+                            <Link href="/dashboard?page=links&p=1">
                                 Shorted Links
                             </Link>
                         </TabsTrigger>

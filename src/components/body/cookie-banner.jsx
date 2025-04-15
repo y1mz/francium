@@ -25,6 +25,17 @@ function CookiesBanner() {
                 setShowBanner(true)
             }, 2000)
         }
+
+        // Handle local settings
+        const LocalOptionsString = window.localStorage.getItem("localSettings")
+
+        if (!LocalOptionsString) {
+            window.localStorage.setItem("localSettings", JSON.stringify({
+                "enableGradient" : true,
+                "lang": "en-us",
+                "logLocal": false
+            }))
+        }
     }, []);
 
     const handleAccept = () => {

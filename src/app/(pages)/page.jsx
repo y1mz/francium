@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic"
 
 function Home() {
     const config = readConfig()
+
   return (
     <main>
       <div className="mx-auto">

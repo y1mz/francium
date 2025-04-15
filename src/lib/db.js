@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "@/lib/prisma/client"
 
 if (typeof global !== "undefined") {
     global.prisma = undefined;
