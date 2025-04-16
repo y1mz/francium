@@ -6,15 +6,13 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent
 import { AvatarFallback, AvatarImage, Avatar } from "@/components/ui/avatar"
 
 import { ChevronsUpDown, LogOut, LayoutTemplate,
-    Library, SquareCheckBig, BellRing, Dock, CircleUser,
-    AtSign, Shield, Cog, CloudDownload, CloudUpload } from "lucide-react"
+    SquareCheckBig, Dock, CircleUser, Cog } from "lucide-react"
 
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import Image from "next/image"
 
 function SettingsSidebar() {
     const [isMobile, setMobile] = useState(false)
@@ -91,21 +89,10 @@ function SettingsSidebar() {
                         </>
                     )}
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                        <BellRing className="h-4 w-4" />
-                        <p className="ml-2">Notifications</p>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
                             <Link href="/check" className="flex">
                                 <SquareCheckBig className="h-4 w-4" />
                                 <p className="ml-2">Link checker</p>
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link href={"/links/collections"}>
-                                <Library className="h-4 w-4" />
-                                <p className="ml-2">Collections</p>
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
@@ -127,7 +114,7 @@ function SettingsSidebar() {
     }
 
     const MenuElements = () => {
-        "use client"
+
         return (
             <div className="flex flex-col space-y-3">
                 <Button variant="sidebar" className={cn(currentPath === "/settings" && "bg-secondary shadow-sm")}
@@ -152,56 +139,6 @@ function SettingsSidebar() {
                         <Link href={"/settings/profile"}>
                             <CircleUser className="h-5 w-5 mr-3" />
                             Profile Settings
-                        </Link>
-                    </Button>
-                    <Button variant="sidebar"
-                            className={cn(currentPath === "/settings/account" && "bg-secondary shadow-sm")}
-                            onClick={() => {
-                                handleRedirect("/settings/account")
-                            }}
-                            asChild
-                    >
-                        <Link href={"/settings/account"}>
-                            <AtSign className="h-5 w-5 mr-3" />
-                            Account Settings
-                        </Link>
-                    </Button>
-                    <Button variant="sidebar"
-                            className={cn(currentPath === "/settings/privacy" && "bg-secondary shadow-sm")}
-                            onClick={() => {
-                                handleRedirect("/settings/privacy")
-                            }}
-                    >
-                        <Link href={"/settings/privacy"} className="flex">
-                            <Shield className="h-5 w-5 mr-3" />
-                            Privacy Settings
-                        </Link>
-                    </Button>
-                </div>
-                <div className="space-y-2">
-                    <p className="text-sm font-medium text-muted-foreground px-4 truncate">Data</p>
-                    <Button variant="sidebar"
-                            className={cn(currentPath === "/settings/data/export" && "bg-secondary shadow-sm")}
-                            onClick={() => {
-                                handleRedirect("/settings/data/export")
-                            }}
-                            asChild
-                    >
-                        <Link href="/settings/data/export">
-                            <CloudDownload className="h-5 w-5 mr-3" />
-                            Export Data
-                        </Link>
-                    </Button>
-                    <Button variant="sidebar"
-                            className={cn(currentPath === "/settings/data/import" && "bg-secondary shadow-sm")}
-                            onClick={() => {
-                                handleRedirect("/settings/data/import")
-                            }}
-                            asChild
-                    >
-                        <Link href="/settings/data/import">
-                            <CloudUpload className="h-5 w-5 mr-3" />
-                            Import Data
                         </Link>
                     </Button>
                 </div>
