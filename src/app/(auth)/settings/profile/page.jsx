@@ -1,9 +1,10 @@
-"use client"
-
 import { Breadcrumb, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbList, BreadcrumbItem } from "@/components/ui/breadcrumb"
 import { House } from "lucide-react"
 
+import SettingsProfileContainer from "@/components/body/containers/settings/profile-container"
+
 function ProfileSettingsPage() {
+
     return (
         <div className="space-y-5 px-5 py-5 md:px-10">
             <nav>
@@ -29,6 +30,7 @@ function ProfileSettingsPage() {
                     </BreadcrumbList>
                 </Breadcrumb>
             </nav>
+            <SettingsProfileContainer />
         </div>
     )
 }

@@ -5,13 +5,12 @@ import { NextResponse } from "next/server"
 export async function PATCH(req) {
     const session = await ServerSession()
     try {
-        const { username, email, logErrors, showProfile } = await req.json()
-        console.log(logErrors, showProfile)
+        const { name, email } = await req.json()
 
         if (!session) {
             return new NextResponse("Unauthorized", { status: 400 })
         }
-        if (!username && !email) {
+        if (!name && !email) {
             return new NextResponse("Username and email is required", { status: 401 })
         }
 
@@ -21,9 +20,9 @@ export async function PATCH(req) {
             }
         })
 
-        const usernameCheck = await db.user.findUnique({
+        const usernameCheck = await db.user.findFirst({
             where: {
-                name: username
+                name: name
             }
         })
 
@@ -40,32 +39,7 @@ export async function PATCH(req) {
                 name: session.user.name
             },
             data: {
-                name: username,
-                prefs: {
-                    update: {
-                        where: {
-                            userId: session.user.id,
-                        },
-                        data: {
-                            showUsernameOnCheck : showProfile,
-                            logErrorsForDevelopement: logErrors
-                        }
-                    }
-                },
-                links: {
-                    updateMany: {
-                        where: {
-                            creatorId: session.user.id,
-                        },
-                        data: {
-                            isAuthorPublic: showProfile
-                        }
-                    }
-                }
-            },
-            include: {
-                prefs: true,
-                links: true
+                name: name,
             }
         })
         return NextResponse.json(server)

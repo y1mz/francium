@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 
-import UserSettingsModal from "@/components/modals/user-settings-modal"
 import CustomUrlModal from "../modals/mylinks/create-custom-url-modal"
 import LinkReportModal from "../modals/link-report-modal"
 import BanUserModal from "../modals/admin/ban-user-modal"
@@ -25,7 +24,6 @@ function ModalProvider() {
     }
     return (
         <>
-            <UserSettingsModal />
             <CustomUrlModal />
             <LinkReportModal />
             <LinkDeleteModal />
