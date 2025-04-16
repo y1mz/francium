@@ -4,21 +4,14 @@ import LinksSearchButton from "@/components/shorter/links-search"
 import LinkNewButton from "@/components/shorter/link-new-button"
 
 import { cn } from "@/lib/utils"
-import { useState, useEffect } from "react"
+import { useLocalSettings } from "@/lib/hooks/useLocalSettings"
 
 function LinksHeader({ shortLinks, title }) {
-    const [enableGr, setEnableGr] = useState(true)
-
-    useEffect(() => {
-        const LocalOptionsString = window.localStorage.getItem("localSettings")
-        const LocalOptionsParsed = JSON.parse(LocalOptionsString)
-
-        setEnableGr(LocalOptionsParsed.enableGradient)
-    }, [])
+    const { options } = useLocalSettings()
 
     return (
         <header className={cn("w-full min-h-[40vh] flex flex-col justify-between rounded-b-2xl shadow-lg",
-            enableGr ? "bg-gradient-to-br from-purple-300 to-indigo-300 dark:from-purple-900 dark:to-indigo-800"
+            options.enableGradient ? "bg-gradient-to-br from-purple-300 to-indigo-300 dark:from-purple-900 dark:to-indigo-800"
                 : "bg-white/10"
         )}
         >

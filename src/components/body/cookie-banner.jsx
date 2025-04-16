@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { generateUUID } from "@/lib/generateUUID"
+import { useLocalSettings } from "@/lib/hooks/useLocalSettings"
 
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -10,6 +11,7 @@ import Link from "next/link"
 function CookiesBanner() {
     const [showBanner, setShowBanner] = useState(false)
     const { data: session } = useSession()
+    const { setOptions } = useLocalSettings()
 
     useEffect(() => {
         // Write local UUID
@@ -36,6 +38,13 @@ function CookiesBanner() {
                 "logLocal": false
             }))
         }
+        const LocalOptionsParsed = JSON.parse(LocalOptionsString)
+        setOptions(LocalOptionsParsed)
+
+        if (window.location.pathname.includes("/settings")) {
+            setShowBanner(false)
+        }
+
     }, []);
 
     const handleAccept = () => {

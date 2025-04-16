@@ -10,12 +10,14 @@ import { Sun, Moon, Dock, ChevronDown } from "lucide-react"
 import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 import { useState, useEffect } from "react"
+import { useLocalSettings } from "@/lib/hooks/useLocalSettings"
 
 function GeneralSettingsContainer() {
     const {theme, setTheme} = useTheme()
+    const { options } = useLocalSettings()
     const [localUUID, setLocalUUID] = useState("")
-    const [enableGradientOption, setGradientOption] = useState(JSON.parse(window.localStorage.getItem("localSettings")).enableGradient)
-    const [enableLoggingOption, setLoggingOption] = useState(true)
+    const [enableGradientOption, setGradientOption] = useState(options.enableGradient)
+    const [enableLoggingOption, setLoggingOption] = useState(options.logLocal)
 
     useEffect(() => {
         setLocalUUID(window.localStorage.getItem("localUUID"))
@@ -73,8 +75,8 @@ function GeneralSettingsContainer() {
 
         return (
             <DropdownMenu>
-                <DropdownMenuTrigger disabled className="flex" asChild>
-                    <Button variant="ghost" className=" ">
+                <DropdownMenuTrigger className="flex" asChild>
+                    <Button variant="disabled" className=" ">
                         <p className="mr-2">🇺🇸</p>
                         English (U.S.A)
                         <ChevronDown className="ml-2 h-4 w-4"/>
@@ -92,8 +94,10 @@ function GeneralSettingsContainer() {
 
     return (
         <section className="space-y-6">
-            <h1 className="font-bold text-3xl md:text-4xl">Site Settings</h1>
-            <p></p>
+            <div>
+                <h1 className="font-bold text-3xl md:text-4xl">Site Settings</h1>
+                <p className="text-sm text-muted-foreground">Customize the application experience</p>
+            </div>
             <div className="space-y-4 px-2">
                 <div>
                     <h2 className="font-semibold text-2xl">Appearance</h2>

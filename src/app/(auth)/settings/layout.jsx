@@ -2,6 +2,7 @@ import { ServerSession } from "@/lib/server-session"
 import { redirect } from "next/navigation"
 
 import SettingsSidebar from "@/components/settings/settings-sidebar"
+import CookiesBanner from "@/components/body/cookie-banner"
 
 async function SettingsLayout({ children }) {
     const session = await ServerSession()
@@ -16,6 +17,7 @@ async function SettingsLayout({ children }) {
             <div className="w-full overflow-y-scroll">
                 {children}
             </div>
+            <CookiesBanner />
         </main>
     )
 }
