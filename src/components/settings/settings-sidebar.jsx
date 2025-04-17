@@ -17,12 +17,18 @@ import Link from "next/link"
 import Image from "next/image"
 
 function SettingsSidebar() {
+    const [isMounted, setMounted] = useState(false)
     const [isMobile, setMobile] = useState(false)
-    const [currentPath, setCurrentPath] = useState(window.location.pathname)
+    const [currentPath, setCurrentPath] = useState("/settings")
     const { data: session } = useSession()
     const router = useRouter()
 
     useEffect(() => {
+        setMounted(true)
+
+        if (window.innerWidth <= 768) {
+            setMobile(true)
+        }
 
         const handleResize = () => {
             if (window.innerWidth >= 768) {
@@ -33,7 +39,11 @@ function SettingsSidebar() {
         }
 
         window.addEventListener("resize", handleResize)
-    });
+    })
+
+    useEffect(() => {
+        setCurrentPath(window.location.pathname)
+    }, [isMounted]);
 
     const handleRedirect = (url) => {
         setCurrentPath(url)
