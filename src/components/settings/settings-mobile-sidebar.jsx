@@ -154,7 +154,7 @@ function SettingsMobileSidebar() {
         <Sheet open={isOpen} onOpenChange={() => setOpen(!isOpen)}>
             <SheetContent
                 side="left"
-                className="flex h-screen flex-col space-y-3"
+                className="flex h-full flex-col space-y-3"
             >
                 <SheetHeader className="font-bold text-xl">
                     Vexxit Link Shortener
