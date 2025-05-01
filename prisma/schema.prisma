@@ -12,19 +12,20 @@ datasource db {
 }
 
 model User {
-  id            String            @id @default(cuid())
+  id            String             @id @default(cuid())
   name          String
-  email         String?           @unique
+  email         String?            @unique
   emailVerified DateTime?
   image         String?
-  role          String            @default("USER")
-  isBanned      Boolean           @default(false)
+  role          String             @default("USER")
+  isBanned      Boolean            @default(false)
   prefs         UserPreferences[]
   accounts      Account[]
   sessions      Session[]
   bans          UserBans[]
   links         ShortLinks[]
   reports       LinkReports[]
+  linkHistory   ShortLinkHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -32,11 +33,12 @@ model User {
 
 model UserPreferences {
   id     String @id @default(cuid())
-  usr    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  usr    User   @relation(fields: [userId], references: [id])
   userId String @unique
 
   showUsernameOnCheck      Boolean @default(false)
   logErrorsForDevelopement Boolean @default(true)
+  isProfilePublic          Boolean @default(false)
 
   lastExportDate DateTime?
   lastImportDate DateTime?
@@ -108,6 +110,8 @@ model ShortLinks {
   nonAuthId String?
 
   reports LinkReports[]
+  visits  ShortLinkHistory[]
+  ban     LinkBans[]
 }
 
 model LinkReports {
@@ -126,17 +130,28 @@ model LinkReports {
   reportProcessed Boolean @default(false)
 }
 
+model LinkBans {
+  id          Int        @id @default(autoincrement())
+  shortlink   ShortLinks @relation(fields: [linkId], references: [id])
+  linkId      Int        @unique
+  ModeratorId String
+
+  reason   String
+  bannedAt DateTime @default(now())
+}
+
 model UserBans {
-  id          Int     @id @default(autoincrement())
-  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String  @unique
-  adminUserId String?
+  id          Int    @id @default(autoincrement())
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String @unique
+  ModeratorId String
 
   reason String
   type   String
 
   bannedAt    DateTime @default(now())
   bannedUntil DateTime
+  isActive    Boolean  @default(true)
 }
 
 model Announcements {
@@ -147,4 +162,15 @@ model Announcements {
   title       String
   description String
   url         String?
+}
+
+model ShortLinkHistory {
+  id       String     @id @default(cuid())
+  date     DateTime   @default(now())
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  link     ShortLinks @relation(fields: [linkSlug], references: [slug], onDelete: Cascade)
+  linkSlug String
+
+  @@index([userId, linkSlug])
 }
