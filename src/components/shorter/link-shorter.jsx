@@ -93,7 +93,10 @@ function LinkShorterBox() {
                     <Input type="url" name="link" placeholder="Link to be shortened"
                         {...register("link", { required: true })} disabled={session?.user.banned || isSubmitting }
                     />
-                    <Button variant="outline" size="icon" onClick={() => handlePaste()} className="hidden md:flex">
+                    <Button variant="outline" size="icon"
+                            onClick={() => handlePaste()} className="hidden md:flex"
+                            disabled={isSubmitting || session?.user.banned}
+                    >
                         <Clipboard className="w-4 h-4"/>
                     </Button>
                     <Button variant="outline"

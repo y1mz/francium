@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { redirect } from "next/navigation"
 import { useState, useEffect } from "react"
 
-function LinkContainer({ links, p }) {
+function LinkContainer({ links, p, session }) {
     const [searchResults, setSearchResults] = useState({})
 
     const shortedLinks = links.sort((a, b) => {
@@ -51,7 +51,7 @@ function LinkContainer({ links, p }) {
 
     return (
         <div className="pb-10">
-            <LinksHeader shortLinks={shortedLinks} title="Short Links" />
+            <LinksHeader shortLinks={shortedLinks} session={session} title="Short Links" />
             <div className="pb-12 px-5">
                 <div className="flex flex-col gap-2 py-5">
                     {!links.length ? (

@@ -6,7 +6,7 @@ import LinkNewButton from "@/components/shorter/link-new-button"
 import { cn } from "@/lib/utils"
 import { useLocalSettings } from "@/lib/hooks/useLocalSettings"
 
-function LinksHeader({ shortLinks, title }) {
+function LinksHeader({ shortLinks, title, session }) {
     const { options } = useLocalSettings()
 
     return (
@@ -23,7 +23,7 @@ function LinksHeader({ shortLinks, title }) {
                     <p className="text-2xl font-bold py-1">Links you've shorted</p>
                 </div>
                 <div className="flex gap-1">
-                    <LinkNewButton />
+                    {!session.user.banned && (<LinkNewButton />)}
                     <LinksSearchButton shortedLink={shortLinks}/>
                 </div>
             </div>

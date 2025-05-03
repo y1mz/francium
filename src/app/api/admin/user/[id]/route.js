@@ -35,29 +35,8 @@ export async function DELETE(req, { params }) {
                 userId: userId
             }
         })
-        const removeDisabledUrls = await db.shortLinks.updateMany({
-            where: {
-                creatorId: userId,
-                disabledReason: "Author got banned"
-            },
-            data: {
-                active: true,
-                disabledReason: null,
-                disabledAt: null,
-                disabledBy: null
-            }
-        })
 
-        const updateUsr = await db.user.update({
-            where: {
-                id: userId,
-            },
-            data: {
-                isBanned: false
-            }
-        })
-
-        return NextResponse.json({ server, removeDisabledUrls, updateUsr })
+        return NextResponse.json({ server })
 
     } catch (e) {
         console.log("[ADMIN_USER_BAN][ERROR]", e)
@@ -103,36 +82,14 @@ export async function PATCH(req, { params }) {
         const server = await db.userBans.create({
             data: {
                 userId: user.id,
-                adminUserId: session.user?.id,
+                ModeratorId: session.user?.id,
                 reason: reason,
                 type: "",
                 bannedUntil: new Date(banDate)
             }
         })
 
-        const updateUsr = await db.user.update({
-            where: {
-                id: user.id
-            },
-            data: {
-                isBanned: true
-            }
-        })
-        // Disable all the urls created by banned user.
-        const disableUrls = await db.shortLinks.updateMany({
-            where: {
-                creatorId: user.id,
-                disabledReason: null
-            },
-            data: {
-                active: false,
-                disabledReason: "Author got banned",
-                disabledAt: new Date(),
-                disabledBy: session.user.id
-            }
-        })
-
-        return NextResponse.json({ server, disableUrls, updateUsr })
+        return NextResponse.json({ server })
 
     } catch (e) {
         console.log("[ADMIN_USER_BAN][ERROR]", e)

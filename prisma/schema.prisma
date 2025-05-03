@@ -18,7 +18,6 @@ model User {
   emailVerified DateTime?
   image         String?
   role          String             @default("USER")
-  isBanned      Boolean            @default(false)
   prefs         UserPreferences[]
   accounts      Account[]
   sessions      Session[]
@@ -111,7 +110,7 @@ model ShortLinks {
 
   reports LinkReports[]
   visits  ShortLinkHistory[]
-  ban     LinkBans[]
+  bans    LinkBans[]
 }
 
 model LinkReports {

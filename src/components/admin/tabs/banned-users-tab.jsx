@@ -54,9 +54,6 @@ function AdminBannedUsersTab({ users }) {
                             E-mail
                         </TableHead>
                         <TableHead>
-                            Links Count
-                        </TableHead>
-                        <TableHead>
                             Banned at
                         </TableHead>
                         <TableHead>
@@ -71,37 +68,34 @@ function AdminBannedUsersTab({ users }) {
                     {users.map((item) => (
                         <TableRow key={item.id}>
                             <TableCell>
-                                {item.id}
+                                {item.user.id}
                             </TableCell>
                             <TableCell>
                                 <Avatar>
                                     <AvatarFallback>
-                                        {item.name.substring(0, 1).toUpperCase()}
+                                        {item.user.name.substring(0, 1).toUpperCase()}
                                     </AvatarFallback>
-                                    <AvatarImage src={item.image} />
+                                    <AvatarImage src={item.user.image} />
                                 </Avatar>
                             </TableCell>
                             <TableCell>
-                                {item.name}
+                                {item.user.name}
                             </TableCell>
                             <TableCell>
-                                {item.email}
+                                {item.user.email}
                             </TableCell>
                             <TableCell>
-                                {item.links.length}
+                                {new Date(item.bannedAt).toDateString()}
                             </TableCell>
                             <TableCell>
-                                {new Date(item.bans[0].bannedAt).toDateString()}
-                            </TableCell>
-                            <TableCell>
-                                {item.bans[0].reason}
+                                {item.reason}
                             </TableCell>
                             <TableCell>
                                 <div className="flex gap-1">
                                     <EditUserButton 
-                                        id={item.id}
-                                        name={item.name}
-                                        banId={item.bans[0].id}
+                                        id={item.user.id}
+                                        name={item.user.name}
+                                        banId={item.id}
                                     />
                                 </div>
                             </TableCell>

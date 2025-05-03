@@ -77,9 +77,16 @@ export const authOptions = {
                 })
             }
 
+            const ActiveUserBans = await db.userBans.findMany({
+                where: {
+                    userId: user.id,
+                    isActive: true
+                }
+            })
+
             session.user.id = user.id
             session.user.role = (user.email === process.env.AdminMail) ? "ADMIN" : user.role
-            session.user.banned = user.isBanned
+            session.user.banned = ActiveUserBans.length > 0
             session.settings = {...usrSettings}
             
             return session
