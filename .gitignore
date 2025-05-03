@@ -51,3 +51,6 @@ src/lib/prisma
 
 ## Local Filters
 config/filters/*.json
+
+## Logs
+config/logs/*.json
