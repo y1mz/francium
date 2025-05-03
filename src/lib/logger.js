@@ -1,5 +1,6 @@
 import fs from "fs"
 import path from "path"
+import { generateUUID } from "@/lib/generateUUID"
 
 async function logger(type, place, message, date, userId, clientId) {
     const logFilePath = path.join(path.resolve("config/logs"), "clientLog.json")
@@ -48,8 +49,10 @@ async function logger(type, place, message, date, userId, clientId) {
     try {
         await isFileExists()
         let log = readCurrentLog()
+        let entryUUID = generateUUID(20)
 
         const newEntry = {
+            id: entryUUID,
             type: type,
             place: place,
             message: message,

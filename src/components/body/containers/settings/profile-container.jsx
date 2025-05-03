@@ -12,12 +12,11 @@ import { useForm } from "react-hook-form"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { toast } from "@/lib/hooks/use-toast"
-import { useRouter } from "next/navigation"
 
 function SettingsProfileContainer() {
     const { data: session } = useSession()
     const [isDisabled, setDisabled] = useState(false)
-    const router = useRouter()
+    const [localUUID, setLocalUUID] = useState("")
 
     const { register,
         watch,
@@ -29,6 +28,8 @@ function SettingsProfileContainer() {
 
     // Set default values when session becomes avaliable
     useEffect(() => {
+        const uuid = window.localStorage.getItem("localUUID")
+        setLocalUUID(uuid)
 
         setValue("email", session?.user.email, {
             shouldDirty: false,
@@ -75,7 +76,10 @@ function SettingsProfileContainer() {
     const onSubmit = async (data) => {
         const response = await fetch("/api/account/update/profile", {
           method: "PATCH",
-          body: JSON.stringify(data)
+          body: JSON.stringify(data),
+            headers: {
+              "x-client-id": localUUID
+            }
         })
 
         if (!response.ok) {

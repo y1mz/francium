@@ -1,9 +1,11 @@
 import { db } from "@/lib/db"
 import { ServerSession } from "@/lib/server-session"
 import { NextResponse } from "next/server"
+import { logger } from "@/lib/logger"
 
 export async function PATCH(req) {
     const session = await ServerSession()
+    const clientId = req.headers.get("x-client-id")
     try {
         const { name, email } = await req.json()
 
@@ -44,7 +46,7 @@ export async function PATCH(req) {
         })
         return NextResponse.json(server)
     } catch (e) {
-        console.log("[USER_UPDATE]", e.message)
+        await logger("ERROR", "[USER_PROFILE_UPDATE]", e.message, (new Date()), session.user.id, clientId)
         return new NextResponse("Internal Server Error", { status: 500 })
     }
 }

@@ -2,6 +2,7 @@ import { db } from "@/lib/db"
 import { ServerSession } from "@/lib/server-session"
 import { headers } from "next/headers"
 import { NextResponse } from "next/server"
+import { logger } from "@/lib/logger"
 
 export async function POST(req) {
     const session = await ServerSession()
@@ -27,12 +28,14 @@ export async function POST(req) {
             }
         })
         if (!server) {
-            return new NextResponse("[2501] Short Url not found", { status: 404 })
+            return new NextResponse("Short Url not found", { status: 404 })
         }
 
         return NextResponse.json(server)
     } catch (e) {
-        console.log("[URL_REPORT][ERROR]", e)
+        const sessionUseId = session?.user ? session.user.id : "Unauthorized"
+
+        await logger("ERROR", "[URL_REPORTER]", e.message, (new Date()), sessionUseId, nonMUUID)
         return new NextResponse("Internal Server Error", { status: 500 })
     }
 }

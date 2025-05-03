@@ -4,9 +4,11 @@ import { NextResponse } from "next/server"
 import { generateUUID } from "@/lib/generateUUID"
 import { CheckUrl } from "@/lib/checkUrl"
 import { getWebsiteMetadata } from "@/lib/getWebsiteMetadata"
+import { logger } from "@/lib/logger"
 
 export async function POST(request){
     const session = await ServerSession()
+    const localUUID = request.headers.get("x-client-id")
 
     try {
         const { link } = await request.json()
@@ -24,19 +26,25 @@ export async function POST(request){
             },
             include: {
                 links: true,
-                bans: true
             }
         })
 
-        if (user.bans.length > 0) {
-            console.log(`[SHORT_ROUTE][WARN] Banned user ${user.id} has tried to short an url.`)
+        const userBans = await db.userBans.findMany({
+            where: {
+                userId: user.id,
+                isActive: true
+            }
+        })
+
+        if (userBans.length > 0) {
             return new NextResponse("You got banned", { status: 401 })
         }
 
         // Run filter before going further
         const filterStatus = CheckUrl(link.split("/").slice(2,3)[0])
         if (filterStatus === 1) {
-            console.log(`[WARN][SHORT_ROUTE] UserId: ${user.id} tried to short a banned url: ${link}`)
+            await logger("WARNING", `[CREATE_SHORT_URL]`, `UserId: (${user.id}) tried to short a banned URL: (${link})`,
+                (new Date()), session.user.id, localUUID)
             return new NextResponse("Tried to short a banned Url", { status: 402 })
         }
 
@@ -45,7 +53,7 @@ export async function POST(request){
         const postDifference = (new Date() - lastShort?.createdAt) / 1000
 
         if (postDifference < 10.0) {
-            console.log(`[WARN][SHORT_ROUTE] User (${user?.name}) acted so quickly.`)
+            await logger("WARNING", "[CREATE_SHORT_URL]", `Userid: (${user.id}) acted so quickly.`, (new Date()), user.id, localUUID)
             return new NextResponse("Please try again 5 seconds later.", { status: 401 })
         }
 
@@ -60,7 +68,7 @@ export async function POST(request){
             }
         })
         if (existingUUID) {
-            console.log(`[WARN][SHORT_ROUTE] UUID (${UUID}) already exists, creating new UUID`)
+            await logger("WARNING", "[CREATE_SHORT_URL]", `UUID: (${UUID}) already exists, creating new UUID.`, (new Date()), session.user.id, localUUID)
             UUID = generateUUID(5)
         }
 
@@ -104,7 +112,7 @@ export async function POST(request){
         return NextResponse.json(response)
 
     } catch (e) {
-        console.log("[SHORT_ROUTE][ERROR]", e.message)
+        await logger("ERROR", "[CREATE_SHORT_URL]", e.message, (new Date()), session.user.id, localUUID)
         return new NextResponse("Internal Server Error", { status: 500 })
     }
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
@@ -16,7 +16,12 @@ function LinkCheckerBox() {
     const [submitting, setSubmitting] = useState(false)
     const [isError, setError] = useState()
     const [endRespone, setEndResponse] = useState({})
-    const [endAuthorResponse, setAuthorResponse] = useState({})
+    const [localUUID, setLocalUUID] = useState("")
+
+    useEffect(() => {
+        const uuid = window.localStorage.getItem("localUUID")
+        setLocalUUID(uuid)
+    }, [])
 
     const Content = () => {
 
@@ -37,7 +42,11 @@ function LinkCheckerBox() {
                     throw new Error("Urls from other servers aren't supported.")
                 }
 
-                const response = await fetch(`/api/meta/${slug}`)
+                const response = await fetch(`/api/meta/${slug}`, {
+                    headers: {
+                        "x-client-id": localUUID
+                    }
+                })
 
                 if (!response.ok) {
                     throw new Error(`Checking Error: ${response.statusText}`)
@@ -45,12 +54,6 @@ function LinkCheckerBox() {
 
                 const responseData = await response.json()
                 setEndResponse(responseData)
-
-                if (responseData.isAuthorPublic) {
-                    const res = await fetch(`/api/meta/${slug}/author`)
-                    const fullRes = await res.json()
-                    setAuthorResponse(fullRes)
-                }
 
             } catch (e) {
                 setError(e)
@@ -84,7 +87,7 @@ function LinkCheckerBox() {
             {isError && <LinkCheckError e_code={isError} />}
             <Content />
             <div className="py-2">
-                {endRespone.id && <LinkCheckResult result={endRespone} author={endAuthorResponse} />}
+                {endRespone.id && <LinkCheckResult result={endRespone} />}
             </div>
         </div>
     )

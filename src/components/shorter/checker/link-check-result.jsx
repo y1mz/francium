@@ -5,7 +5,7 @@ import Link from "next/link"
 import LinkReportButton from "./link-report-button"
 
 
-function LinkCheckResult({ result, author }) {
+function LinkCheckResult({ result }) {
 
     return (
         <div className="p-4 rounded-lg border border-white/30 bg-white/10 backdrop-blur-sm">
@@ -26,19 +26,6 @@ function LinkCheckResult({ result, author }) {
                         <p className="whitespace-nowrap font-bold">Url: </p>
                         <code className="line-clamp-1 text-sm rounded px-[0.3rem] py-[0.2rem] font-mono">{result.link}</code>
                     </div>
-                    {author?.username &&
-                        <>
-                            <Separator className="bg-white/50 px-10" />
-                            <div className="flex gap-3 items-center">
-                                <p className="whitespace-nowrap font-bold">Creator: </p>
-                                <Avatar className="h-8 w-8">
-                                    <AvatarImage src={author?.avatar}/>
-                                    <AvatarFallback>{author?.username.substring(0, 1).toUpperCase()}</AvatarFallback>
-                                </Avatar>
-                                <p className="line-clamp-1 text-sm">@{author.username}</p>
-                            </div>
-                        </>
-                    }
                     {result.metaImageUrl && <>
                         <Separator className="bg-white/50 px-10" />
                         <div className="flex flex-col gap-2">

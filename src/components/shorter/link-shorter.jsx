@@ -1,7 +1,7 @@
 "use client"
 
 import { useSession } from "next-auth/react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useToast } from "@/lib/hooks/use-toast"
 
@@ -49,7 +49,10 @@ function LinkShorterBox() {
                         method: 'POST',
                         body: JSON.stringify({
                             link: data.link
-                        })
+                        }),
+                        headers: {
+                            "x-client-id": window.localStorage.getItem("localUUID")
+                        }
                     })
 
                     if (!response.ok) {
