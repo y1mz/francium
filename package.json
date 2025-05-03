@@ -9,12 +9,10 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "filters": "node src/lib/getFilters.js",
-    "cli": "bun src/cli.js"
+    "filters": "node src/lib/getFilters.js"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
-    "@inquirer/prompts": "^7.5.0",
     "@prisma/client": "^6.6.0",
     "@radix-ui/react-accordion": "^1.2.4",
     "@radix-ui/react-aspect-ratio": "^1.1.3",
@@ -36,10 +34,8 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "commander": "^13.1.0",
     "glob": "^9.0.0",
     "gray-matter": "^4.0.3",
-    "inquirer": "^12.6.0",
     "lucide-react": "^0.469.0",
     "markdown-to-jsx": "^7.7.4",
     "next": "15.3.1",
