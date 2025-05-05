@@ -6,11 +6,27 @@ import {
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb"
 import {House} from "lucide-react"
+import { MobileSidebarToggle } from "@/components/settings/settings-mobile-sidebar"
+import SettingsAccountContainer from "@/components/body/containers/settings/account-container"
 
-function ProfileSettingsPage() {
+import { db } from "@/lib/db"
+import { ServerSession } from "@/lib/server-session"
+import { readConfig } from "@/lib/readConfig"
+
+async function ProfileSettingsPage() {
+    const config = readConfig()
+    const session = await ServerSession()
+
+    const Bans = await db.userBans.findMany({
+        where: {
+            userId: session.user.id
+        }
+    })
+
     return (
         <div className="space-y-5 px-5 py-5 md:px-10">
-            <nav>
+            <nav className="flex gap-1.5">
+                <MobileSidebarToggle />
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>
@@ -33,6 +49,7 @@ function ProfileSettingsPage() {
                     </BreadcrumbList>
                 </Breadcrumb>
             </nav>
+            <SettingsAccountContainer siteConf={config} userBans={Bans} />
         </div>
     )
 }
