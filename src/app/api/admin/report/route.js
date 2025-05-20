@@ -2,10 +2,6 @@ import { db } from "@/lib/db"
 import { ServerSession } from "@/lib/server-session"
 import { NextResponse } from "next/server"
 
-export async function PATCH(req) {
-
-}
-
 export async function DELETE(req) {
     const session = await ServerSession()
 
@@ -19,7 +15,7 @@ export async function DELETE(req) {
             where: {
                 id: id,
                 reportUrlSlug: slug
-            }, 
+            },
             data: {
                 reportProcessed: true
             }

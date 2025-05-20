@@ -107,7 +107,6 @@ model ShortLinks {
 
   reports LinkReports[]
   visits  ShortLinkHistory[]
-  bans    LinkBans[]
 }
 
 model LinkReports {
@@ -126,16 +125,6 @@ model LinkReports {
   reportProcessed Boolean @default(false)
 }
 
-model LinkBans {
-  id          Int        @id @default(autoincrement())
-  shortlink   ShortLinks @relation(fields: [linkId], references: [id])
-  linkId      Int        @unique
-  ModeratorId String
-
-  reason   String
-  bannedAt DateTime @default(now())
-}
-
 model UserBans {
   id          Int    @id @default(autoincrement())
   user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -145,8 +134,8 @@ model UserBans {
   reason String
   type   String
 
-  bannedAt    DateTime @default(now())
-  bannedUntil DateTime
+  bannedAt    DateTime? @default(now())
+  bannedUntil DateTime?
   isActive    Boolean  @default(true)
 }
 
@@ -168,6 +157,7 @@ model ShortLinkHistory {
   unAuthClientId String?
   link           ShortLinks @relation(fields: [linkSlug], references: [slug], onDelete: Cascade)
   linkSlug       String
+  visitorCountry String     @default("Unknown")
 
   @@index([userId, linkSlug])
 }

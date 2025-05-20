@@ -19,10 +19,7 @@ export async function PATCH(req) {
                 createdAt: createdAt
             },
             data: {
-                active: false,
-                disabledBy: session.user.id,
-                disabledReason: "Disabled by owner.",
-                disabledAt: new Date().toISOString()
+                active: false
             }
         })
 
@@ -52,9 +49,6 @@ export async function POST(req) {
             },
             data: {
                 active: true,
-                disabledBy: null,
-                disabledReason: null,
-                disabledAt: null
             }
         })
 

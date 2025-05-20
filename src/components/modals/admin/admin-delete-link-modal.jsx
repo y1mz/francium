@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react"
 
 const AdminLinkDeleteModal = () => {
     const { isOpen, onClose, type, data } = useModal()
-    const { id, slug, name, createdAt } = data
+    const { id, slug, name, authorId, createdAt, clientId } = data
     const isModalOpen = isOpen && type === "AdminlinkDel"
     const { data: session } = useSession()
 
@@ -21,10 +21,12 @@ const AdminLinkDeleteModal = () => {
 
     const handleDelete = async () => {
         const response = await fetch(`/api/admin/link/${id}`, {
-            method: "DELETE",
+            method: "PATCH",
             body: JSON.stringify({
                 slug: slug,
-                createdAt: createdAt
+                createdAt: createdAt,
+                authorId: authorId,
+                clientId: clientId
             })
         })
         if (response.ok) {

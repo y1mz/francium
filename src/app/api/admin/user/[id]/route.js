@@ -1,64 +1,32 @@
 import { db } from "@/lib/db"
 import { ServerSession } from "@/lib/server-session"
 import { NextResponse } from "next/server"
-
-export async function DELETE(req, { params }) {
-    const userId = params.id
-    const session = await ServerSession()
-
-    if (!session) {
-        return new NextResponse("Unauthorized", { status: 401 })
-    }
-
-    try {
-        if (session.user.role === "USER") {
-            console.log(`[ADMIN_USER_BAN][ERROR] Unauthorized user (id: ${session.user?.id}) tried to access Admin route`)
-            return new NextResponse("Unauthorized", { status: 401 })
-        }
-
-        const { banId } = await req.json()
-
-        const banDetails = await db.userBans.findUnique({
-            where: {
-                id: banId,
-                userId: userId
-            }
-        })
-        if (!banDetails) {
-            console.log(`[ADMIN_USER_BAN][ERROR] User ban with id: ${banId} doesn't exists`)
-            return new NextResponse("Not found", { status: 404 })
-        }
-
-        const server = await db.userBans.delete({
-            where: {
-                id: banId,
-                userId: userId
-            }
-        })
-
-        return NextResponse.json({ server })
-
-    } catch (e) {
-        console.log("[ADMIN_USER_BAN][ERROR]", e)
-        return new NextResponse("Internal Server Error", { status: 500 })
-    }
-}
+import { auditLogger } from "@/lib/auditLogger"
+import { logger } from "@/lib/logger"
+import { headers } from "next/headers"
 
 export async function PATCH(req, { params }) {
-    const userId = params.id
+    const { id } = await params
+    const userId = id
     const session = await ServerSession()
-    
+    const hed = await headers()
+
+    const clientId = hed.get("x-client-id")
+
     if (!session) {
-        return new NextResponse("Unauthorized", { status: 401 })
+      return new NextResponse("Unauthorized", { status: 401 })
+    }
+
+    if (session.user.role === "USER") {
+      return new NextResponse("Unauthorized", { status: 401 })
+    }
+
+    if (!clientId) {
+      return new NextResponse("Unauthorized", { status: 401 })
     }
 
     try {
-        if (session.user.role === "USER") {
-            console.log(`[ADMIN_USER_BAN][ERROR] Unauthorized user (id: ${session.user?.id}) tried to access Admin route`)
-            return new NextResponse("Unauthorized", { status: 401 })
-        }
-
-        const { usename, mail, reason, banDate } = await req.json()
+        const { usename, mail, reason, type, banDate } = await req.json()
 
         const user = await db.user.findUnique({
             where: {
@@ -72,24 +40,26 @@ export async function PATCH(req, { params }) {
         })
 
         if (!user) {
-            console.log(`[ADMIN_USER_BAN][ERROR] User with id: ${userId} doesn't exists`)
+            await logger("ERROR", "[ADMIN_USER_BAN]", `[ERROR] User with id: ${userId} doesn't exists`, session.user?.id, clientId)
             return new NextResponse("User not found", { status: 404 })
-        }
-        if (user.bans.length > 0) {
-            return new NextResponse("User already banned", { status: 200 })
         }
 
         const server = await db.userBans.create({
             data: {
-                userId: user.id,
-                ModeratorId: session.user?.id,
-                reason: reason,
-                type: "",
-                bannedUntil: new Date(banDate)
+              userId: user.id,
+              ModeratorId: session.user.id,
+              type: type,
+              reason: reason,
+              bannedUntil: banDate
             }
         })
 
-        return NextResponse.json({ server })
+        auditLogger("[USER_BAN]", `User ${user.name} has been banned by ModeratorId: ${session.user.id} for reason of ${reason}`,
+          (new Date().toDateString()), session.user.id)
+
+        return NextResponse.json({
+          status: "OK"
+        })
 
     } catch (e) {
         console.log("[ADMIN_USER_BAN][ERROR]", e)

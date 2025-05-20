@@ -1,7 +1,9 @@
 import fs from "fs"
 import path from "path"
 
-async function auditLogger(type, message, date, userId,) {
+import { logger } from "@/lib/logger"
+
+async function auditLogger(type, message, date, modId) {
     const logFilePath = path.join(path.resolve("config/logs"), "auditLog.json")
 
     // Create Log file and directory if they don't exist.
@@ -59,12 +61,12 @@ async function auditLogger(type, message, date, userId,) {
         log.push(newEntry)
         writeLogFile(log)
 
-        console.log(`[${new Date(date)}]`, type, place, message, clientId)
+        console.log(`[${new Date(date)}]`, type, message)
 
         return true
 
     } catch (e) {
-        console.log("[ERROR]: ", e.message)
+        await logger("ERROR", "[AUDIT_LOGGER]", e.message, (new Date().toDateString()), modId)
     }
 }
 
