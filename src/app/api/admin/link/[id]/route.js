@@ -18,19 +18,30 @@ export async function PATCH(req, { params }) {
         const { slug, authorId, clientId, reason } = await req.json()
         const slugR = slug.split("/").slice(3,4)[0]
 
+        // Get user details
+        const linkDetails = await db.shortLinks.findUnique({
+            where: {
+                id: linkId,
+                slug: slugR
+            }
+        })
+
+        console.log(linkDetails)
+
         // Delete the Shortened URL
         await db.shortLinks.delete({
           where: {
-            slug: slugR,
-            creatorId: authorId,
-            nonAuthId: clientId
+              id: linkId,
+              slug: slugR,
+              creatorId: authorId,
+              nonAuthId: clientId
           }
         })
 
         // Create a warning for user
         await db.userBans.create({
           data: {
-            userId: authorId,
+            userId: linkDetails.creatorId,
             ModeratorId: session.user.id,
             type: "WARNING",
             reason: reason,
@@ -39,7 +50,7 @@ export async function PATCH(req, { params }) {
         })
 
         // Log action
-        auditLogger("[URL_REMOVAL]", `URL With slug: ${slugR} has been removed by ModeratorId: ${session.user.id}`,
+        await auditLogger("[URL_REMOVAL]", `URL With slug: ${slugR} has been removed by ModeratorId: ${session.user.id}`,
           (new Date().toDateString()), session.user.id)
 
         return NextResponse.json({

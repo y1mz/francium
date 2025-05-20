@@ -64,9 +64,9 @@ function AdminLinksTab({ links }) {
                                 asChild
                         >
                             <div
-                                onClick={() => {onOpen("AdminlinkDel", body)}}
+                                onClick={() => {onOpen("banLnk", body)}}
                             >
-                                <Trash2 className="h-5 w-5 text-rose-600" />
+                                <ShieldOff className="h-5 w-5 text-rose-600" />
                             </div>
                         </Button>
                     </TooltipTrigger>

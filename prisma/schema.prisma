@@ -128,7 +128,7 @@ model LinkReports {
 model UserBans {
   id          Int    @id @default(autoincrement())
   user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String @unique
+  userId      String
   ModeratorId String
 
   reason String
@@ -136,7 +136,7 @@ model UserBans {
 
   bannedAt    DateTime? @default(now())
   bannedUntil DateTime?
-  isActive    Boolean  @default(true)
+  isActive    Boolean   @default(true)
 }
 
 model Announcements {

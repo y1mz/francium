@@ -14,8 +14,7 @@ import { useForm } from "react-hook-form"
 const DisableUrlModal = () => {
     const { isOpen, onClose, type, data } = useModal()
     const isModalOpen = isOpen && type === "banLnk"
-    const { data: session } = useSession()
-    const { id, slug } = data
+    const { id, slug, name, authorId, createdAt, clientId } = data
     const { register
         , handleSubmit
         , formState: { errors },
@@ -26,11 +25,13 @@ const DisableUrlModal = () => {
         setValue("slug", (window.location.origin + "/" + slug))
     }, [isModalOpen]);
 
+    const feBody = data
+
     const onSubmit = async (data) => {
-        const feBody = JSON.stringify(data)
+
         const response = await fetch(`/api/admin/link/${id}`, {
             method: "PATCH",
-            body: feBody
+            body: JSON.stringify({...feBody, ...data})
         })
         if (!response.ok) {
             setIsError(response.status + response.statusText)
