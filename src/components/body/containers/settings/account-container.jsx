@@ -17,27 +17,35 @@ function SettingsAccountContainer({ siteConf, userBans }) {
 
         const statusTexts = {
             "warning": "URL has removed.",
-            "temp": "Account restricted",
+            "temp": `Account restricted until: `,
             "perma": "Account has suspended."
         }
 
+        const ttext = statusTexts[type]
+
         return (
             <div className="max-w-[600px] rounded-lg bg-white dark:bg-[#1E2130] p-6 mb-6">
-                <div className="flex items-center gap-4">
-                    {statusIcons[type]}
-                    <div>
-                        <p className="font-semibold text-lg">{statusTexts[type]}</p>
-                        <p className="text-sm font-medium text-muted-foreground">{reason}</p>
-                        <div className="flex gap-2 mt-2 items-center">
-                            <span className={`py-1 px-2 rounded-full text-xs font-light ${
-                                !isActive ? "dark:bg-green-500/20 dark:text-green-400 bg-green-700/30 text-green-800"  : "bg-orange-500/20 text-orange-400"
-                            }`}>
+                <div className="flex gap-4">
+                    <div className="flex items-center h-full gap-4">
+                        {statusIcons[type]}
+                        <div>
+                            <p className="font-semibold text-lg">{type === "temp" ? ttext + " " + new Date(bannedUntil).toDateString() : ttext}</p>
+                            <p className="text-sm font-medium text-muted-foreground">{reason}</p>
+                            <div className="flex gap-2 mt-2 items-center">
+                                {type === "temp" && (
+                                    <span className={`py-1 px-2 rounded-full text-xs font-light ${
+                                        !isActive ? "dark:bg-green-500/20 dark:text-green-400 bg-green-700/30 text-green-800" : "bg-orange-500/20 text-orange-400"
+                                    }`}>
                                 {isActive ? "Active" : "Expired"}
                             </span>
-                            {type !== "perma" && (
-                                <p className="font-medium text-muted-foreground text-xs">Duration : {banDuration}</p>
-                            )}
+                                )}
+                            </div>
                         </div>
+                    </div>
+                    <div className="ml-auto">
+                        <p className="text-sm font-medium text-muted-foreground">
+                            {new Date(bannedAt).toDateString()}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -92,7 +100,9 @@ function SettingsAccountContainer({ siteConf, userBans }) {
                     {userBans.length ? (
                         <>
                             {userBans.map((item, index) => (
-                                <BanCard key={index} type={item.type} reason={item.reason} />
+                                <BanCard key={index} type={item.type} reason={item.reason} bannedAt={item.bannedAt}
+                                         isActive={item.isActive} bannedUntil={item.bannedUntil}
+                                />
                             ))}
                         </>
                     ) : (

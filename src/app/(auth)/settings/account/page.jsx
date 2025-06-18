@@ -20,6 +20,9 @@ async function ProfileSettingsPage() {
     const Bans = await db.userBans.findMany({
         where: {
             userId: session.user.id
+        },
+        orderBy: {
+            bannedAt: "desc"
         }
     })
 
