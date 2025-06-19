@@ -1,13 +1,14 @@
 import { Breadcrumb, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbList, BreadcrumbItem } from "@/components/ui/breadcrumb"
 import { House } from "lucide-react"
-
+import { MobileSidebarToggle } from "@/components/settings/settings-mobile-sidebar"
 import SettingsProfileContainer from "@/components/body/containers/settings/profile-container"
 
 function ProfileSettingsPage() {
 
     return (
         <div className="space-y-5 px-5 py-5 md:px-10">
-            <nav>
+            <nav className="flex gap-1.5">
+                <MobileSidebarToggle />
                 <Breadcrumb>
                     <BreadcrumbList>
                         <BreadcrumbItem>

@@ -66,38 +66,30 @@ export const authOptions = {
                 })
             }
 
-            session.user.id = user.id
-            session.user.role = user.role
-            session.user.banned = user.isBanned
-            session.settings = {...usrSettings}
-            
-            return session
-        },
-        async signIn({ user, profile }) {
-            const adminMail = process.env.AdminMail
-            const admins = await db.user.findMany({
+            if (user.email === process.env.AdminMail) {
+                await db.user.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        role: "ADMIN"
+                    }
+                })
+            }
+
+            const ActiveUserBans = await db.userBans.findMany({
                 where: {
-                    role: "ADMIN"
+                    userId: user.id,
+                    isActive: true
                 }
             })
 
-            try {
-                if (user.email === adminMail && (admins.length === 0)) {
-                    await db.user.update({
-                        where: {
-                            id: user.id,
-                            email: user.email
-                        },
-                        data: {
-                            role: "ADMIN"
-                        }
-                    })
-                }
-            } catch (e) {
-                console.log("[ADMIN_UPDATE_ROLE][WARN]", `Failed to set the user ${user.email} as Admin, please try again.`)
-                return true
-            }
-            return true
+            session.user.id = user.id
+            session.user.role = (user.email === process.env.AdminMail) ? "ADMIN" : user.role
+            session.user.banned = ActiveUserBans.length > 0
+            session.settings = {...usrSettings}
+            
+            return session
         }
     },
     pages: {

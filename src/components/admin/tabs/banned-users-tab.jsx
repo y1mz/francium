@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ShieldBan } from "lucide-react"
+import { ShieldBan, NotepadTextDashed } from "lucide-react"
 
 import { useModal } from "@/components/modals/hooks/modal-hook"
 
@@ -36,6 +36,21 @@ function AdminBannedUsersTab({ users }) {
         )
     }
 
+    const ReadAppealButton = ({ userDetails, banDetails, isDisabled }) => {
+
+        return (
+            <>
+                <Button size="icon" variant="ghost"
+                        disabled={isDisabled}
+                        className="disabled:text-muted-foreground"
+                        onClick={() => {}}
+                >
+                    <NotepadTextDashed className="h-5 w-5" />
+                </Button>
+            </>
+        )
+    }
+
     return (
         <>
             <Table>
@@ -54,10 +69,13 @@ function AdminBannedUsersTab({ users }) {
                             E-mail
                         </TableHead>
                         <TableHead>
-                            Links Count
+                            Ban Type
                         </TableHead>
                         <TableHead>
                             Banned at
+                        </TableHead>
+                        <TableHead>
+                            Banned Until
                         </TableHead>
                         <TableHead>
                             Ban reason
@@ -71,37 +89,45 @@ function AdminBannedUsersTab({ users }) {
                     {users.map((item) => (
                         <TableRow key={item.id}>
                             <TableCell>
-                                {item.id}
+                                {item.user.id}
                             </TableCell>
                             <TableCell>
                                 <Avatar>
                                     <AvatarFallback>
-                                        {item.name.substring(0, 1).toUpperCase()}
+                                        {item.user.name.substring(0, 1).toUpperCase()}
                                     </AvatarFallback>
-                                    <AvatarImage src={item.image} />
+                                    <AvatarImage src={item.user.image} />
                                 </Avatar>
                             </TableCell>
                             <TableCell>
-                                {item.name}
+                                {item.user.name}
                             </TableCell>
                             <TableCell>
-                                {item.email}
+                                {item.user.email}
                             </TableCell>
                             <TableCell>
-                                {item.links.length}
+                                {item.type === "temp" ? "Temporary restriction" : "Permanent account termination"}
                             </TableCell>
                             <TableCell>
-                                {new Date(item.bans[0].bannedAt).toDateString()}
+                                {new Date(item.bannedAt).toDateString()}
                             </TableCell>
                             <TableCell>
-                                {item.bans[0].reason}
+                                {item.type !== "perma" ? new Date(item.bannedUntil).toDateString() : "Permanent"}
+                            </TableCell>
+                            <TableCell>
+                                {item.reason}
                             </TableCell>
                             <TableCell>
                                 <div className="flex gap-1">
+                                    <ReadAppealButton
+                                        userDetails={item.user}
+                                        banDetails={item}
+                                        isDisabled={!item.isAppeal}
+                                    />
                                     <EditUserButton 
-                                        id={item.id}
-                                        name={item.name}
-                                        banId={item.bans[0].id}
+                                        id={item.user.id}
+                                        name={item.user.name}
+                                        banId={item.id}
                                     />
                                 </div>
                             </TableCell>

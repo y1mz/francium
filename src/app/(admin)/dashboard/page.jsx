@@ -15,7 +15,7 @@ async function DashboardPage({ searchParams }) {
     const session = await ServerSession()
 
     let page
-    page = searchParams.page
+    page = (await searchParams).page
     if (!page){
         page = "reports"
     }
@@ -41,7 +41,14 @@ async function DashboardPage({ searchParams }) {
         }
     })
     
-    const bannedUsers = users.filter((user) => user.bans.length > 0)
+    const bannedUsers = await db.userBans.findMany({
+        where: {
+            isActive: true
+        },
+        include: {
+            user: true
+        }
+    })
 
     const shortLinks = await db.shortLinks.findMany({
         include: {

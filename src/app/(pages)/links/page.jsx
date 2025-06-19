@@ -34,7 +34,7 @@ async function MyLinksPage({ searchParams }) {
     const { p }  = await searchParams
 
     return (
-        <LinksContainer links={shortedLinks} p={p} />
+        <LinksContainer links={shortedLinks} p={p} session={session}/>
     )
 }
 

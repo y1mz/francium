@@ -7,16 +7,22 @@ import { Input } from "../ui/input"
 import { useForm } from "react-hook-form"
 import { useOnboarding } from "@/lib/hooks/onboarding-complete-hook"
 import { useToast } from "@/lib/hooks/use-toast"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { cn } from "@/lib/utils"
 
 function OnboardingUserNameCard() {
   const [loading, setLoading] = useState(false)
+  const [localUUID, setLocalUUID] = useState("")
   const { setComplete } = useOnboarding()
   const { register, watch, handleSubmit, formState : { errors }, setError } = useForm()
   const { toast } = useToast()
   const { data: session } = useSession()
+
+  useEffect(() => {
+    const uuid = window.localStorage.getItem("localUUID")
+    setLocalUUID(uuid)
+  }, []);
 
   const onSubmit = async (data) => {
     const userId = session.user.id
@@ -53,7 +59,10 @@ function OnboardingUserNameCard() {
       } else {
         const response = await fetch("/api/account/onboarding", {
           method: "PATCH",
-          body: JSON.stringify(postData)
+          body: JSON.stringify(postData),
+          headers: {
+            "x-client-id": localUUID
+          }
         })
 
         if (!response.ok) {

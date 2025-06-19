@@ -1,7 +1,7 @@
 "use client"
 
 import { useSession } from "next-auth/react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useToast } from "@/lib/hooks/use-toast"
 
@@ -49,7 +49,10 @@ function LinkShorterBox() {
                         method: 'POST',
                         body: JSON.stringify({
                             link: data.link
-                        })
+                        }),
+                        headers: {
+                            "x-client-id": window.localStorage.getItem("localUUID")
+                        }
                     })
 
                     if (!response.ok) {
@@ -90,7 +93,10 @@ function LinkShorterBox() {
                     <Input type="url" name="link" placeholder="Link to be shortened"
                         {...register("link", { required: true })} disabled={session?.user.banned || isSubmitting }
                     />
-                    <Button variant="outline" size="icon" onClick={() => handlePaste()} className="hidden md:flex">
+                    <Button variant="outline" size="icon"
+                            onClick={() => handlePaste()} className="hidden md:flex"
+                            disabled={isSubmitting || session?.user.banned}
+                    >
                         <Clipboard className="w-4 h-4"/>
                     </Button>
                     <Button variant="outline"

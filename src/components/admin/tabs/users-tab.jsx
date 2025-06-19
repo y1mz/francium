@@ -20,8 +20,14 @@ function AdminUsersTab({ users }) {
     const { data: session } = useSession()
     const { onOpen } = useModal()
     let usersR
-    usersR = users.filter((user) => user.name !== session?.user?.name)
-    usersR = usersR.filter((user) => user.isBanned == false)
+    usersR = users.filter((user) => user.email !== session?.user?.email)
+    usersR = usersR.filter((user) => {
+        const bans = user.bans
+        const activeBans = bans.filter((ban) => ban.isActive === true)
+
+        return activeBans.length <= 0
+
+    })
 
     const usrRoles = {
         "ADMIN": (
@@ -51,12 +57,15 @@ function AdminUsersTab({ users }) {
         return (
             <DropdownMenu>
                 <DropdownMenuTrigger disabled={session?.user.role !== "ADMIN"}>
-                    <Button variant="ghost" disabled={role !== "ADMIN"}>
+                    <Button variant="ghost" disabled={role === "ADMIN"}>
                         {children}
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => handleRoleUpdate(id, email, "MOD")}>
+                    <DropdownMenuItem
+                        onClick={() => handleRoleUpdate(id, email, "MOD")}
+                        className="text-indigo-400"
+                    >
                         <UserCheck className="mr-auto h-4 w-4" />
                         <p>Moderator</p>
                     </DropdownMenuItem>

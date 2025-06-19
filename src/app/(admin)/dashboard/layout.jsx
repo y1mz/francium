@@ -8,7 +8,7 @@ import conf from "&/siteconfig.json"
 async function AdminLayout({ children }) {
     const server = await ServerSession()
     if (!server) {
-        return redirect("/login?callbackUrl=https%3A%2F%2Fvexxit.xyz%2Fdashboard")
+        return redirect("/sign-in?callbackUrl=https%3A%2F%2Fvexxit.xyz%2Fdashboard")
     } else if (server.user?.role !== "ADMIN") {
         return redirect("/")
     }

@@ -48,11 +48,13 @@ function AdminLinksTab({ links }) {
 
         const pagedLinks = linksR.slice((page - 1) * 6, page * 6)
 
-        const EditUserButton = ({ id, name, slug, createdAt}) => {
+        const EditUserButton = ({ id, name, slug, creatorId, cId,  createdAt}) => {
             const body = {
                 id: id,
                 name: name,
                 slug: slug,
+                authorId: creatorId,
+                clientId: cId,
                 createdAt: createdAt
             }
             return (
@@ -62,34 +64,9 @@ function AdminLinksTab({ links }) {
                                 asChild
                         >
                             <div
-                                onClick={() => {onOpen("AdminlinkDel", body)}}
-                            >
-                                <Trash2 className="h-5 w-5 text-rose-600" />
-                            </div>
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p>Delete Link</p>
-                    </TooltipContent>
-                </Tooltip>
-            )
-        }
-
-        const DisableUrlIcon = ({ id, slug }) => {
-            const body = {
-                id: id,
-                slug: slug
-            }
-            return (
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <Button size="icon" variant="ghost"
-                                asChild
-                        >
-                            <div
                                 onClick={() => {onOpen("banLnk", body)}}
                             >
-                                <ShieldOff className="h-5 w-5" />
+                                <ShieldOff className="h-5 w-5 text-rose-600" />
                             </div>
                         </Button>
                     </TooltipTrigger>
@@ -170,11 +147,8 @@ function AdminLinksTab({ links }) {
                                             id={item.id}
                                             name={item.name}
                                             slug={item.slug}
+                                            creatorId={item.creatorId}
                                             createdAt={item.createdAt}
-                                        />
-                                        <DisableUrlIcon
-                                            id={item.id}
-                                            slug={item.slug}
                                         />
                                     </div>
                                 </TableCell>

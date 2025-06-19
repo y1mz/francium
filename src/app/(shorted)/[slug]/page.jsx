@@ -22,19 +22,19 @@ async function RedirectPage({ params }) {
         return notFound()
     }
 
-    if (!redirectUrl.active) {
+    if (redirectUrl.active === false) {
         return (
             <UrlExpiredContainer />
         )
     }
 
-    if (redirectUrl.usageLimit && redirectUrl.usageLimit <= redirectUrl.usage) {
+    if (redirectUrl.usageLimit && redirectUrl.usageLimit === redirectUrl.usage) {
         return (
             <UrlExpiredContainer />
         )
     }
 
-    if (redirectUrl.expiresAt >= currentDate) {
+    if (redirectUrl.expiresAt && redirectUrl.expiresAt >= currentDate) {
         let reported = redirectUrl.reports
         let usageA
         usageA = redirectUrl.usage + 1

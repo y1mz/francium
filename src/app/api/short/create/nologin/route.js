@@ -1,26 +1,19 @@
 import { db } from "@/lib/db"
-import { ServerSession } from "@/lib/server-session"
 import { NextResponse } from "next/server"
 import { generateUUID } from "@/lib/generateUUID"
 import { CheckUrl } from "@/lib/checkUrl"
 import { getWebsiteMetadata } from "@/lib/getWebsiteMetadata"
-import { headers } from "next/headers"
+import { logger } from "@/lib/logger";
 
 export async function POST(request) {
-    const session = await ServerSession()
+    const nonLoginMemberUUID = request.headers.get("nonLoginUUID")
 
-    if (session) {
-        return new NextResponse("Wrong API endpoint, please try again on '/api/create' endpoint.", { status: 400 })
+    if (!nonLoginMemberUUID) {
+        return new NextResponse("Unauthorized", { status: 401 })
     }
 
     try {
         const { link } = await request.json()
-        const headersList = await headers()
-        const nonLoginMemberUUID = headersList.get("nonLoginUUID")
-
-        if (!nonLoginMemberUUID) {
-            return new NextResponse("Unauthorized", { status: 401 })
-        }
 
         if (!link) {
             return new NextResponse("link can't be empty", { status: 400 })
@@ -39,7 +32,9 @@ export async function POST(request) {
         // Run filter before going further
         const filterStatus = CheckUrl(link.split("/").slice(2,3)[0])
         if (filterStatus === 1) {
-            console.log(`[SHORT_ROUTE_NOLOGIN][WARN] UserId: ${nonLoginMemberUUID} tried to short a banned url: ${link}`)
+
+            await logger("WARNING", "[CREATE_SHORT_URL_NON_LOGIN]", `UserId: (${nonLoginMemberUUID}) tried to short a banned URL: (${link})`,
+                (new Date()), "Unauthorized", nonLoginMemberUUID)
             return new NextResponse("Tried to short a banned Url", { status: 402 })
         }
 
@@ -52,7 +47,9 @@ export async function POST(request) {
             }
         })
         if (existingUUID) {
-            console.log(`[SHORT_ROUTE_NOLOGIN][WARN] UUID (${UUID}) already exists, creating new UUID`)
+
+            await logger("WARNING", "[CREATE_SHORT_URL_NON_LOGIN]", `UUID: (${UUID}) already exists, creating new UUID.`,
+                (new Date()), "Unauthorized", nonLoginMemberUUID)
             UUID = generateUUID(5)
         }
 
@@ -83,7 +80,7 @@ export async function POST(request) {
         })
 
     } catch (e) {
-        console.log("[SHORT_ROUTE_NOLOGIN][ERROR]", e.message)
+        await logger("ERROR", "[CREATE_SHORT_URL_NON_LOGIN]", e.message, (new Date()), "Unauthorized", nonLoginMemberUUID)
         return new NextResponse("Internal Server Error", { status: 500 })
     }
 }
