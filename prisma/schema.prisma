@@ -137,6 +137,11 @@ model UserBans {
   bannedAt    DateTime? @default(now())
   bannedUntil DateTime?
   isActive    Boolean   @default(true)
+
+  isAppeal      Boolean   @default(false)
+  appealDate    DateTime?
+  appealContent String?
+  isAApproved   Boolean?
 }
 
 model Announcements {

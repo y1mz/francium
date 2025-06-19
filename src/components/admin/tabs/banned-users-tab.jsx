@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ShieldBan } from "lucide-react"
+import { ShieldBan, NotepadTextDashed } from "lucide-react"
 
 import { useModal } from "@/components/modals/hooks/modal-hook"
 
@@ -36,6 +36,21 @@ function AdminBannedUsersTab({ users }) {
         )
     }
 
+    const ReadAppealButton = ({ userDetails, banDetails, isDisabled }) => {
+
+        return (
+            <>
+                <Button size="icon" variant="ghost"
+                        disabled={isDisabled}
+                        className="disabled:text-muted-foreground"
+                        onClick={() => {}}
+                >
+                    <NotepadTextDashed className="h-5 w-5" />
+                </Button>
+            </>
+        )
+    }
+
     return (
         <>
             <Table>
@@ -54,7 +69,13 @@ function AdminBannedUsersTab({ users }) {
                             E-mail
                         </TableHead>
                         <TableHead>
+                            Ban Type
+                        </TableHead>
+                        <TableHead>
                             Banned at
+                        </TableHead>
+                        <TableHead>
+                            Banned Until
                         </TableHead>
                         <TableHead>
                             Ban reason
@@ -85,13 +106,24 @@ function AdminBannedUsersTab({ users }) {
                                 {item.user.email}
                             </TableCell>
                             <TableCell>
+                                {item.type === "temp" ? "Temporary restriction" : "Permanent account termination"}
+                            </TableCell>
+                            <TableCell>
                                 {new Date(item.bannedAt).toDateString()}
+                            </TableCell>
+                            <TableCell>
+                                {item.type !== "perma" ? new Date(item.bannedUntil).toDateString() : "Permanent"}
                             </TableCell>
                             <TableCell>
                                 {item.reason}
                             </TableCell>
                             <TableCell>
                                 <div className="flex gap-1">
+                                    <ReadAppealButton
+                                        userDetails={item.user}
+                                        banDetails={item}
+                                        isDisabled={!item.isAppeal}
+                                    />
                                     <EditUserButton 
                                         id={item.user.id}
                                         name={item.user.name}

@@ -57,12 +57,15 @@ function AdminUsersTab({ users }) {
         return (
             <DropdownMenu>
                 <DropdownMenuTrigger disabled={session?.user.role !== "ADMIN"}>
-                    <Button variant="ghost" disabled={role !== "ADMIN"}>
+                    <Button variant="ghost" disabled={role === "ADMIN"}>
                         {children}
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => handleRoleUpdate(id, email, "MOD")}>
+                    <DropdownMenuItem
+                        onClick={() => handleRoleUpdate(id, email, "MOD")}
+                        className="text-indigo-400"
+                    >
                         <UserCheck className="mr-auto h-4 w-4" />
                         <p>Moderator</p>
                     </DropdownMenuItem>

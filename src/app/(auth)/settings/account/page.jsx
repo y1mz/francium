@@ -26,6 +26,13 @@ async function ProfileSettingsPage() {
         }
     })
 
+    const CurrentActiveBan = await db.userBans.findMany({
+        where: {
+            userId: session.user.id,
+            isActive: true
+        }
+    })
+
     return (
         <div className="space-y-5 px-5 py-5 md:px-10">
             <nav className="flex gap-1.5">
@@ -52,7 +59,7 @@ async function ProfileSettingsPage() {
                     </BreadcrumbList>
                 </Breadcrumb>
             </nav>
-            <SettingsAccountContainer siteConf={config} userBans={Bans} />
+            <SettingsAccountContainer siteConf={config} userBans={Bans} currentActiveBan={CurrentActiveBan[0]} />
         </div>
     )
 }

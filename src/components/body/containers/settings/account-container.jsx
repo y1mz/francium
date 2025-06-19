@@ -1,11 +1,15 @@
 "use client"
 
 import { CheckCircle, AlertCircle, Clock, XCircle } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 import { useSession } from "next-auth/react"
+import { useModal } from "@/components/modals/hooks/modal-hook"
+import { cn } from "@/lib/utils"
 
-function SettingsAccountContainer({ siteConf, userBans }) {
+function SettingsAccountContainer({ siteConf, userBans, currentActiveBan }) {
     const { data: session } = useSession()
+    const { onOpen } = useModal()
 
     const BanCard = ({ type, reason, bannedAt, bannedUntil, banDuration, isActive }) => {
 
@@ -63,7 +67,7 @@ function SettingsAccountContainer({ siteConf, userBans }) {
                         Account Status
                 </h2>
                 <div className="max-w-[600px] rounded-lg bg-white dark:bg-[#1E2130] p-6 mb-6">
-                    <div className="flex items-center gap-6">
+                    <div className="flex flex-wrap items-center gap-6">
                         {session?.user.banned ? (
                             <>
                                 <XCircle className="h-6 w-6 text-red-500" />
@@ -75,6 +79,17 @@ function SettingsAccountContainer({ siteConf, userBans }) {
                                     <p className="font-medium text-sm text-muted-foreground">Your account got restricted from using {siteConf?.SiteName}.</p>
                                     <p className="font-medium text-sm text-muted-foreground">You can still access to your saved data.</p>
                                 </div>
+                                {!currentActiveBan.isAppeal && (
+                                    <Button
+                                        variant="ghost"
+                                        className="ml-auto"
+                                        onClick={() => onOpen("banAppeal", {
+                                            currentBan: currentActiveBan
+                                        })}
+                                    >
+                                        Appeal Ban
+                                    </Button>
+                                )}
                             </>
 
                         ) : (
@@ -91,6 +106,12 @@ function SettingsAccountContainer({ siteConf, userBans }) {
                         )}
                     </div>
                 </div>
+                {currentActiveBan.isAppeal && (
+                    <div className="max-w-[600px] rounded-lg bg-white dark:bg-[#1E2130] p-6 mb-6">
+                        <h3 className="font-semibold text-lg">Your appeal</h3>
+                        <p className="text-sm text-muted-foreground">{currentActiveBan.appealContent}</p>
+                    </div>
+                )}
             </div>
             <div className="px-2 space-y-4">
                 <h2 className="font-semibold text-2xl">

@@ -15,7 +15,7 @@ async function DashboardPage({ searchParams }) {
     const session = await ServerSession()
 
     let page
-    page = searchParams.page
+    page = (await searchParams).page
     if (!page){
         page = "reports"
     }
