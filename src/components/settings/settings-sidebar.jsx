@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent
 import { AvatarFallback, AvatarImage, Avatar } from "@/components/ui/avatar"
 
 import { ChevronsUpDown, LogOut, LayoutTemplate,
-    Library, SquareCheckBig, BellRing, Dock, CircleUser, Cog } from "lucide-react"
+    Library, SquareCheckBig, BellRing, Dock, CircleUser, Cog, AtSign } from "lucide-react"
 
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
@@ -149,6 +149,18 @@ function SettingsSidebar() {
                         <Link href={"/settings/profile"}>
                             <CircleUser className="h-5 w-5 mr-3" />
                             Profile Settings
+                        </Link>
+                    </Button>
+                    <Button variant="sidebar"
+                            className={cn(currentPath === "/settings/account" && "bg-secondary shadow-sm")}
+                            onClick={() => {
+                                handleRedirect("/settings/account")
+                            }}
+                            asChild
+                    >
+                        <Link href={"/settings/account"}>
+                            <AtSign className="h-5 w-5 mr-3" />
+                            Account Settings
                         </Link>
                     </Button>
                 </div>
