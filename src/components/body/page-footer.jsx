@@ -10,6 +10,8 @@ import path from "path"
 function PageRooter() {
     const jsonPlace = path.resolve("package.json")
     const jsonContent = JSON.parse(fs.readFileSync(jsonPlace, "utf8"))
+    const appVer = "v1.0.5"
+    const codeName = "oneone"
 
     return (
         <footer className="w-full py-5">
@@ -41,7 +43,7 @@ function PageRooter() {
                     </Tooltip>
                     <Tooltip>
                         <TooltipTrigger>
-                            <p className="font-bold text-sm text-black/60 dark:text-white/40 hover:underline">{jsonContent.version}</p>
+                            <p className="font-bold text-sm text-black/60 dark:text-white/40 hover:underline">{appVer}</p>
                         </TooltipTrigger>
                         <TooltipContent>
                             #{jsonContent.codename} - {jsonContent.version}
