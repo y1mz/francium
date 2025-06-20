@@ -59,7 +59,7 @@ async function ProfileSettingsPage() {
                     </BreadcrumbList>
                 </Breadcrumb>
             </nav>
-            <SettingsAccountContainer siteConf={config} userBans={Bans} currentActiveBan={CurrentActiveBan[0]} />
+            <SettingsAccountContainer siteConf={config} userBans={Bans} currentActiveBan={CurrentActiveBan.length && CurrentActiveBan[0]} />
         </div>
     )
 }

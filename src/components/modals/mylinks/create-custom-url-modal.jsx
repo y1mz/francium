@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useToast } from "@/lib/hooks/use-toast"
+import { cn } from "@/lib/utils"
 
 const CustomUrlModal = () => {
     const { onOpen, isOpen, onClose, type } = useModal()
@@ -22,10 +23,13 @@ const CustomUrlModal = () => {
         handleSubmit,
         formState: { errors, isSubmitting },
         setError,
-        clearErrors, reset } = useForm()
+        clearErrors, reset, watch } = useForm()
     const { toast } = useToast()
     const [customExpDate, setCustomExpDate] = useState("")
     const [customUsage, setCustomUsage] = useState("")
+    const [isDisabled, setDisabled] = useState(false)
+
+    const slugWatch = watch("uLinkKeyword")
 
     useEffect(() => {
         clearErrors()
@@ -36,6 +40,37 @@ const CustomUrlModal = () => {
         }
 
     }, [isModalOpen])
+
+    useEffect(() => {
+        const slugFetch = async (slug) => {
+            const response = await fetch("/api/account/check/slug", {
+                method: "POST",
+                body: JSON.stringify({ slug: slug })
+            })
+
+            if (response.ok && response.status === 201) {
+                setError("uLinkKeyword", { type: "focus", message: "Keyword is already taken." })
+                setDisabled(true)
+                return
+            }
+            if (response.ok && response.status === 200) {
+                clearErrors("uLinkKeyword")
+                setDisabled(false)
+                return
+            }
+        }
+
+        let timeoutD
+
+        timeoutD = setTimeout(() => {
+            if (slugWatch.length > 2) {
+                slugFetch(slugWatch)
+            }
+        }, 400)
+
+        return () => clearTimeout(timeoutD)
+
+    }, [slugWatch]);
 
     const handleClose = () => {
         reset()
@@ -50,7 +85,7 @@ const CustomUrlModal = () => {
                 body: JSON.stringify({
                     link: data.uLink,
                     keyword: data.uLinkKeyword,
-                    CustomExpDate: customExpDate !== "n" ? customExpDate : "",
+                    CustomExpDate: customExpDate,
                     usageLimit: customUsage !== "n" ? customUsage: ""
                 })
             })
@@ -98,18 +133,38 @@ const CustomUrlModal = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col gap-4">
                             <div>
-                                <Label htmlFor="uLink">Long Url</Label>
+                                <Label htmlFor="uLink"
+                                       className={cn(errors.uLink && "text-red-600")}
+                                >
+                                    Long Url
+                                </Label>
                                 <Input type="url" id="uLink" name="uLink"
-                                       placeholder="Link to be shortened" {...register("uLink", {required: true})} />
+                                       placeholder="Link to be shortened" {...register("uLink", {required: true})}
+                                       className={cn(errors.uLink && "border-red-600 outline-red-600")}
+                                />
                                 {errors.uLink && <p className="text-sm text-red-600">{errors.uLink.message}</p>}
                             </div>
                             <div>
-                                <Label htmlFor="uLinkKeyword">Url keyword (optional)</Label>
+                                <Label htmlFor="uLinkKeyword"
+                                       className={cn(errors.uLinkKeyword && "text-red-600")}
+                                >
+                                    Url keyword (optional)
+                                </Label>
                                 <p className="text-sm text-muted-foreground">
                                     Create short urls with custom keywords.
                                 </p>
                                 <Input type="text" id="uLinkKeyword" name="uLink"
-                                       placeholder="Example: short, custom ..." {...register("uLinkKeyword", {  required: false, minLength: 3, maxLength:10 })} />
+                                       placeholder="Example: short, custom ..." {...register("uLinkKeyword", {
+                                           required: false,
+                                           minLength: { value: 3, message: "Keyword needs to contain at least 3 characters." },
+                                           maxLength: { value: 15, message: "Keyword can't exceed 15 characters" },
+                                           pattern: {
+                                               value: /^[a-zA-Z0-9_.-]+$/,
+                                               message: "Invalid keyword"
+                                           }
+                                       })}
+                                       className={cn(errors.uLinkKeyword && "border-red-600 outline-red-600")}
+                                />
                                 {errors.uLinkKeyword && <p className="text-sm text-red-600">{errors.uLinkKeyword.message}</p>}
                             </div>
                             <div>
@@ -123,7 +178,7 @@ const CustomUrlModal = () => {
                                             <SelectValue placeholder="Expire after" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value={"n"}>
+                                            <SelectItem value={"240"}>
                                                 No Expiration (default)
                                             </SelectItem>
                                             <SelectItem value={"1"}>
@@ -168,8 +223,12 @@ const CustomUrlModal = () => {
                                 </div>
                             </div>
                             <div className="flex gap-2 mt-2 justify-end">
-                                <Button variant="ghost" onClick={() => onClose()}>Close</Button>
-                                <Button type="submit" className="md:w-1/3" disabled={isSubmitting}>Short!</Button>
+                                <Button variant="ghost" onClick={() => onClose()}>
+                                    Close
+                                </Button>
+                                <Button type="submit" className="md:w-1/3" disabled={isSubmitting || isDisabled}>
+                                    Short!
+                                 </Button>
                             </div>
                         </div>
                     </form>

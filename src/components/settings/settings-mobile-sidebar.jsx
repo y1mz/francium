@@ -115,21 +115,11 @@ function SettingsMobileSidebar() {
                         </>
                     )}
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                        <BellRing className="h-4 w-4" />
-                        <p className="ml-2">Notifications</p>
-                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                         <Link href="/check" className="flex">
                             <SquareCheckBig className="h-4 w-4" />
                             <p className="ml-2">Link checker</p>
-                        </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                        <Link href={"/links/collections"}>
-                            <Library className="h-4 w-4" />
-                            <p className="ml-2">Collections</p>
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
