@@ -12,11 +12,11 @@ const UserBanDelete = () => {
     const isModalOpen = isOpen && type === "userBanDel"
 
     const handleDelete = async () => {
-        const response = await fetch(`/api/admin/user/${userId}`, {
+        const response = await fetch(`/api/admin/ban/remove/${userId}/${banId}`, {
             method: "DELETE",
-            body: JSON.stringify({
-                banId: banId
-            })
+            headers: {
+                "x-client-id": window.localStorage.getItem("localUUID")
+            }
         })
         if (response.ok) {
             window.location.reload()

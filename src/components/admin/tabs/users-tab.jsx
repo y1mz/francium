@@ -84,13 +84,11 @@ function AdminUsersTab({ users }) {
             id: id,
             mail: email
         }
-        const isButtonDisabled = bans.length > 0
         return (
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button size="icon" variant="ghost" 
                         onClick={() => onOpen("banUsr", modalData)}
-                        disabled={isButtonDisabled}
                     >
                         <ShieldAlert className="h-5 w-5" />
                     </Button>
@@ -134,9 +132,6 @@ function AdminUsersTab({ users }) {
                             Role
                         </TableHead>
                         <TableHead>
-                            Is Banned
-                        </TableHead>
-                        <TableHead>
                             Actions
                         </TableHead>
                     </TableRow>
@@ -171,9 +166,6 @@ function AdminUsersTab({ users }) {
                                 <ChangeUserRoleButton id={item.id} email={item.email} role={item.role}>
                                     {usrRoles[item.role]}
                                 </ChangeUserRoleButton>
-                            </TableCell>
-                            <TableCell>
-                                {item.bans.length > 0 ? (<p>True</p>) : (<p>False</p>)}
                             </TableCell>
                             <TableCell>
                                 <div className="flex gap-1">

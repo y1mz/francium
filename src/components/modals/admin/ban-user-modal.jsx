@@ -30,7 +30,7 @@ const BanUserModal = () => {
 
     const onSubmit = async (data) => {
         const feBody = JSON.stringify(data)
-        const response = await fetch(`/api/admin/user/${id}`, {
+        const response = await fetch(`/api/admin/ban/create/${id}`, {
             method: "PATCH",
             body: feBody
         })

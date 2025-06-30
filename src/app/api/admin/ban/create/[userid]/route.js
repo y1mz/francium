@@ -6,23 +6,23 @@ import { logger } from "@/lib/logger"
 import { headers } from "next/headers"
 
 export async function PATCH(req, { params }) {
-    const { id } = await params
-    const userId = id
+    const { userid } = await params
+
     const session = await ServerSession()
     const hed = await headers()
 
     const clientId = hed.get("x-client-id")
 
     if (!session) {
-      return new NextResponse("Unauthorized", { status: 401 })
+        return new NextResponse("Unauthorized", { status: 401 })
     }
 
     if (session.user.role === "USER") {
-      return new NextResponse("Unauthorized", { status: 401 })
+        return new NextResponse("Unauthorized", { status: 400 })
     }
 
     if (!clientId) {
-      return new NextResponse("Unauthorized", { status: 401 })
+        return new NextResponse("Unauthorized", { status: 401 })
     }
 
     try {
@@ -30,7 +30,7 @@ export async function PATCH(req, { params }) {
 
         const user = await db.user.findUnique({
             where: {
-                id: userId,
+                id: userid,
                 name: usename,
                 email: mail
             },
@@ -39,8 +39,26 @@ export async function PATCH(req, { params }) {
             }
         })
 
+        const activeBans = user.filter((user) => {
+          const bans = user.bans
+
+          const aBans = bans.filter((ban) => ban.isActive === true)
+          return aBans.length <= 1
+        })
+
+        if (activeBans.length) {
+          await db.userBans.updateMany({
+            where: {
+              isActive: true
+            },
+            data: {
+              isActive: false
+            }
+          })
+        }
+
         if (!user) {
-            await logger("ERROR", "[ADMIN_USER_BAN]", `[ERROR] User with id: ${userId} doesn't exists`, session.user?.id, clientId)
+            await logger("ERROR", "[ADMIN_BAN_CREATE]", `[ERROR] User with id: ${userid} doesn't exists`, session.user?.id, clientId)
             return new NextResponse("User not found", { status: 404 })
         }
 
@@ -56,13 +74,15 @@ export async function PATCH(req, { params }) {
 
         auditLogger("[USER_BAN]", `User ${user.name} has been banned by ModeratorId: ${session.user.id} for reason of ${reason}`,
           (new Date().toDateString()), session.user.id)
-
+        
+        server
+        
         return NextResponse.json({
           status: "OK"
         })
 
     } catch (e) {
-        console.log("[ADMIN_USER_BAN][ERROR]", e)
+        console.log("[ADMIN_BAN_CREATE][ERROR]", e)
         return new NextResponse("Internal Server Error", { status: 500 })
     }
 }
