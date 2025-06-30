@@ -34,8 +34,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "geoip-lite": "^1.4.10",
-    "glob": "^9.0.0",
+    "glob": "^11.0.3",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.469.0",
     "markdown-to-jsx": "^7.7.4",
@@ -52,7 +51,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
-    "eslint": "^8.57.1",
+    "eslint": "^9.30.0",
     "eslint-config-next": "15.3.1",
     "postcss": "^8.5.3",
     "prisma": "^6.6.0",

@@ -29,8 +29,6 @@ const CustomUrlModal = () => {
     const [customUsage, setCustomUsage] = useState("")
     const [isDisabled, setDisabled] = useState(false)
 
-    const slugWatch = watch("uLinkKeyword")
-
     useEffect(() => {
         clearErrors()
         reset()
@@ -40,6 +38,8 @@ const CustomUrlModal = () => {
         }
 
     }, [isModalOpen])
+
+    const slugWatch = watch("uLinkKeyword")
 
     useEffect(() => {
         const slugFetch = async (slug) => {

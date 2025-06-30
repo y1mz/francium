@@ -1,9 +1,15 @@
 import LinkShorterBox from "../../shorter/link-shorter"
 import HomeFAQ from "../home/home-faq-section"
 import InfoSection from "../home/info-section"
-import HeaderEffect from "../home/header-effect"
 import PageRooter from "@/components/body/page-footer"
 import AnnouncementAlert from "@/components/body/announcement-alert"
+
+import { Bebas_Neue } from "next/font/google"
+
+const bebas = Bebas_Neue({
+    weight: '400',
+    subsets: ["latin"]
+})
 
 function HomeContainer({ config }) {
     const items = config.HomePage.InfoSection
@@ -18,9 +24,7 @@ function HomeContainer({ config }) {
                     <div className="max-w-[768px] mx-auto sm:pt-20">
                         <div className="p-5 sm:px-16 sm:pt-10">
                             <AnnouncementAlert/>
-                            <HeaderEffect
-                                text={config.SiteName}
-                            />
+                            <h1 className={`text-center text-6xl font-bold pt-20 ${bebas.className}`}>{config.SiteName}</h1>
                             <p className="text-center font-semibold text-lg sm:mb-12 mb-2 mt-2">{config.SiteDescription}</p>
                             <LinkShorterBox/>
                         </div>
