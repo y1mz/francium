@@ -43,7 +43,12 @@ function AdminBannedUsersTab({ users }) {
                 <Button size="icon" variant="ghost"
                         disabled={isDisabled}
                         className="disabled:text-muted-foreground"
-                        onClick={() => {}}
+                        onClick={() => {
+                            onOpen("aBanAppeal", {
+                                user: userDetails,
+                                ban: banDetails
+                            })
+                        }}
                 >
                     <NotepadTextDashed className="h-5 w-5" />
                 </Button>
@@ -122,7 +127,7 @@ function AdminBannedUsersTab({ users }) {
                                     <ReadAppealButton
                                         userDetails={item.user}
                                         banDetails={item}
-                                        isDisabled={!item.isAppeal}
+                                        isDisabled={!item.isAppeal || item.isAApproved === false}
                                     />
                                     <EditUserButton 
                                         id={item.user.id}

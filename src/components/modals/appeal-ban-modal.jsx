@@ -11,6 +11,7 @@ import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { useForm } from "react-hook-form"
 import { toast } from "@/lib/hooks/use-toast"
+import { useRouter } from "next/navigation"
 
 function BanAppealModal() {
     const { isOpen, onClose, type, data } = useModal()
@@ -21,8 +22,10 @@ function BanAppealModal() {
         , formState: { errors },
         setValue, setError, watch } = useForm()
     const currentBan = isModalOpen && data.currentBan
+    const router = useRouter()
 
     const handleClose = () => {
+        router.refresh()
         onClose()
     }
 

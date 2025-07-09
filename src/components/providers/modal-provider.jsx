@@ -12,6 +12,7 @@ import SearchLinksModal from "@/components/modals/mylinks/search-links-modal"
 import CustomUrlSuccessModal from "@/components/modals/mylinks/create-url-success-modal"
 import RenameUrlModal from "@/components/modals/mylinks/rename-url-modal"
 import AppealBanModal from "@/components/modals/appeal-ban-modal"
+import AdminBanAppealModal from "../modals/admin/ban-appeal-modal"
 
 function ModalProvider() {
     const [isMounted, setIsMounted] = useState(false)
@@ -34,6 +35,7 @@ function ModalProvider() {
             <CustomUrlSuccessModal />
             <RenameUrlModal />
             <AppealBanModal />
+            <AdminBanAppealModal />
         </>
     )
 }

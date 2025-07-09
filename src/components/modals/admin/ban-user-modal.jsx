@@ -3,7 +3,7 @@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "../../ui/textarea"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { User, Mail, Hash, AlertTriangle } from "lucide-react"
 import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
