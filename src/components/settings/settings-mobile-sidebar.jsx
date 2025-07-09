@@ -30,7 +30,7 @@ import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react";
 
-function MobileSidebarToggle() {
+function MobileSidebarToggle({ config }) {
     const { setOpen, isOpen } = useMobileSidebar()
 
     return (
@@ -44,7 +44,7 @@ function MobileSidebarToggle() {
     )
 }
 
-function SettingsMobileSidebar() {
+function SettingsMobileSidebar({ config }) {
     const { isOpen, setOpen } = useMobileSidebar()
     const [isMounted, setMounted] = useState(false)
     const [currentPath, setCurrentPath] = useState("/settings")
@@ -157,7 +157,7 @@ function SettingsMobileSidebar() {
                 className="flex h-full flex-col space-y-3"
             >
                 <SheetHeader className="font-bold text-xl">
-                    Vexxit Link Shortener
+                    {config.SiteName}
                 </SheetHeader>
                 <div className="flex flex-col h-full space-y-3">
                     <Button variant="sidebar" className={cn(currentPath === "/settings" && "bg-secondary shadow-sm")}

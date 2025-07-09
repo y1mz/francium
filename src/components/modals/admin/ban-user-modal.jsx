@@ -1,92 +1,155 @@
 "use client"
 
-import { Dialog, DialogContent, DialogFooter} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Textarea } from "../../ui/textarea"
-import ModalError from "@/components/body/modal-error"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { User, Mail, Hash, AlertTriangle } from "lucide-react"
+import { Switch } from "@/components/ui/switch"
+import { Input } from "@/components/ui/input"
 
 import { useModal } from "../hooks/modal-hook"
-import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useRouter } from "next/navigation"
+import { toast } from "@/lib/hooks/use-toast"
 
 const BanUserModal = () => {
     const { isOpen, onClose, type, data } = useModal()
     const isModalOpen = isOpen && type === "banUsr"
-    const { data: session } = useSession()
     const { id, name, mail } = data
-    const { register
+    const { register, reset, clearErrors
         , handleSubmit
-        , formState: { errors },
-        setValue, setError } = useForm()
-    const [isError, setIsError] = useState()
+        , formState: { errors, isSubmitting } } = useForm()
+    const router = useRouter()
+
+    const [isPerma, setIsPerma] = useState(false)
 
     useEffect(() => {
-        setValue("username", name)
-        setValue("userid", id)
-        setValue("email", mail)
-    }, [isModalOpen]);
+        reset()
+        clearErrors()
+    }, [isModalOpen])
+
+    const handleClose = () => {
+        router.refresh()
+        onClose()
+    }
 
     const onSubmit = async (data) => {
-        const feBody = JSON.stringify(data)
+        const feBody = {
+            usename: name,
+            mail: mail,
+            type: isPerma ? "PERMA" : "TEMP",
+            reason: data.reason,
+            banDate: !isPerma ? data.banDate : null
+        }
         const response = await fetch(`/api/admin/ban/create/${id}`, {
             method: "PATCH",
-            body: feBody
+            body: JSON.stringify(feBody),
+            headers: {
+                "x-client-id": window.localStorage.getItem("localUUID")
+            }
         })
         if (!response.ok) {
-            setIsError(response.status + response.statusText)
+            toast({
+                title: "Something went wrong: 500",
+                description: "There was an error, please try again",
+                type: "destructive"
+            })
         } else {
+            router.refresh()
             onClose()
         }
     }
 
     return (
-        <Dialog open={isModalOpen} onOpenChange={() => onClose()}>
+        <Dialog open={isModalOpen} onOpenChange={() => handleClose()}>
             <DialogContent>
-                <div className="flex flex-col gap-4">
-                    <h2 className="text-2xl font-bold">
+                <DialogHeader>
+                    <DialogTitle>
                         Ban User
-                    </h2>
-                    {isError && <ModalError message={isError} />}
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="flex flex-col gap-5 w-full">
-                                <div className="flex gap-4">
+                    </DialogTitle>
+                    <DialogDescription>Restrict violent users from application</DialogDescription>
+                </DialogHeader>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 w-full">
+                        <Card className="border-0 shadow-none">
+                            <CardContent className="space-y-4 rounded-lg bg-muted/50 p-4">
+                                <h3 className="font-medium text-sm text-muted-foreground uppercase">User Information</h3>
+                                <div className="space-y-3">
+                                    <div className="flex gap-1 items-center">
+                                        <User className="h-6 w-6 mr-2" />
+                                        <div>
+                                            <p className="text-sm">Username</p>
+                                            <p className="text-sm text-muted-foreground">{name}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-1 items-center">
+                                        <Mail className="h-5 w-5 mr-2" />
+                                        <div>
+                                            <p className="text-sm">E-mail</p>
+                                            <p className="text-sm text-muted-foreground">{mail}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-1 items-center">
+                                        <Hash className="h-6 w-6 mr-2" />
+                                        <div>
+                                            <p className="text-sm">User ID</p>
+                                            <p className="text-sm text-muted-foreground">{id}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                        <div className="space-y-3">
+                            <div className="space-y-1">
+                                <p>Ban Reason</p>
+                                <Textarea 
+                                    className="w-full"
+                                    placeholder="Provide a detailed ban reason here ..."
+                                    {...register("reason", {
+                                        required: true,
+                                        minLength: {
+                                            value: 5,
+                                            message: "A minimum length of 5 characters required."
+                                        },
+                                        maxLength: {
+                                            value: 155,
+                                            message: "Ban reason can't exceed 155 characters."
+                                        }
+                                    })}
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <div className="flex items-center justify-between rounded-lg border p-4">
+                                    <div className="space-y-1">
+                                        <div className="flex items-center gap-2">
+                                            <AlertTriangle className="h-5 w-5 text-amber-500" />
+                                            <p className="font-semibold">Permanent Ban</p>
+                                        </div>
+                                        <p className="text-sm text-muted-foreground">User will be permanently banned from the application</p>
+                                    </div>
+                                    <Switch id="perma-ban" checked={isPerma} onCheckedChange={setIsPerma} />
+                                </div>
+                                {!isPerma && (
                                     <div>
-                                        <p className="font-bold">Username</p>
-                                        <Input type="text" id="username" name="username" placeholder="Your fancy username"
-                                                className="w-full" {...register("username")} disabled
+                                        <p>Banned Until</p>
+                                        <Input 
+                                            type="date" 
+                                            {...register("banDate", {
+                                                required: {
+                                                    value: (!isPerma ? true : false)
+                                                }
+                                            })}
                                         />
                                     </div>
-                                    <div>
-                                        <p className="font-bold">User id</p>
-                                        <Input type="text" id="userid" name="userid" placeholder="Your email address"
-                                            className="w-full" {...register("userid")} disabled
-                                        />
-                                    </div>
-                                </div>
-                                <div>
-                                    <p className="font-bold">User email</p>
-                                    <Input type="email" id="email" name="email" placeholder="Your email address"
-                                        className="w-full" {...register("email")} disabled
-                                    />
-                                </div>
-                                <div>
-                                    <p className="font-bold">Ban reason</p>
-                                    <Textarea 
-                                        type="text" name="reason" placeholder="Ban reason here"
-                                        className="w-full" {...register("reason")} required
-                                    />
-                                    <p className="font-bold">Banned until</p>
-                                    <Input type="date" {...register("banDate")} required />
-                                </div>
-                            <Button type="submit">Apply</Button>
+                                )}
+                            </div>
                         </div>
+                        <DialogFooter className="mt-2">
+                            <Button variant="ghost" onClick={() => onClose()}>Close</Button>
+                            <Button type="submit" >Apply Ban</Button>
+                        </DialogFooter>
                     </form>
-                </div>
-                <DialogFooter className="mt-2">
-                    <Button variant="ghost" onClick={() => onClose()}>Close</Button>
-                </DialogFooter>
             </DialogContent>
         </Dialog>
     )

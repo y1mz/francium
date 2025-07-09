@@ -26,8 +26,6 @@ export async function PATCH(req, { params }) {
             }
         })
 
-        console.log(linkDetails)
-
         // Delete the Shortened URL
         await db.shortLinks.delete({
           where: {

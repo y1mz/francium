@@ -55,7 +55,7 @@ async function auditLogger(type, message, date, modId) {
             type: type,
             message: message,
             logDate: new Date(date),
-            userId: userId
+            userId: modId
         }
 
         log.push(newEntry)

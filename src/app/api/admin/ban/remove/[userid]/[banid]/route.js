@@ -6,8 +6,7 @@ import { logger } from "@/lib/logger"
 import { headers } from "next/headers"
 
 export async function DELETE(req, { params }) {
-    const para = await params
-    const { userid, banId } = para
+    const { userid, banid } = await params
 
     const hed = await headers()
     const clientId = hed.get("x-client-id")
@@ -38,7 +37,7 @@ export async function DELETE(req, { params }) {
         const ban = await db.userBans.findFirst({
             where: {
                 user: user,
-                id: banId,
+                id: parseInt(banid),
                 isActive: true
             },
             include: {

@@ -14,15 +14,15 @@ function SettingsAccountContainer({ siteConf, userBans, currentActiveBan }) {
     const BanCard = ({ type, reason, bannedAt, bannedUntil, banDuration, isActive }) => {
 
         const statusIcons = {
-            "warning": <AlertCircle className="h-6 w-6 text-yellow-600" />,
-            "temp": <Clock className="h-6 w-6 text-red-700" />,
-            "perma": <XCircle className="h-6 w-6 text-red-500" />
+            "WARNING": <AlertCircle className="h-6 w-6 text-yellow-600" />,
+            "TEMP": <Clock className="h-6 w-6 text-red-700" />,
+            "PERMA": <XCircle className="h-6 w-6 text-red-500" />
         }
 
         const statusTexts = {
-            "warning": "URL has removed.",
-            "temp": `Account restricted until: `,
-            "perma": "Account has suspended."
+            "WARNING": "URL has removed.",
+            "TEMP": "Account restricted until: ",
+            "PERMA": "Account has suspended."
         }
 
         const ttext = statusTexts[type]

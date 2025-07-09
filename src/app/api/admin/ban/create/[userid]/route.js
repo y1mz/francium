@@ -10,7 +10,6 @@ export async function PATCH(req, { params }) {
 
     const session = await ServerSession()
     const hed = await headers()
-
     const clientId = hed.get("x-client-id")
 
     if (!session) {
@@ -33,17 +32,14 @@ export async function PATCH(req, { params }) {
                 id: userid,
                 name: usename,
                 email: mail
-            },
-            include: {
-                bans: true
             }
         })
 
-        const activeBans = user.filter((user) => {
-          const bans = user.bans
-
-          const aBans = bans.filter((ban) => ban.isActive === true)
-          return aBans.length <= 1
+        const activeBans = await db.userBans.findMany({
+          where: {
+            userId: user.id,
+            isActive: true
+          }
         })
 
         if (activeBans.length) {
@@ -68,7 +64,7 @@ export async function PATCH(req, { params }) {
               ModeratorId: session.user.id,
               type: type,
               reason: reason,
-              bannedUntil: banDate
+              bannedUntil: new Date(banDate).toISOString()
             }
         })
 

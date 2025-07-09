@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 
-function SettingsSidebar() {
+function SettingsSidebar({ config }) {
     const [isMounted, setMounted] = useState(false)
     const [isMobile, setMobile] = useState(false)
     const [currentPath, setCurrentPath] = useState("/settings")
@@ -56,7 +56,7 @@ function SettingsSidebar() {
                 <Link href={"/"}
 
                 >
-                    <p className="font-bold text-xl">Vexxit Link Shortener</p>
+                    <p className="font-bold text-xl">{config.SiteName}</p>
                 </Link>
             </Button>
         )
