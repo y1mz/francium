@@ -2,15 +2,8 @@
 
 import {
     AtSign,
-    CircleUser,
-    CloudDownload,
-    CloudUpload,
-    Cog,
-    Menu,
-    Shield,
-    ChevronsUpDown,
-    Dock,
-    BellRing, SquareCheckBig, Library, LayoutTemplate, LogOut
+    CircleUser, Cog, Menu, ChevronsUpDown,
+    Dock, SquareCheckBig, LayoutTemplate, LogOut
 } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -103,7 +96,7 @@ function SettingsMobileSidebar({ config }) {
                             <span>{session?.user.email}</span>
                         </div>
                     </DropdownMenuLabel>
-                    {session?.user.role === "ADMIN" && (
+                    {session?.user.role !== "USER" && (
                         <>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem asChild>
@@ -115,21 +108,10 @@ function SettingsMobileSidebar({ config }) {
                         </>
                     )}
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                        <BellRing className="h-4 w-4" />
-                        <p className="ml-2">Notifications</p>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                         <Link href="/check" className="flex">
                             <SquareCheckBig className="h-4 w-4" />
                             <p className="ml-2">Link checker</p>
-                        </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                        <Link href={"/links/collections"}>
-                            <Library className="h-4 w-4" />
-                            <p className="ml-2">Collections</p>
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
@@ -195,44 +177,6 @@ function SettingsMobileSidebar({ config }) {
                             <Link href={"/settings/account"}>
                                 <AtSign className="h-5 w-5 mr-3"/>
                                 Account Settings
-                            </Link>
-                        </Button>
-                        <Button variant="sidebar"
-                                className={cn(currentPath === "/settings/privacy" && "bg-secondary shadow-sm")}
-                                onClick={() => {
-                                    handleRedirect("/settings/privacy")
-                                }}
-                        >
-                            <Link href={"/settings/privacy"} className="flex">
-                                <Shield className="h-5 w-5 mr-3"/>
-                                Privacy Settings
-                            </Link>
-                        </Button>
-                    </div>
-                    <div className="space-y-2">
-                        <p className="text-sm font-medium text-muted-foreground px-4 truncate">Data</p>
-                        <Button variant="sidebar"
-                                className={cn(currentPath === "/settings/data/export" && "bg-secondary shadow-sm")}
-                                onClick={() => {
-                                    handleRedirect("/settings/data/export")
-                                }}
-                                asChild
-                        >
-                            <Link href="/settings/data/export">
-                                <CloudDownload className="h-5 w-5 mr-3"/>
-                                Export Data
-                            </Link>
-                        </Button>
-                        <Button variant="sidebar"
-                                className={cn(currentPath === "/settings/data/import" && "bg-secondary shadow-sm")}
-                                onClick={() => {
-                                    handleRedirect("/settings/data/import")
-                                }}
-                                asChild
-                        >
-                            <Link href="/settings/data/import">
-                                <CloudUpload className="h-5 w-5 mr-3"/>
-                                Import Data
                             </Link>
                         </Button>
                     </div>

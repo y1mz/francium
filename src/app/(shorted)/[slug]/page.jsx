@@ -34,6 +34,22 @@ async function RedirectPage({ params }) {
         )
     }
 
+    if (!redirectUrl.expiresAt) {
+        let usageA
+        usageA = redirectUrl.usage + 1
+
+        await db.shortLinks.update({
+            where: {
+                slug
+            },
+            data: {
+                usage: usageA
+            }
+        })
+
+        return redirect(redirectUrl.link)
+    }
+
     if (redirectUrl.expiresAt && redirectUrl.expiresAt >= currentDate) {
         let reported = redirectUrl.reports
         let usageA
