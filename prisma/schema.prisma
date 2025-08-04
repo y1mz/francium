@@ -23,6 +23,7 @@ model User {
   sessions      Session[]
   bans          UserBans[]
   links         ShortLinks[]
+  collections   LinkCollections[]
   reports       LinkReports[]
   linkHistory   ShortLinkHistory[]
 
@@ -107,6 +108,24 @@ model ShortLinks {
 
   reports LinkReports[]
   visits  ShortLinkHistory[]
+  collections LinkCollections[]
+}
+
+model LinkCollections {
+  id String @id @default(cuid())
+  name String
+  description String?
+  emoIcon String?
+
+  creator User  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId String
+  createDate DateTime @default(now())
+  lastUpdated DateTime @updatedAt
+
+  isPublic Boolean @default(false)
+  publicSlug String
+
+  links ShortLinks[]
 }
 
 model LinkReports {
