@@ -29,7 +29,7 @@ function LinkContainer({ links, p, session }) {
         return redirect(url + "?p=1")
     }
     const page = p
-    const itemsPerPage = 9
+    const itemsPerPage = 12
 
     let pagesNumber = (links.length % itemsPerPage) >= 1 ? Math.floor((links.length / itemsPerPage) + 1) : links.length / itemsPerPage
     if (Math.floor(pagesNumber) === 0) {
@@ -51,7 +51,7 @@ function LinkContainer({ links, p, session }) {
 
     return (
         <div className="pb-10">
-            <LinksHeader shortLinks={shortedLinks} session={session} title="Short Links" />
+            <LinksHeader shortLinks={shortedLinks} session={session} title="My Links" />
             <div className="pb-12 px-5">
                 <div className="flex flex-col gap-2 py-5">
                     {!links.length ? (
@@ -59,7 +59,7 @@ function LinkContainer({ links, p, session }) {
                             Nothing here yet
                         </p>
                     ) : (
-                        <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <div className=" mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row-dense gap-3">
                             {pagedLinks.map((link) => (
                                 <LinkBox
                                     key={link.id}

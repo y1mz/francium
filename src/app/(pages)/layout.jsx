@@ -7,7 +7,7 @@ function MainPageLayout({ children }) {
     const config = readConfig()
 
     return (
-        <section className="pb-10">
+        <section>
             {children}
             <CookiesBanner />
             <Footer conf={config} />

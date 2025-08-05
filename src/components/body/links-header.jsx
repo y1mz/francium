@@ -10,7 +10,7 @@ function LinksHeader({ shortLinks, title, session }) {
     const { options } = useLocalSettings()
 
     return (
-        <header className={cn("w-full min-h-[40vh] flex flex-col justify-between rounded-b-2xl shadow-lg",
+        <header className={cn("w-full min-h-[40vh] flex flex-col justify-between shadow-lg",
             options.enableGradient ? "bg-gradient-to-br from-purple-300 to-indigo-300 dark:from-purple-900 dark:to-indigo-800"
                 : "bg-white/10"
         )}
