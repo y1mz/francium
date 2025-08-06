@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent
 , DropdownMenuSeparator, DropdownMenuItem, DropdownMenuLabel } from "@/components/ui/dropdown-menu"
 import CollectionsSidebarMenuElements from "./collections-sidebar-menu-elements"
+import { PlusCircle } from "lucide-react"
 
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
@@ -44,6 +45,15 @@ function CollectionsSidebar({ config, collections }) {
         )
     }
 
+    const NewCollectionButton = () => {
+      return (
+        <Button variant="sidebar" className="mt-auto active:scale-90 transition-transform duration-300">
+          <PlusCircle className="h-5 w-5 mr-3" />
+          New Collection
+        </Button>
+      )
+    }
+
     // Don't forget to add the new collection button below!
     return (
         <div className={cn(
@@ -54,8 +64,10 @@ function CollectionsSidebar({ config, collections }) {
             {isMobile ? null : (
                 <nav className="flex flex-col gap-5 h-full w-full p-5">
                     <LogoButton />
-                    <CollectionsSidebarMenuElements />
-
+                    <CollectionsSidebarMenuElements
+                      collections={collections}
+                    />
+                    <NewCollectionButton />
                 </nav>
             )}
         </div>

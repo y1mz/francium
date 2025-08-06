@@ -10,6 +10,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent
     , DropdownMenuSeparator, DropdownMenuItem, DropdownMenuLabel } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import CollectionsSidebarMenuElements from "./collections-sidebar-menu-elements"
+import { Menu } from "lucide-react"
 
 import { useState, useEffect } from "react"
 import { useMobileSidebar } from "@/lib/hooks/useMobileSidebar"
@@ -23,11 +24,10 @@ function MobileSidebarToggle({ config }) {
 
     return (
         <button
-            className="md:hidden flex items-center gap-1.5 text-sm hover:text-foreground text-muted-foreground transition-colors duration-100"
+            className="md:hidden flex items-center gap-1.5 text-sm hover:text-foreground text-black dark:text-white transition-colors duration-100 p-1"
             onClick={() => setOpen(!isOpen)}
         >
-            <Menu className="h-4 w-4"/>
-            <Separator orientation="vertical" />
+            <Menu className="h-5 w-5"/>
         </button>
     )
 }

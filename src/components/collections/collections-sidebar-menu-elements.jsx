@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 
-function CollectionsSidebarMenuElements() {
+function CollectionsSidebarMenuElements({ collections }) {
   const [isMounted, setMounted] = useState(false)
   const [currentPath, setCurrentPath] = useState("/settings")
   const router = useRouter()

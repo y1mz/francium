@@ -16,9 +16,14 @@ async function CollectionsLayout({ children }) {
   }
 
   // Get collections from db
-  const cs = [{
-
-  }]
+  const cs = await db.linkCollections.findMany({
+    where: {
+      creatorId: session.user.id
+    },
+    orderBy: {
+      lastUpdated: "desc"
+    }
+  })
 
   return (
     <main className="flex w-full h-[100vh] transition-all duration-300 overflow-y-hidden">

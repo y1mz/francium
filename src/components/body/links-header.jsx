@@ -2,6 +2,7 @@
 
 import LinksSearchButton from "@/components/shorter/links-search"
 import LinkNewButton from "@/components/shorter/link-new-button"
+import { MobileSidebarToggle } from "../collections/collections-mobile-sidebar"
 
 import { cn } from "@/lib/utils"
 import { useLocalSettings } from "@/lib/hooks/useLocalSettings"
@@ -15,8 +16,13 @@ function LinksHeader({ shortLinks, title, session }) {
                 : "bg-white/10"
         )}
         >
-            <div className="pt-24 md:pt-32">
-                <h1 className="justify-center items-center text-center font-bold text-4xl">{title}</h1>
+            <div>
+              <nav className="flex gap-1.5 py-3 px-5">
+                <MobileSidebarToggle />
+              </nav>
+              <div className="pt-24 md:pt-32">
+                  <h1 className="justify-center items-center text-center font-bold text-4xl">{title}</h1>
+              </div>
             </div>
             <div className="mb-5 px-5 md:px-10 flex flex-wrap sm:justify-between">
                 <div>
