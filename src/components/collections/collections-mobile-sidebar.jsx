@@ -10,14 +10,13 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent
     , DropdownMenuSeparator, DropdownMenuItem, DropdownMenuLabel } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import CollectionsSidebarMenuElements from "./collections-sidebar-menu-elements"
-import { Menu } from "lucide-react"
+import { Menu, PlusCircle } from "lucide-react"
 
 import { useState, useEffect } from "react"
 import { useMobileSidebar } from "@/lib/hooks/useMobileSidebar"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { useRouter } from "next/navigation"
-import { useSession } from "next-auth/react";
+import { useModal } from "../modals/hooks/modal-hook"
 
 function MobileSidebarToggle({ config }) {
     const { setOpen, isOpen } = useMobileSidebar()
@@ -34,6 +33,7 @@ function MobileSidebarToggle({ config }) {
 
 function CollectionsMobileSidebar({ config, collections }) {
     const { isOpen, setOpen } = useMobileSidebar()
+    const { onOpen } = useModal()
 
     useEffect(() => {
 
@@ -50,18 +50,30 @@ function CollectionsMobileSidebar({ config, collections }) {
         return null
     }
 
+    const NewCollectionButton = () => {
+      return (
+        <Button
+          variant="sidebar"
+          className="mt-auto active:scale-90 transition-transform duration-300"
+          onClick={() => { onOpen("newCollection") }}
+        >
+          <PlusCircle className="h-5 w-5 mr-3" />
+          New Collection
+        </Button>
+      )
+    }
 
     return (
         <Sheet open={isOpen} onOpenChange={() => setOpen(!isOpen)}>
             <SheetContent
                 side="left"
-                className="flex h-full flex-col space-y-3"
+                className="flex h-full flex-col gap-5"
             >
                 <SheetHeader className="font-bold text-xl">
                     {config.SiteName}
                 </SheetHeader>
                 <CollectionsSidebarMenuElements />
-
+                <NewCollectionButton />
             </SheetContent>
         </Sheet>
     )

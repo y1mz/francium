@@ -7,14 +7,14 @@ import CollectionsSidebarMenuElements from "./collections-sidebar-menu-elements"
 import { PlusCircle } from "lucide-react"
 
 import { useEffect, useState } from "react"
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useModal } from "../modals/hooks/modal-hook"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import Image from "next/image"
 
 function CollectionsSidebar({ config, collections }) {
     const [isMobile, setMobile] = useState(false)
+    const { onOpen } = useModal()
 
     useEffect(() => {
 
@@ -47,7 +47,11 @@ function CollectionsSidebar({ config, collections }) {
 
     const NewCollectionButton = () => {
       return (
-        <Button variant="sidebar" className="mt-auto active:scale-90 transition-transform duration-300">
+        <Button
+          variant="sidebar"
+          className="mt-auto active:scale-90 transition-transform duration-300"
+          onClick={() => { onOpen("newCollection") }}
+        >
           <PlusCircle className="h-5 w-5 mr-3" />
           New Collection
         </Button>

@@ -13,6 +13,7 @@ import CustomUrlSuccessModal from "@/components/modals/mylinks/create-url-succes
 import RenameUrlModal from "@/components/modals/mylinks/rename-url-modal"
 import AppealBanModal from "@/components/modals/appeal-ban-modal"
 import AdminBanAppealModal from "../modals/admin/ban-appeal-modal"
+import NewCollectionModal from "../modals/collections/new-collection-modal"
 
 function ModalProvider() {
     const [isMounted, setIsMounted] = useState(false)
@@ -36,6 +37,7 @@ function ModalProvider() {
             <RenameUrlModal />
             <AppealBanModal />
             <AdminBanAppealModal />
+            <NewCollectionModal />
         </>
     )
 }

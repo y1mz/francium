@@ -78,7 +78,6 @@ const CustomUrlModal = () => {
     }
 
     const onSubmit = async (data) => {
-        console.log(data)
         try {
             const response = await fetch("/api/short/create/custom", {
                 method: 'POST',
