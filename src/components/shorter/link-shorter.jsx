@@ -35,7 +35,7 @@ function LinkShorterBox() {
 
             try {
                 if (!session) {
-                    response = await fetch("/api/short/create/nologin", {
+                    response = await fetch("/api/links/short/create/nologin", {
                         method: "POST",
                         body: JSON.stringify({
                             link: data.link
@@ -45,7 +45,7 @@ function LinkShorterBox() {
                         }
                     })
                 } else {
-                    response = await fetch("/api/short/create", {
+                    response = await fetch("/api/links/short/create", {
                         method: 'POST',
                         body: JSON.stringify({
                             link: data.link

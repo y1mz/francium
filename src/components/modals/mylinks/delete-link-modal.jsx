@@ -22,7 +22,7 @@ const LinkDeleteModal = () => {
     }
 
     const handleDelete = async () => {
-        const response = await fetch("/api/short/delete", {
+        const response = await fetch("/api/links/short/delete", {
             method: "DELETE",
             body: JSON.stringify({
                 id: id,

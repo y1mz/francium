@@ -45,7 +45,7 @@ const RenameUrlModal = () => {
 
     const onSubmit = async (data) => {
         try {
-            const response = await fetch("/api/short/update", {
+            const response = await fetch("/api/links/short/update", {
                 method: 'PATCH',
                 body: JSON.stringify({
                     id: id,

@@ -79,7 +79,7 @@ const CustomUrlModal = () => {
 
     const onSubmit = async (data) => {
         try {
-            const response = await fetch("/api/short/create/custom", {
+            const response = await fetch("/api/links/short/create/custom", {
                 method: 'POST',
                 body: JSON.stringify({
                     link: data.uLink,

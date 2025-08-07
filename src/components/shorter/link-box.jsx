@@ -50,7 +50,7 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active }) {
     }
 
     const handleDisable = async () => {
-        const response = await fetch("/api/short/disable", {
+        const response = await fetch("/api/links/short/disable", {
             method: "PATCH",
             body: JSON.stringify({
                 id: LinkId,
@@ -74,7 +74,7 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active }) {
     }
 
     const handleActivate = async () => {
-        const response = await fetch("/api/short/disable", {
+        const response = await fetch("/api/links/short/disable", {
             method: "POST",
             body: JSON.stringify(urlData)
         })

@@ -7,13 +7,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 import { useModal } from "../hooks/modal-hook"
+import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useToast } from "@/lib/hooks/use-toast"
 import { cn } from "@/lib/utils"
 
 const NewCollectionModal = () => {
-    const { onOpen, isOpen, onClose, type } = useModal()
+    const { isOpen, onClose, type } = useModal()
     const isModalOpen = isOpen && type === "newCollection"
     const { register,
         handleSubmit,
@@ -21,6 +22,7 @@ const NewCollectionModal = () => {
         setError,
         clearErrors, reset, watch } = useForm()
     const { toast } = useToast()
+    const router = useRouter()
 
     useEffect(() => {
         clearErrors()
@@ -35,6 +37,27 @@ const NewCollectionModal = () => {
 
     const onSubmit = async (data) => {
         try {
+          const response = await fetch("/api/links/collections/create", {
+            method: "POST",
+            headers: {
+              "x-client-id": window.localStorage.getItem("localUUID")
+            },
+            body: JSON.stringify({
+              name: data.name,
+              description: data.description,
+              isPublic: false,
+              emoji: null
+            })
+          })
+
+          if (!response.ok) {
+            throw new Error("")
+          }
+
+          if (response.ok) {
+            router.refresh()
+            onClose()
+          }
 
         } catch (e) {
 
