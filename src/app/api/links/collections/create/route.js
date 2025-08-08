@@ -14,13 +14,9 @@ export async function POST(req) {
     if (!session) {
         return new NextResponse("Unauthorized", { status: 401 })
     }
-
-    const user = await db.user.findUnique({
-      where: {
-        id: session.user.id,
-        email: session.user.email
-      }
-    })
+    if (!localUUID) {
+      return new NextResponse("Unauthorized", { status: 401 })
+    }
 
     if (session.user.banned) {
       return new NextResponse("You got banned", { status: 401 })
@@ -40,7 +36,7 @@ export async function POST(req) {
       UUID = generateUUID(6, true)
     }
 
-    const server = await db.linkCollections.create({
+    await db.linkCollections.create({
       data: {
         name: name,
         description: description,
@@ -51,10 +47,10 @@ export async function POST(req) {
       }
     })
 
-    return NextResponse.json(server)
+    return new NextResponse("OK", { status: 200 })
 
   } catch (e) {
-      await logger("ERROR", "[CREATE_COLLECTION]", e.message, (new Date()), session.user.id, localUUID)
+      await logger("ERROR", "[COLLECTION_CREATE_API]", e.message, (new Date()), session.user.id, localUUID)
       return new NextResponse("Internal Server Error", { status: 500 })
   }
 }

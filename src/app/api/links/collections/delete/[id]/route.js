@@ -1,16 +1,15 @@
 import { db } from "@/lib/db"
 import { ServerSession } from "@/lib/server-session"
 import { NextResponse } from "next/server"
+import { generateUUID } from "@/lib/generateUUID"
 import { logger } from "@/lib/logger"
 
-export async function PATCH(req, { params }) {
+export async function DELETE(req) {
   const session = await ServerSession()
   const localUUID = req.headers.get("x-client-id")
 
-  // This api automatically updates the collection according to body
-
   try {
-    const body = await req.json()
+    const { slug } = await req.json()
     const { id } = await params
 
     if (!session) {
@@ -24,28 +23,25 @@ export async function PATCH(req, { params }) {
       return new NextResponse("You got banned", { status: 401 })
     }
 
-    const toBeUpdated = await db.linkCollections.findUnique({
+    const toBeDeleted = await db.linkCollections.findUnique({
       where: {
         id: id,
-        creatorId: session.user.id,
-        publicSlug: body.slug
+        publicSlug: slug,
+        creatorId: session.user.id
       }
     })
 
-    if (!toBeUpdated) {
+    if (!toBeDeleted) {
       return new NextResponse(`Collection with id: ${id} doesn't exist.`, { status: 404 })
     } else {
-      await db.linkCollections.update({
-        where: toBeUpdated,
-        data: body.options
+      await db.linkCollections.delete({
+        where: toBeDeleted
       })
       return new NextResponse("OK", { status: 200 })
     }
 
-    return new NextResponse("OK", { status: 200 })
-
   } catch (e) {
-      await logger("ERROR", "[COLLECTION_UPDATE_API]", e.message, (new Date()), session.user.id, localUUID)
-      return new NextResponse("Internal Server Error", { status: 500 })
+    await logger("ERROR", "[COLLECTION_DELETE_API]", e.message, (new Date()), session.user.id, localUUID)
+    return new NextResponse("Internal Server Error", { status: 500 })
   }
 }
