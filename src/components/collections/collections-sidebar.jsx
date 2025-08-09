@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 import Image from "next/image"
 
-function CollectionsSidebar({ config, collections }) {
+function CollectionsSidebar({ config, collections, isBanned }) {
     const [isMobile, setMobile] = useState(false)
     const { onOpen } = useModal()
 
@@ -70,8 +70,11 @@ function CollectionsSidebar({ config, collections }) {
                     <LogoButton />
                     <CollectionsSidebarMenuElements
                       collections={collections}
+                      isBanned={isBanned}
                     />
-                    <NewCollectionButton />
+                    {!isBanned && (
+                      <NewCollectionButton />
+                    )}
                 </nav>
             )}
         </div>

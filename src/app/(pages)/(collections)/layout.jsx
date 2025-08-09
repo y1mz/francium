@@ -29,11 +29,11 @@ async function CollectionsLayout({ children }) {
     <main className="flex w-full h-[100vh] transition-all duration-300 overflow-y-hidden">
       <CollectionsSidebar
         config={config}
-        collections={cs}
+        collections={cs.slice(0, 15)}
       />
       <CollectionsMobileSidebar
         config={config}
-        collections={cs}
+        collections={cs.slice(0, 15)}
       />
       <div className="w-full overflow-y-auto">
         {children}

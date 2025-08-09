@@ -1,37 +1,35 @@
 "use client"
 
-import { Separator } from "@/components/ui/separator"
 import {
     Sheet,
     SheetContent,
     SheetHeader
 } from "@/components/ui/sheet"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent
-    , DropdownMenuSeparator, DropdownMenuItem, DropdownMenuLabel } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import CollectionsSidebarMenuElements from "./collections-sidebar-menu-elements"
 import { Menu, PlusCircle } from "lucide-react"
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useMobileSidebar } from "@/lib/hooks/useMobileSidebar"
-import Link from "next/link"
-import { cn } from "@/lib/utils"
 import { useModal } from "../modals/hooks/modal-hook"
 
-function MobileSidebarToggle({ config }) {
-    const { setOpen, isOpen } = useMobileSidebar()
+function MobileSidebarToggle() {
+    const { setOpen, isOpen, setMobile } = useMobileSidebar()
 
     return (
         <button
             className="md:hidden flex items-center gap-1.5 text-sm hover:text-foreground text-black dark:text-white transition-colors duration-100 p-1"
-            onClick={() => setOpen(!isOpen)}
+            onClick={() => {
+              setOpen(!isOpen)
+              setMobile(true)
+            }}
         >
             <Menu className="h-5 w-5"/>
         </button>
     )
 }
 
-function CollectionsMobileSidebar({ config, collections }) {
+function CollectionsMobileSidebar({ config, collections, isBanned }) {
     const { isOpen, setOpen } = useMobileSidebar()
     const { onOpen } = useModal()
 
@@ -50,6 +48,11 @@ function CollectionsMobileSidebar({ config, collections }) {
         return null
     }
 
+    const handleOpenChange = () => {
+      setOpen(!isOpen)
+      setMobile(false)
+    }
+
     const NewCollectionButton = () => {
       return (
         <Button
@@ -64,7 +67,7 @@ function CollectionsMobileSidebar({ config, collections }) {
     }
 
     return (
-        <Sheet open={isOpen} onOpenChange={() => setOpen(!isOpen)}>
+        <Sheet open={isOpen} onOpenChange={() => handleOpenChange()}>
             <SheetContent
                 side="left"
                 className="flex h-full flex-col gap-5"
@@ -72,8 +75,12 @@ function CollectionsMobileSidebar({ config, collections }) {
                 <SheetHeader className="font-bold text-xl">
                     {config.SiteName}
                 </SheetHeader>
-                <CollectionsSidebarMenuElements />
-                <NewCollectionButton />
+                <CollectionsSidebarMenuElements
+                  collections={collections}
+                />
+                {!isBanned && (
+                  <NewCollectionButton />
+                )}
             </SheetContent>
         </Sheet>
     )

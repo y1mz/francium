@@ -20,17 +20,19 @@ function LinksHeader({ shortLinks, title, session }) {
               <nav className="flex gap-1.5 py-3 px-5">
                 <MobileSidebarToggle />
               </nav>
-              <div className="pt-24 md:pt-32">
+              <div className="pt-24">
                   <h1 className="justify-center items-center text-center font-bold text-4xl">{title}</h1>
               </div>
             </div>
-            <div className="mb-5 px-5 md:px-10 flex flex-wrap sm:justify-between">
+            <div className="mb-5 px-5 md:px-10 flex flex-wrap justify-between">
                 <div>
-                    <p className="text-2xl font-bold py-1">Links you've shorted</p>
+
                 </div>
                 <div className="flex gap-1">
                     {!session.user.banned && (<LinkNewButton />)}
-                    <LinksSearchButton shortedLink={shortLinks}/>
+                    <LinksSearchButton
+                      shortedLink={shortLinks}
+                    />
                 </div>
             </div>
         </header>

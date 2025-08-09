@@ -42,7 +42,7 @@ function LinkCheckerBox() {
                     throw new Error("Urls from other servers aren't supported.")
                 }
 
-                const response = await fetch(`/api/meta/${slug}`, {
+                const response = await fetch(`/api/links/meta/${slug}`, {
                     headers: {
                         "x-client-id": localUUID
                     }
