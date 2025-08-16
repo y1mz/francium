@@ -14,7 +14,7 @@ import { Ellipsis, Trash2, PenTool, CircleMinus, LibraryBig, CirclePlay } from "
 import Link from "next/link"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
-function LinkBox({ LinkId, title, url, shortUrl, cDate, active }) {
+function LinkBox({ LinkId, title, url, shortUrl, cDate, active, userCol }) {
     const { onOpen } = useModal()
     const [copied, setCopied] = useState(false)
     const router = useRouter()
@@ -95,6 +95,36 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active }) {
         }
     }
 
+    const latestCollections = userCol.slice(0, 3)
+
+    const handleAddCollection = async ( linkId, colId, colName ) => {
+        const response = await fetch("/api/links/collections/link/add", {
+            method: "POST",
+            body: JSON.stringify({
+                collectionId: colId,
+                linkId: linkId
+            }),
+            headers: {
+                "x-client-id": window.localStorage.getItem("localUUID")
+            }
+        })
+
+        if (response.ok) {
+            router.refresh()
+            toast({
+                title: ("URL successfuly added to collection: " + colName)
+            })
+        }
+
+        if (!response.ok) {
+            toast({
+                title: "There was an error",
+                description: "Server had an error while processing the request, please try again",
+                variant: "destructive"
+            })
+        }
+    }
+
     return (
         <div
             className="relative rounded-lg bg-white/10 hover:bg-white/20  shadow-lg hover:shadow-none tansition duration-200 h-48 max-w-[350px] px-12 md:px-0"
@@ -131,15 +161,33 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active }) {
                                 <PenTool className="h-4 w-4 mr-2" />
                                 Rename Url
                             </DropdownMenuItem>
-                            <DropdownMenuSub>
-                                <DropdownMenuSubTrigger>
-                                    <LibraryBig className="h-4 w-4 mr-2" />
-                                    Add to collection
-                                </DropdownMenuSubTrigger>
-                                <DropdownMenuSubContent>
-                                    Coming Soon!
-                                </DropdownMenuSubContent>
-                            </DropdownMenuSub>
+                            {userCol.length > 0 && (
+                                <DropdownMenuSub>
+                                    <DropdownMenuSubTrigger>
+                                        <LibraryBig className="h-4 w-4 mr-2" />
+                                        Add to collection
+                                    </DropdownMenuSubTrigger>
+                                    <DropdownMenuSubContent>
+                                        {latestCollections.map((collection, index) => (
+                                            <DropdownMenuItem 
+                                                key={index}
+                                                onClick={() => handleAddCollection(LinkId, collection.id, collection.name)}
+                                            >
+                                                {collection.name}
+                                            </DropdownMenuItem>
+                                        ))}
+                                        {userCol.length > 3 && (
+                                            <>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem>
+                                                    <Ellipsis className="h-4 w-4 mr-2" />
+                                                    <p>More</p>
+                                                </DropdownMenuItem>
+                                            </>
+                                        )}
+                                    </DropdownMenuSubContent>
+                                </DropdownMenuSub>
+                            )}
                             <DropdownMenuSeparator />
                             {active ? (
                                 <DropdownMenuItem onClick={() => handleDisable()}>

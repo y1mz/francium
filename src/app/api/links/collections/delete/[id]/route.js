@@ -4,7 +4,7 @@ import { NextResponse } from "next/server"
 import { generateUUID } from "@/lib/generateUUID"
 import { logger } from "@/lib/logger"
 
-export async function DELETE(req) {
+export async function DELETE(req, { params }) {
   const session = await ServerSession()
   const localUUID = req.headers.get("x-client-id")
 

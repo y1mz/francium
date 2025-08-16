@@ -11,30 +11,34 @@ async function MyLinksPage({ searchParams }) {
         return redirect("/")
     }
 
-    // Fetch user Content and sort it based on their date
-    const userContent = await db.user.findUnique({
+    const links = await db.shortLinks.findMany({
         where: {
-            id: session.user.id,
-            name: session.user.name,
-            email: session.user.email
+            creatorId: session.user.id
         },
         include: {
-            links: true
+            collections: true
         },
+        orderBy: {
+            createdAt: "desc",
+        }
     })
-    const links = userContent.links
-    const shortedLinks = links.sort((a, b) => {
-        let dateA = new Date(a.createdAt)
-        let dateB = new Date(b.createdAt)
+    // Filter links without a collection
+    const unCollectedLinks = links.filter((link) => link.collections.length === 0)
 
-        return dateB.getTime() - dateA.getTime()
+    const userCollections = await db.linkCollections.findMany({
+        where: {
+            creatorId: session.user.id
+        }, 
+        orderBy: {
+            lastUpdated: "desc"
+        }
     })
 
     // Pagination
     const { p }  = await searchParams
 
     return (
-        <LinksContainer links={shortedLinks} p={p} session={session}/>
+        <LinksContainer links={unCollectedLinks} p={p} session={session} collections={userCollections}/>
     )
 }
 

@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { redirect } from "next/navigation"
 import { useState, useEffect } from "react"
 
-function LinkContainer({ links, p, session }) {
+function LinkContainer({ links, p, session, collections }) {
     const [searchResults, setSearchResults] = useState({})
 
     const shortedLinks = links.sort((a, b) => {
@@ -69,6 +69,7 @@ function LinkContainer({ links, p, session }) {
                                     shortUrl={link.slug}
                                     cDate={link.createdAt}
                                     active={link.active}
+                                    userCol={collections}
                                 />
                             ))}
                         </div>

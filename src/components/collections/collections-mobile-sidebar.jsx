@@ -37,7 +37,7 @@ function CollectionsMobileSidebar({ config, collections, isBanned }) {
 
         const handleResize = () => {
             if ((window.innerWidth >= 768) && isOpen) {
-                setOpen(false)
+                setOpen(!isOpen)
             }
         }
 
@@ -46,11 +46,6 @@ function CollectionsMobileSidebar({ config, collections, isBanned }) {
 
     if (!isOpen) {
         return null
-    }
-
-    const handleOpenChange = () => {
-      setOpen(!isOpen)
-      setMobile(false)
     }
 
     const NewCollectionButton = () => {
@@ -67,7 +62,7 @@ function CollectionsMobileSidebar({ config, collections, isBanned }) {
     }
 
     return (
-        <Sheet open={isOpen} onOpenChange={() => handleOpenChange()}>
+        <Sheet open={isOpen} onOpenChange={() => setOpen(!isOpen)}>
             <SheetContent
                 side="left"
                 className="flex h-full flex-col gap-5"

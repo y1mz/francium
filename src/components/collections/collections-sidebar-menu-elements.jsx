@@ -10,12 +10,14 @@ import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { useMobileSidebar } from "@/lib/hooks/useMobileSidebar"
+import { useModal } from "../modals/hooks/modal-hook"
 
 function CollectionsSidebarMenuElements({ collections, isBanned }) {
   const [isMounted, setMounted] = useState(false)
   const [currentPath, setCurrentPath] = useState("/settings")
   const router = useRouter()
   const { isMobile } = useMobileSidebar()
+  const { onOpen } = useModal()
 
   useEffect(() => {
     setMounted(true)
@@ -30,7 +32,7 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
       router.push(url)
   }
 
-  const CollectionButton = ({ slug, title }) => {
+  const CollectionButton = ({ id, slug, title }) => {
 
     return (
       <Button variant="sidebar" className={cn(currentPath === `/collection/${slug}` && "bg-secondary shadow-sm") + "group flex"}>
@@ -44,7 +46,7 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
         {!isBanned && (
           <DropdownMenu>
             <DropdownMenuTrigger className="ml-auto">
-             <div className="hidden group-hover:block">
+             <div className={cn(!isMobile && "hidden group-hover:block")}>
                 <Ellipsis className="h-5 w-5" />
               </div>
             </DropdownMenuTrigger>
@@ -54,7 +56,14 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
                 <p>Edit</p>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem 
+                className="text-red-600"
+                onClick={() => onOpen("collectionDel", {
+                  id: id,
+                  publicSlug: slug,
+                  name: title
+                })}  
+              >
                 <Trash className="h-4 w-4 mr-2" />
                 <p>Delete Collection</p>
               </DropdownMenuItem>
@@ -122,6 +131,7 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
                 key={index}
                 title={item.name}
                 slug={item.publicSlug}
+                id={item.id}
               />
             ))}
         </div>
