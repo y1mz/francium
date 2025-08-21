@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import CollectionsSidebarMenuElements from "./collections-sidebar-menu-elements"
-import { Menu, PlusCircle } from "lucide-react"
+import { Menu, PlusCircle, Minus } from "lucide-react"
 
 import { useEffect } from "react"
 import { useMobileSidebar } from "@/lib/hooks/useMobileSidebar"
@@ -17,15 +17,18 @@ function MobileSidebarToggle() {
     const { setOpen, isOpen, setMobile } = useMobileSidebar()
 
     return (
-        <button
-            className="md:hidden flex items-center gap-1.5 text-sm hover:text-foreground text-black dark:text-white transition-colors duration-100 p-1"
-            onClick={() => {
-              setOpen(!isOpen)
-              setMobile(true)
-            }}
-        >
-            <Menu className="h-5 w-5"/>
-        </button>
+        <div className="flex md:hidden items-center text-black dark:text-white">
+            <button
+                className="hover:text-foreground text-black dark:text-white transition-colors duration-100 p-1"
+                onClick={() => {
+                    setOpen(!isOpen)
+                    setMobile(true)
+                }}
+            >
+                <Menu className="h-5 w-5"/>
+            </button>
+            <Minus className="rotate-90 -ml-2" />
+        </div>
     )
 }
 

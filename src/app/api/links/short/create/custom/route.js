@@ -4,19 +4,24 @@ import { NextResponse } from "next/server"
 import { generateUUID } from "@/lib/generateUUID"
 import { getWebsiteMetadata } from "@/lib/getWebsiteMetadata"
 import { CheckUrl } from "@/lib/checkUrl"
+import { logger } from "@/lib/logger"
 
 export async function POST(request){
     const session = await ServerSession()
+    const localUUID = request.headers.get("x-client-id")
 
     try {
-        const body = await request.json()
-        const { link, keyword, usageLimit, CustomExpDate } = body
+
+        const { link, keyword, usageLimit, CustomExpDate, collectionId } = await request.json()
 
         if (!session) {
             return new NextResponse("Unauthorized", { status: 401 })
         }
         if (!link) {
             return new NextResponse("link can't be empty", { status: 400 })
+        }
+        if (!localUUID) {
+            return new NextResponse("Unauthorized", { status: 401 })
         }
 
         let user = await db.user.findUnique({
@@ -83,7 +88,8 @@ export async function POST(request){
 
         // Return the database response
         const serResult  = await server()
-        const response = {
+
+        let response = {
             url: `/${serResult.slug}`,
             fullUrl: serResult.link,
             title: serResult.name,
@@ -91,10 +97,44 @@ export async function POST(request){
             img: serResult.metaImageUrl,
             metaName: serResult.metaName
         }
+
+        // Add link to a collection if it's creted inside a collection
+        if (collectionId) {
+            const collectionDetails = await db.linkCollections.findUnique({
+                where: {
+                    id: collectionId,
+                    creatorId: session.user.id
+                },
+                include: {
+                    links: true
+                }
+            })
+
+            if (!collectionDetails) {
+                return NextResponse.json(response)
+            } else {
+                await db.linkCollections.update({
+                    where: {
+                        id: collectionDetails.id,
+                        name: collectionDetails.name,
+                        creatorId: collectionDetails.creatorId
+                    },
+                    data: {
+                        links: {
+                            connect: serResult
+                        }, 
+                    },
+                    include: {
+                        links: true
+                    }
+                })
+            }
+        }
+
         return NextResponse.json(response)
 
     } catch (e) {
-        console.log("[SHORT_ROUTE][ERROR]", e)
+        await logger("ERROR", "[CREATE_CUSTOM_SHORT_URL]", e.message, (new Date()), session.user.id, localUUID)
         return new NextResponse("Internal Server Error", { status: 500 })
     }
 }

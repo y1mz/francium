@@ -16,7 +16,8 @@ import { useToast } from "@/lib/hooks/use-toast"
 import { cn } from "@/lib/utils"
 
 const CustomUrlModal = () => {
-    const { onOpen, isOpen, onClose, type } = useModal()
+    const { onOpen, isOpen, onClose, type, data } = useModal()
+    const { collectionId } = data
     const { data: session } = useSession()
     const isModalOpen = isOpen && type === "newUrl"
     const { register,
@@ -85,8 +86,12 @@ const CustomUrlModal = () => {
                     link: data.uLink,
                     keyword: data.uLinkKeyword,
                     CustomExpDate: customExpDate,
-                    usageLimit: customUsage !== "n" ? customUsage: ""
-                })
+                    usageLimit: customUsage !== "n" ? customUsage: "",
+                    collectionId: collectionId
+                }),
+                headers: {
+                    "x-client-id": window.localStorage.getItem("localUUID")
+                }
             })
             if (!response.ok) {
                 if (response.status === 402) {

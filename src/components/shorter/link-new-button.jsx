@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
-function LinkNewButton() {
+function LinkNewButton({ collectionId }) {
     const { onOpen } = useModal()
 
     return (
         <Tooltip>
             <TooltipTrigger asChild>
-                <Button variant="outline" onClick={() => onOpen("newUrl")}>
-                    <Plus className="h-4 w-4" />
+                <Button variant="ghost" onClick={() => onOpen("newUrl", { collectionId: collectionId })}>
+                    <Plus className="h-5 w-5" />
                 </Button>
             </TooltipTrigger>
             <TooltipContent>

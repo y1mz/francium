@@ -97,7 +97,7 @@ const NewCollectionModal = () => {
                                 <Input type="text" id="name" name="name"
                                       placeholder="Bookmarks, Design Tools, Other stuff ..." {...register("name", {
                                         required: true,
-                                        maxLength: { value: 15, message: "Name of a collection can't exceed 15 characters"}
+                                        maxLength: { value: 25, message: "Name of a collection can't exceed 25 characters"}
                                       })}
                                        className={cn(errors.name && "border-red-600 outline-red-600")}
                                 />

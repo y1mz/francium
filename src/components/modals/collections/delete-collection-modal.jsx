@@ -30,8 +30,16 @@ const CollectionDeleteModal = () => {
             }
         })
         if (response.ok) {
-            router.refresh()
-            return onClose()
+
+            const currentLocation = window.location.pathname
+
+            if (currentLocation === `/collection/${publicSlug}`) {
+                router.push("/collections")
+                return onClose()
+            } else {
+                router.refresh()
+                return onClose()
+            }
         }
     }
 
