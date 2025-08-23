@@ -4,10 +4,11 @@ import { Button } from "../ui/button"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "../ui/dropdown-menu"
 import { ChevronsUpDown, LayoutTemplate,
     Library, Ellipsis, AtSign, History, Shapes, Trash, Pen, Search } from "lucide-react"
+import { Skeleton } from "../ui/skeleton"
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense} from "react"
 import { cn } from "@/lib/utils"
 import { useMobileSidebar } from "@/lib/hooks/useMobileSidebar"
 import { useModal } from "../modals/hooks/modal-hook"
@@ -74,6 +75,35 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
     )
   }
 
+  const CollectionsLoadingFallback = () => {
+      return (
+        <>
+          <Skeleton className="rounded-md h-10 mb-1" />
+          <Skeleton className="rounded-md h-10 mb-1" />
+          <Skeleton className="rounded-md h-10 mb-1" />
+          <Skeleton className="rounded-md h-10 mb-1" />
+          <Skeleton className="rounded-md h-10 mb-1" />
+          <Skeleton className="rounded-md h-10 mb-1" />
+        </>
+      )
+  }
+
+  const CollectionList = () => {
+    return (
+        <>
+          {collections.map((item, index) => (
+              <CollectionButton
+                key={index}
+                title={item.name}
+                slug={item.publicSlug}
+                id={item.id}
+              />
+          ))}
+        </>
+    )
+  }
+
+
   return (
     <div className="flex flex-col space-y-3 overflow-y-scroll">
         <div className="space-y-2">
@@ -126,14 +156,9 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
         </div>
         <div className="space-y-2 overflow-y-scroll">
           <p className="text-sm font-medium text-muted-foreground px-4 truncate">Collections</p>
-            {collections.map((item, index) => (
-              <CollectionButton
-                key={index}
-                title={item.name}
-                slug={item.publicSlug}
-                id={item.id}
-              />
-            ))}
+            <Suspense fallback={<CollectionsLoadingFallback />}>
+              <CollectionList />
+            </Suspense>
         </div>
     </div>
   )

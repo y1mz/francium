@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu,
     DropdownMenuContent,
@@ -9,7 +9,7 @@ import { DropdownMenu,
     from "@/components/ui/dropdown-menu"
 import Link from "next/link"
 
-import { LogOut, Cog, LayoutTemplate, LogIn, Dock, SquareCheckBig, Info } from "lucide-react"
+import { LogOut, Cog, LayoutTemplate, LogIn, Dock, SquareCheckBig, Shapes } from "lucide-react"
 
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useModal } from "@/components/modals/hooks/modal-hook"
@@ -54,16 +54,23 @@ function UserButton() {
                         </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator/>
-                    {session.user?.role === "ADMIN" && (
+                    {session.user?.role !== "USER" && (
                         <>
                             <DropdownMenuItem asChild>
                                 <Link href="/dashboard">
                                     <Dock className="h-4 w-4" />
-                                    <p className="ml-2">Dashboard</p>
+                                    <p className="ml-2">Modereation Dashboard</p>
                                 </Link>
                             </DropdownMenuItem>
+                            <DropdownMenuSeparator />
                         </>
                     )}
+                    <DropdownMenuItem asChild>
+                        <Link href={"/settings"}>
+                            <Cog className="h-4 w-4" />
+                            <p className="ml-2">Settings</p>
+                        </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link href="/check" className="flex">
                             <SquareCheckBig className="h-4 w-4" />
@@ -71,9 +78,9 @@ function UserButton() {
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link href={"/settings"}>
-                            <Cog className="h-4 w-4" />
-                            <p className="ml-2">Settings</p>
+                        <Link href={"/collections"}>
+                            <Shapes className="h-4 w-4" />
+                            <p className="ml-2">Collections</p>
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>

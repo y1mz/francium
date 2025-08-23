@@ -7,7 +7,7 @@ import { AvatarFallback, AvatarImage, Avatar } from "@/components/ui/avatar"
 
 import { ChevronsUpDown, LogOut, LayoutTemplate,
     Library, SquareCheckBig, BellRing, Dock, CircleUser,
-    AtSign, Shield, Cog, CloudDownload, CloudUpload } from "lucide-react"
+    AtSign, Shield, Cog, CloudDownload, CloudUpload, Shapes } from "lucide-react"
 
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
@@ -113,8 +113,8 @@ function SettingsSidebar({ config }) {
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                            <Link href={"/links/collections"}>
-                                <Library className="h-4 w-4" />
+                            <Link href={"/collections"}>
+                                <Shapes className="h-4 w-4" />
                                 <p className="ml-2">Collections</p>
                             </Link>
                         </DropdownMenuItem>

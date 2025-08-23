@@ -7,7 +7,7 @@ function AboutHeader({ title }) {
     const { options } = useLocalSettings()
 
     return (
-        <header className={cn("w-full min-h-[30vh] rounded-b-2xl shadow-lg",
+        <header className={cn("w-full min-h-[30vh] shadow-lg",
             options.enableGradient ? "bg-gradient-to-br from-purple-300 to-indigo-300 dark:from-purple-900 dark:to-indigo-800" : "bg-white/10"
             )}
         >

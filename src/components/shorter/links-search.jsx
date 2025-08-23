@@ -12,7 +12,7 @@ const { onOpen } = useModal()
         <>
             <Button
                 onClick={() => onOpen("searchLinks", { links: shortedLink })}
-                variant="outline"
+                variant="ghost"
                 className="w-[300px] justify-start text-left font-normal hidden md:flex"
             >
                 <Search className="mr-2 h-4 w-4" />

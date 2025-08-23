@@ -26,7 +26,7 @@ function CollectionsPageContainer({ collectionDetails, otherCollections, links, 
                 id={collectionDetails.id}
                 slug={collectionDetails.publicSlug}
             />
-            <div className="pb-12 px-5 space-y-2">
+            <div className="pb-12 px-5">
                 <div className="flex flex-col gap-2 py-5">
                     {!links.length ? (
                     <p className="text-lg font-semibold text-center mt-5">
