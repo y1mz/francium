@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 import { ServerSession } from "@/lib/server-session"
 import { redirect } from "next/navigation"
 
-import CollectionsPageContainer from "@/components/body/containers/collections/collection-page-container"
+import CollectionPageContainer from "@/components/body/containers/collections/collection-page-container"
 
 async function CollectionSlugPage({ params }) {
     const { slug } = await params
@@ -34,7 +34,7 @@ async function CollectionSlugPage({ params }) {
 
 
     return (
-        <CollectionsPageContainer 
+        <CollectionPageContainer 
             collectionDetails={collectionDetails}
             links={collectionDetails.links}
             otherCollections={userCollections}

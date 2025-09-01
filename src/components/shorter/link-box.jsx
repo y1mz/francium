@@ -127,9 +127,9 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active, userCol }) {
 
     return (
         <div
-            className="relative rounded-lg bg-white/10 hover:bg-white/20  shadow-lg hover:shadow-none tansition duration-200 h-48 max-w-[350px] px-12 md:px-0"
+            className="relative rounded-lg bg-white/10 hover:bg-white/20  shadow-lg hover:shadow-none tansition duration-200 h-48 min-w-[300px] max-w-[350px] py-5"
         >
-            <div className="flex flex-col px-0 py-5 md:px-5">
+            <div className="flex flex-col px-0 md:px-5">
                     {title ? (
                         <>
                             <h2 className={cn("text-xl font-bold my-0", !active && "text-muted-foreground")}>{title.split(/[- ]+/).slice(0, 4).join(" ")}{title.split(" ").length > 5 && "..."}</h2>

@@ -13,7 +13,7 @@ import CollectionsHeader from "@/components/collections/collection-header"
 import CollectionLinkBox from "@/components/collections/collection-link-box"
 
 
-function CollectionsPageContainer({ collectionDetails, otherCollections, links, p }) {
+function CollectionPageContainer({ collectionDetails, otherCollections, links, p }) {
     const sortedLinks = links.sort((a, b) => {
         return (new Date(b.createdAt).getTime()) - (new Date(a.createdAt).getDate())
     })
@@ -57,4 +57,4 @@ function CollectionsPageContainer({ collectionDetails, otherCollections, links, 
     )
 }
 
-export default CollectionsPageContainer
+export default CollectionPageContainer

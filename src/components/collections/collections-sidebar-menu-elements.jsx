@@ -137,7 +137,7 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
             >
                 <Link href={"/collections"}>
                     <Shapes className="h-5 w-5 mr-3" />
-                    All Collections
+                    Collections
                 </Link>
             </Button>
             {isMobile && (

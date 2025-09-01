@@ -61,7 +61,8 @@ export async function POST(req) {
             data: {
                 links: {
                     connect: linkDetails
-                }
+                },
+                lastUpdated: (new Date().toDateString())
             },
             include: {
                 links: true

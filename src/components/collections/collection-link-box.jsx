@@ -12,7 +12,6 @@ import { DropdownMenu, DropdownMenuContent,
     DropdownMenuSubTrigger, DropdownMenuSubContent } from "@/components/ui/dropdown-menu"
 import { Ellipsis, Trash2, PenTool, CircleMinus, LibraryBig, CirclePlay, Globe, Clipboard, ClipboardCheck } from "lucide-react"
 import Link from "next/link"
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 function CollectionLinkBox({ LinkId, title, url, shortUrl, cDate, active, userCol, currentCol }) {
     const { onOpen } = useModal()
@@ -104,7 +103,7 @@ function CollectionLinkBox({ LinkId, title, url, shortUrl, cDate, active, userCo
 
     return (
         <div
-            className="relative rounded-lg bg-white/10 hover:bg-white/20 shadow-lg hover:shadow-none transition-all duration-200 h-48 max-w-[350px] px-12 md:px-0 py-5"
+            className="relative rounded-lg bg-white/10 hover:bg-white/20 shadow-lg hover:shadow-none transition-all duration-200 h-48 max-w-[350px] py-5"
         >
             <div className="flex flex-col px-0 md:px-5">
                     {title ? (
@@ -121,16 +120,20 @@ function CollectionLinkBox({ LinkId, title, url, shortUrl, cDate, active, userCo
             <div className="absolute bottom-0 inset-x-0 p-4 flex justify-between items-end">
                 <DropdownMenu className="mr-auto">
                         <DropdownMenuTrigger>
-                            <Tooltip>
-                                <TooltipTrigger className="mr-auto" asChild>
-                                    <Button variant="ghost" size="icon">
-                                        <Ellipsis className="h-6 w-6" />
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    More Options
-                                </TooltipContent>
-                            </Tooltip>
+                            <Button variant="ghost" size="icon" className="group relative">
+                                <Ellipsis className="h-6 w-6" />
+                                <span
+                                    className={cn(
+                                        "absolute -top-10 left-1/2 -translate-x-1/2",
+                                        "px-3 py-2 rounded text-xs font-normal",
+                                        "bg-popover text-popover-foreground",
+                                        "opacity-0 group-hover:opacity-100",
+                                        "transition-opacity whitespace-nowrap pointer-events-none"
+                                    )}
+                                >
+                                    More options
+                                </span>
+                            </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuItem onClick={() => onOpen("renameUrl", urlData)}>
@@ -187,17 +190,39 @@ function CollectionLinkBox({ LinkId, title, url, shortUrl, cDate, active, userCo
                     </DropdownMenu>
                     <div className="flex">
                         {copied ? (
-                                <Button className="bg-green-500">
+                                <Button className="bg-green-500" variant="ghost" size="icon">
                                     <ClipboardCheck className="h-6 w-6" />
                                 </Button>
                             ) : (
-                                <Button disabled={!active} variant="ghost2" onClick={() => handleCopy()}>
+                                <Button disabled={!active} variant="ghost" size="icon" onClick={() => handleCopy()} className="relative group">
                                     <Clipboard className="h-6 w-6" />
+                                    <span
+                                    className={cn(
+                                        "absolute -top-10 left-1/2 -translate-x-1/2",
+                                        "px-3 py-2 rounded text-xs font-normal",
+                                        "bg-popover text-popover-foreground",
+                                        "opacity-0 group-hover:opacity-100",
+                                        "transition-opacity whitespace-nowrap pointer-events-none"
+                                    )}
+                                    >
+                                        Copy Url
+                                    </span>
                                 </Button>
                             )}
-                        <Button variant="ghost2" asChild>
+                        <Button variant="ghost" size="icon" asChild className="group relative">
                             <Link href={url} target="_blank">
                                 <Globe className="h-6 w-6" />
+                                <span
+                                className={cn(
+                                    "absolute -top-10 left-1/2 -translate-x-1/2",
+                                    "px-3 py-2 rounded text-xs font-normal",
+                                    "bg-popover text-popover-foreground",
+                                    "opacity-0 group-hover:opacity-100",
+                                    "transition-opacity whitespace-nowrap pointer-events-none"
+                                )}
+                            >
+                                Open Url
+                            </span>
                             </Link>
                         </Button>
                     </div>
