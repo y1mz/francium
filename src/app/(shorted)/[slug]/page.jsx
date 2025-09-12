@@ -1,20 +1,23 @@
 import { db } from '@/lib/db'
 import { redirect } from "next/navigation"
 import { notFound } from "next/navigation"
+import { ServerSession } from '@/lib/server-session'
 
 import UrlReportedContainer from '@/components/body/containers/redirecting-container'
-import UrlExpiredContainer from "@/components/body/containers/redirect/urk-expired-container"
 
 async function RedirectPage({ params }) {
     const { slug } = await params
     const currentDate = new Date()
+    const session = await ServerSession()
 
     const redirectUrl = await db.shortLinks.findUnique({
         where: {
-            slug
+            slug: slug,
+            active: true
         },
         include: {
-            reports: true
+            reports: true,
+            visits: true
         }
     })
 
@@ -22,60 +25,54 @@ async function RedirectPage({ params }) {
         return notFound()
     }
 
-    if (redirectUrl.active === false) {
-        return (
-            <UrlExpiredContainer />
-        )
+    if (redirectUrl.usageLimit) {
+      const totalVisits = (redirectUrl.usage) + (redirectUrl.visits?.length)
+      if (totalVisits >= usageLimit) {
+        return notFound()
+      }
     }
 
-    if (redirectUrl.usageLimit && redirectUrl.usageLimit === redirectUrl.usage) {
-        return (
-            <UrlExpiredContainer />
-        )
+    if (redirectUrl.expiresAt) {
+      const isExpired = (new Date(redirectUrl.expiresAt)) <= currentDate
+
+      if (isExpired) {
+        return notFound()
+      }
     }
 
-    if (!redirectUrl.expiresAt) {
-        let usageA
-        usageA = redirectUrl.usage + 1
+    const reports = redirectUrl.reports
 
-        await db.shortLinks.update({
-            where: {
-                slug
-            },
-            data: {
-                usage: usageA
-            }
-        })
+    // Create history if user is logged in
+    if (session) {
 
-        return redirect(redirectUrl.link)
-    }
-
-    if (redirectUrl.expiresAt && redirectUrl.expiresAt >= currentDate) {
-        let reported = redirectUrl.reports
-        let usageA
-        usageA = redirectUrl.usage + 1
-
-        await db.shortLinks.update({
-            where: {
-                slug
-            },
-            data: {
-                usage: usageA
-            }
-        })
-
-        if (reported.length > 0) {
-            let redirectUU = redirectUrl.link
-            return (
-                <UrlReportedContainer url={redirectUU} />
-            )
+      await db.shortLinkHistory.create({
+        data: {
+          userId: session.user.id,
+          linkSlug: slug
         }
 
-        return redirect(redirectUrl.link)
+      })
+
     } else {
-        return (
-            <UrlExpiredContainer />
-        )
+
+      let uptadedUsage = redirectUrl.usage + 1
+      await db.shortLinks.update({
+          where: {
+              slug
+          },
+          data: {
+              usage: usageA
+          }
+      })
+    }
+
+    // Redirect user to link
+    if (reports.length) {
+      return (
+        <UrlReportedContainer url={redirectUrl.link} />
+      )
+    } else {
+      return redirect(redirectUrl.link)
     }
 }
 
