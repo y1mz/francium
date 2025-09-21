@@ -2,14 +2,15 @@
 
 import { MobileSidebarToggle } from "./collections-mobile-sidebar"
 import LinkNewButton from "../shorter/link-new-button"
+import { Button } from "../ui/button"
 import Link from "next/link"
 
-import { Home, ChevronRight } from "lucide-react"
+import { Home, ChevronRight, Plus } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { useLocalSettings } from "@/lib/hooks/useLocalSettings"
 
-function CollectionsHeader({ title, description, id, slug }) {
+function CollectionsHeader({ title, description, id, slug, isCollection }) {
     const { options } = useLocalSettings()
 
     return (
@@ -19,7 +20,7 @@ function CollectionsHeader({ title, description, id, slug }) {
                 : "bg-white/10"
         )}
     >
-        <div className="w-full flex justify-between items-center pt-3 px-5">
+        <div className="w-full flex justify-between items-center px-5 py-3">
             <nav className="flex items-center gap-1">
                 <MobileSidebarToggle />
                 <Link href="/">
@@ -29,21 +30,33 @@ function CollectionsHeader({ title, description, id, slug }) {
                 <Link href="/collections">
                     Collections
                 </Link>
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                <Link href={"/collection/" + slug} className="line-clamp-1">
-                    {title}
-                </Link>
+                {isCollection && (
+                    <>
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                        <Link href={"/collection/" + slug} className="line-clamp-1">
+                            {title}
+                        </Link>
+                    </>
+                )}
             </nav>
-            <div className="flex gap-1.5">
-                <LinkNewButton 
-                    collectionId={id}
-                />
-            </div>
+            {isCollection ? (
+                <div className="flex gap-1.5">
+                    <LinkNewButton 
+                        collectionId={id}
+                    />
+                </div>
+            ) : (
+                <Button variant="ghost">
+                    <Plus className="h-5 w-5" />
+                </Button>
+            )}
         </div>
         <div className="w-full h-full grid items-center px-5 md:px-10">
               <div>
                 <h1 className="font-bold text-4xl md:text-5xl">{title}</h1>
-                <p>{description}</p>
+                {isCollection && (
+                    <p>{description}</p>
+                )}
               </div>
           </div>
     </header>

@@ -11,6 +11,7 @@ import { useState, useEffect } from "react"
 
 import CollectionsHeader from "@/components/collections/collection-header"
 import CollectionLinkBox from "@/components/collections/collection-link-box"
+import LinkBox from "@/components/shorter/link-box"
 
 
 function CollectionPageContainer({ collectionDetails, otherCollections, links, p }) {
@@ -25,6 +26,7 @@ function CollectionPageContainer({ collectionDetails, otherCollections, links, p
                 description={collectionDetails.description}
                 id={collectionDetails.id}
                 slug={collectionDetails.publicSlug}
+                isCollection={true}
             />
             <div className="pb-12 px-5">
                 <div className="flex flex-col gap-2 py-5">
@@ -37,7 +39,7 @@ function CollectionPageContainer({ collectionDetails, otherCollections, links, p
                         className="mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row-dense gap-3"
                     >
                         {sortedLinks.map((link, index) => (
-                            <CollectionLinkBox
+                            <LinkBox
                                 key={index}
                                 LinkId={link.id}
                                 title={link.name}
@@ -46,7 +48,8 @@ function CollectionPageContainer({ collectionDetails, otherCollections, links, p
                                 cDate={link.createdAt}
                                 active={link.active}
                                 userCol={otherCollections}
-                                currentCol={collectionDetails}
+                                isCollection={true}
+                                currentCollection={collectionDetails}
                             />
                         ))}
                     </div>

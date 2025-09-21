@@ -14,7 +14,7 @@ import { Ellipsis, Trash2, PenTool, CircleMinus, LibraryBig, CirclePlay } from "
 import Link from "next/link"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
-function LinkBox({ LinkId, title, url, shortUrl, cDate, active, userCol }) {
+function LinkBox({ LinkId, title, url, shortUrl, cDate, active, userCol, isCollection, currentCollection }) {
     const { onOpen } = useModal()
     const [copied, setCopied] = useState(false)
     const router = useRouter()
@@ -30,6 +30,14 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active, userCol }) {
         name: title,
         slug: shortUrl,
         createdAt: cDate
+    }
+
+    let collectionList
+
+    if (isCollection && currentCollection) {
+        collectionList = userCol.filter((collection) => collection.id !== currentCollection.id).slice(0,3)
+    } else {
+        collectionList = userCol.slice(0, 3)
     }
 
     const handleCopy = async () => {
@@ -95,8 +103,6 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active, userCol }) {
         }
     }
 
-    const latestCollections = userCol.slice(0, 3)
-
     const handleAddCollection = async ( linkId, colId, colName ) => {
         const response = await fetch("/api/links/collections/link/add", {
             method: "POST",
@@ -159,16 +165,16 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active, userCol }) {
                         <DropdownMenuContent>
                             <DropdownMenuItem onClick={() => onOpen("renameUrl", urlData)}>
                                 <PenTool className="h-4 w-4 mr-2" />
-                                Rename Url
+                                Rename
                             </DropdownMenuItem>
                             {userCol.length > 0 && (
                                 <DropdownMenuSub>
                                     <DropdownMenuSubTrigger>
                                         <LibraryBig className="h-4 w-4 mr-2" />
-                                        Add to collection
+                                        {isCollection ? "Move to collection" : "Add to collection"}
                                     </DropdownMenuSubTrigger>
                                     <DropdownMenuSubContent>
-                                        {latestCollections.map((collection, index) => (
+                                        {collectionList.map((collection, index) => (
                                             <DropdownMenuItem 
                                                 key={index}
                                                 onClick={() => handleAddCollection(LinkId, collection.id, collection.name)}
@@ -210,8 +216,12 @@ function LinkBox({ LinkId, title, url, shortUrl, cDate, active, userCol }) {
                         </DropdownMenuContent>
                     </DropdownMenu>
                     <div className="flex">
-                        {copied ? <Button className="bg-green-500 hover:bg-green-300">Copied!</Button> : <Button disabled={!active} variant="ghost2" onClick={() => handleCopy()}>Copy Url</Button>}
-                        <Button variant="ghost2" asChild><Link href={url} target="_blank">Open Url</Link></Button>
+                        {!isCollection && (
+                            <>
+                                {copied ? <Button className="bg-green-500 hover:bg-green-300">Copied!</Button> : <Button disabled={!active} variant="ghost2" onClick={() => handleCopy()}>Copy Url</Button>}
+                            </>
+                        )}
+                        <Button variant="ghost2" asChild><Link href={url} target="_blank">Open</Link></Button>
                     </div>
                 </div>
         </div>

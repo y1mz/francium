@@ -1,7 +1,7 @@
 "use client"
 
-import CollectionsPageHeader from "@/components/collections/collections-page-header"
 import CollectionBox from "@/components/collections/collection-box"
+import CollectionsHeader from "@/components/collections/collection-header"
 
 import {
     Pagination, PaginationContent, PaginationEllipsis,
@@ -15,7 +15,10 @@ import { useState, useEffect } from "react"
 function CollectionsPageContainer({ collections, p }) {
     return (
         <div className="pb-10">
-            <CollectionsPageHeader />
+            <CollectionsHeader
+                title="Collections"
+                isCollection={false}
+            />
             <div className="pb-12 px-5">
                 <div className="space-y-2 py-5">
                     {!collections.length ? (
@@ -34,6 +37,7 @@ function CollectionsPageContainer({ collections, p }) {
                                     description={item.description}
                                     itemsCount={item.links?.length}
                                     isPublic={item.isPublic}
+                                    slug={item.publicSlug}
                                 />
                             ))}
                         </div>
