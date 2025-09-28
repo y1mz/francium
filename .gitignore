@@ -54,3 +54,5 @@ config/filters/*.json
 
 ## Logs
 config/logs/*.json
+
+.vscode/settings.json

@@ -10,7 +10,6 @@ import { redirect } from "next/navigation"
 import { useState, useEffect } from "react"
 
 import CollectionsHeader from "@/components/collections/collection-header"
-import CollectionLinkBox from "@/components/collections/collection-link-box"
 import LinkBox from "@/components/shorter/link-box"
 
 

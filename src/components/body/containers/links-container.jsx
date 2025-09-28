@@ -59,7 +59,7 @@ function LinkContainer({ links, p, session, collections }) {
                             Nothing here yet
                         </p>
                     ) : (
-                        <div className=" mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row-dense gap-3">
+                        <div className=" mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
                             {pagedLinks.map((link) => (
                                 <LinkBox
                                     key={link.id}

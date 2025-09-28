@@ -19,15 +19,15 @@ function CollectionsPageContainer({ collections, p }) {
                 title="Collections"
                 isCollection={false}
             />
-            <div className="pb-12 px-5">
-                <div className="space-y-2 py-5">
+            <div className="pb-12 px-5 mx-auto max-w-[1450px]">
+                <div className="flex flex-col gap-2 py-5 px-5 lg:px-10 xl:px-15">
                     {!collections.length ? (
                         <p className="text-lg font-semibold text-center mt-5">
                             Nothing here yet
                         </p>
                     ) : (
                         <div
-                            className="mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row-dense gap-3"
+                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-cols-auto gap-3"
                         >
                             {collections.map((item, index) => (
                                 <CollectionBox

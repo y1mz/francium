@@ -33,7 +33,7 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
       router.push(url)
   }
 
-  const CollectionButton = ({ id, slug, title }) => {
+  const CollectionButton = ({ id, slug, title, description }) => {
 
     return (
       <Button variant="sidebar" className={cn(currentPath === `/collection/${slug}` && "bg-secondary shadow-sm") + "group flex"}>
@@ -52,7 +52,14 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="rounded-xl">
-              <DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => onOpen("collectionEdit", {
+                  id: id,
+                  publicSlug: slug,
+                  name: title,
+                  description: description
+                })}
+              >
                 <Pen className="h-4 w-4 mr-2" />
                 <p>Edit</p>
               </DropdownMenuItem>
@@ -97,6 +104,7 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
                 title={item.name}
                 slug={item.publicSlug}
                 id={item.id}
+                description={item.description}
               />
           ))}
         </>

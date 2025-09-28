@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
-import { FolderOpen, Ellipsis } from "lucide-react"
+import { FolderOpen, Ellipsis, Pencil, Trash } from "lucide-react"
 
 import { useModal } from "../modals/hooks/modal-hook"
 
@@ -12,16 +12,16 @@ function CollectionBox({ collectionId, title, description, itemsCount, isPublic,
 
     return (
         <div
-            className="relative rounded-lg bg-white/10 hover:bg-white/20 hover:shadow-none transition-all duration-200 h-48 min-w-[300px] max-w-[350px] px-3 py-5"
+            className="relative rounded-lg bg-white/10 hover:bg-white/20 hover:shadow-none transition-all duration-200 h-48 w-full px-3 py-5"
         >
-            <div>
+            <div className="flex flex-col">
                 <div>
                    <div className="flex gap-2 items-center">
                         <FolderOpen className="h-6 w-6" />
                         <h2 className="text-xl font-bold">{title}</h2>
                    </div>
                     {description && (
-                        <span className="text-sm">
+                        <span className="text-md">
                             {description}
                         </span>
                         )}
@@ -38,6 +38,30 @@ function CollectionBox({ collectionId, title, description, itemsCount, isPublic,
                                 <Ellipsis className="h-6 w-6" />
                             </Button>
                         </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuItem
+                                onClick={() => onOpen("collectionEdit", {
+                                    id: collectionId,
+                                    publicSlug: slug,
+                                    name: title,
+                                    description: description
+                                })}
+                            >
+                                <Pencil className="h-4 w-4 mr-2" />
+                                <p>Edit</p>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="text-red-600"
+                                onClick={() => onOpen("collectionDel", {
+                                    id: collectionId,
+                                    publicSlug: slug,
+                                    name: title
+                                }) }
+                            >
+                                <Trash className="h-4 w-4 mr-2" />
+                                <p>Delete Collection</p>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
                     </DropdownMenu>
                     <div className="flex">
                         <Button variant="ghost2" asChild>
