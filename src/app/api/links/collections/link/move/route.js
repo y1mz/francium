@@ -8,7 +8,7 @@ export async function POST(req) {
   const localUUID = req.headers.get("x-client-id");
 
   try {
-    const { collectionId, linkId } = await req.json();
+    const { currentCollection, newCollection, linkId } = await req.json();
 
     if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -21,10 +21,23 @@ export async function POST(req) {
       return new NextResponse("You got banned", { status: 401 });
     }
 
-    const linkDetails = await db.shortLinks.findUnique({
+    // Get the link details and disconnect it from the old collection
+    const linkDetails = await db.shortLinks.update({
       where: {
         id: linkId,
         creatorId: session.user.id,
+      },
+      data: {
+        collections: {
+          disconnect: [
+            {
+              id: currentCollection,
+            },
+          ],
+        },
+      },
+      include: {
+        collections: true,
       },
     });
 
@@ -32,9 +45,10 @@ export async function POST(req) {
       return new NextResponse("Short Url doesn't exists", { status: 404 });
     }
 
+    // Get the collection details and add link to that collection
     const collectionDetails = await db.linkCollections.findUnique({
       where: {
-        id: collectionId,
+        id: currentCollection,
         creatorId: session.user.id,
       },
       include: {
@@ -44,25 +58,15 @@ export async function POST(req) {
 
     if (!collectionDetails) {
       return new NextResponse("Collection doesn't exists", { status: 404 });
-    }
-
-    // Check if link is already in the collection
-    const isLinkIn = collectionDetails.links.some(
-      (link) => link.id === linkDetails.id,
-    );
-
-    if (isLinkIn) {
-      return new NextResponse("OK", { status: 201 });
     } else {
-      const server = await db.linkCollections.update({
+      await db.linkCollections.update({
         where: {
-          id: collectionDetails.id,
-          name: collectionDetails.name,
-          creatorId: collectionDetails.creatorId,
+          id: newCollection,
+          creatorId: session.user.id,
         },
         data: {
           links: {
-            connect: linkDetails,
+            connect: [{ id: linkDetails.id }],
           },
           lastUpdated: new Date().toISOString(),
         },
@@ -71,12 +75,12 @@ export async function POST(req) {
         },
       });
 
-      return NextResponse.json(server);
+      return new NextResponse("OK", { status: 200 });
     }
   } catch (e) {
     await logger(
       "ERROR",
-      "[COLLECTION_ADD_API]",
+      "[COLLECTION_MOVE_API]",
       e.message,
       new Date(),
       session.user.id,
