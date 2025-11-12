@@ -1,45 +1,47 @@
-import { db } from "@/lib/db"
-import { notFound } from "next/navigation"
-import { ServerSession } from "@/lib/server-session"
-import { redirect } from "next/navigation"
+import { db } from "@/lib/db";
+import { notFound } from "next/navigation";
+import { ServerSession } from "@/lib/server-session";
+import { redirect } from "next/navigation";
 
-import CollectionPageContainer from "@/components/body/containers/collections/collection-page-container"
+import CollectionPageContainer from "@/components/body/containers/collections/collection-page-container";
 
 async function CollectionSlugPage({ params }) {
-    const { slug } = await params
-    const session = await ServerSession()
+  const { slug } = await params;
+  const session = await ServerSession();
 
-    if (!session) {
-        return redirect("/")
-    }
+  if (!session) {
+    return redirect("/");
+  }
 
-    const collectionDetails = await db.linkCollections.findUnique({
-        where: {
-            publicSlug: slug
-        },
-        include: {
-            links: true
-        }
-    })
+  const collectionDetails = await db.linkCollections.findUnique({
+    where: {
+      publicSlug: slug,
+    },
+    include: {
+      links: true,
+    },
+  });
 
-    const userCollections = await db.linkCollections.findMany({
-        where: {
-            creatorId: session.user.id
-        }
-    })
+  const userCollections = await db.linkCollections.findMany({
+    where: {
+      creatorId: session.user.id,
+    },
+    orderBy: {
+      lastUpdated: "desc",
+    },
+  });
 
-    if (!collectionDetails) {
-        return notFound()
-    }
+  if (!collectionDetails) {
+    return notFound();
+  }
 
-
-    return (
-        <CollectionPageContainer 
-            collectionDetails={collectionDetails}
-            links={collectionDetails.links}
-            otherCollections={userCollections}
-        />
-    )
+  return (
+    <CollectionPageContainer
+      collectionDetails={collectionDetails}
+      links={collectionDetails.links}
+      otherCollections={userCollections}
+    />
+  );
 }
 
-export default CollectionSlugPage
+export default CollectionSlugPage;

@@ -24,6 +24,7 @@ import {
   CircleMinus,
   LibraryBig,
   CirclePlay,
+  BookPlus,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -191,26 +192,26 @@ function LinkBox({
 
   return (
     <div className="relative rounded-lg bg-white/10 hover:bg-white/20  shadow-lg hover:shadow-none tansition duration-200 h-48 max-w-[350px] py-5">
-      <div className="flex flex-col px-0 md:px-5">
+      <div className="flex flex-col w-auto px-0 md:px-5">
         {title ? (
           <>
             <h2
               className={cn(
-                "text-xl font-bold my-0",
+                "text-xl font-bold my-0 line-clamp-2",
                 !active && "text-muted-foreground",
               )}
             >
-              {title.split(/[- ]+/).slice(0, 4).join(" ")}
-              {title.split(" ").length > 5 && "..."}
+              {title.split(/[- ]+/).slice(0, 5).join(" ")}
+              {title.split(" ").length > 6 && "..."}
             </h2>
-            <span
+            <p
               className={cn(
-                "font-light text-sm truncate",
+                "font-light text-sm line-clamp-1",
                 !active && "text-muted-foreground",
               )}
             >
               {url}
-            </span>
+            </p>
           </>
         ) : (
           <h2 className="text-xl font-bold my-0 line-clamp-3">{url}</h2>
@@ -258,7 +259,18 @@ function LinkBox({
                     {userCol.length > 3 && (
                       <>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            onOpen("moveCollection", {
+                              userCollections: userCol,
+                              isCollection: isCollection ? true : false,
+                              isCollectionId: isCollection
+                                ? currentCollection.id
+                                : null,
+                              linkId: LinkId,
+                            });
+                          }}
+                        >
                           <Ellipsis className="h-4 w-4 mr-2" />
                           <p>More</p>
                         </DropdownMenuItem>

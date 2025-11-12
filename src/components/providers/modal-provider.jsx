@@ -15,6 +15,7 @@ import AdminBanAppealModal from "../modals/admin/ban-appeal-modal";
 import NewCollectionModal from "../modals/collections/new-collection-modal";
 import CollectionDeleteModal from "../modals/collections/delete-collection-modal";
 import EditCollectionModal from "../modals/collections/edit-collection-modal";
+import MoreCollectionsModal from "../modals/collections/more-collections-modal";
 
 function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false);
@@ -40,6 +41,7 @@ function ModalProvider() {
       <NewCollectionModal />
       <CollectionDeleteModal />
       <EditCollectionModal />
+      <MoreCollectionsModal />
     </>
   );
 }
