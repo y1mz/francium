@@ -10,15 +10,18 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Library } from "lucide-react";
 
 import { useModal } from "../hooks/modal-hook";
 import { useToast } from "@/lib/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { set } from "react-hook-form";
 
 function MoreCollectionsModal() {
   const { isOpen, onClose, type, data } = useModal();
   const isModalOpen = isOpen && type === "moveCollection";
+  const [loading, setLoading] = useState(false);
 
   const { toast } = useToast();
   const router = useRouter();
@@ -45,7 +48,24 @@ function MoreCollectionsModal() {
   }
 
   const handleMoveItem = async (newColId, newColName) => {
+    setLoading(true);
     try {
+      if (!newColId) {
+        const response = await fetch("/api/links/collections/link/move", {
+          method: "PATCH",
+          body: JSON.stringify({
+            currentCollection: isCollectionId,
+            linkId: linkId,
+          }),
+          headers: {
+            "x-client-id": window.localStorage.getItem("localUUID"),
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("500: Internal server error");
+        }
+      }
       if (isCollection) {
         const response = await fetch("/api/links/collections/link/move", {
           method: "POST",
@@ -91,6 +111,8 @@ function MoreCollectionsModal() {
           "Server had an error while processing the request, please try again",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -100,6 +122,22 @@ function MoreCollectionsModal() {
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>
+          {isCollection && (
+            <CommandItem>
+              <Library className="h-5 w-5 mr-2" />
+              <p>My Links</p>
+              <Button
+                className="ml-auto"
+                variant="ghost"
+                disabled={loading}
+                onClick={() => handleMoveItem()}
+              >
+                <Plus className="h-5 w-5" />
+              </Button>
+            </CommandItem>
+          )}
+        </CommandGroup>
+        <CommandGroup heading="My Collections">
           {collectionList &&
             collectionList.map((item, index) => (
               <CommandItem key={index}>
@@ -107,6 +145,7 @@ function MoreCollectionsModal() {
                 <Button
                   className="ml-auto"
                   variant="ghost"
+                  disabled={loading}
                   onClick={() => {
                     handleMoveItem(item.id, item.name);
                   }}

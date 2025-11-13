@@ -25,6 +25,7 @@ import {
   LibraryBig,
   CirclePlay,
   BookPlus,
+  BookMinus,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -190,6 +191,33 @@ function LinkBox({
     }
   };
 
+  const handleRemoveCollection = async () => {
+    const response = await fetch("/api/links/collections/link/move", {
+      method: "PATCH",
+      body: JSON.stringify({
+        linkId: LinkId,
+        currentCollection: currentCollection.id,
+      }),
+      headers: {
+        "x-client-id": window.localStorage.getItem("localUUID"),
+      },
+    });
+
+    if (response.ok) {
+      router.refresh();
+      toast({
+        title: "URL successfuly removed from collection.",
+      });
+    } else {
+      toast({
+        title: "There was an error",
+        description:
+          "Server had an error while processing the request, please try again",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="relative rounded-lg bg-white/10 hover:bg-white/20  shadow-lg hover:shadow-none tansition duration-200 h-48 max-w-[350px] py-5">
       <div className="flex flex-col w-auto px-0 md:px-5">
@@ -278,6 +306,12 @@ function LinkBox({
                     )}
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
+              )}
+              {isCollection && (
+                <DropdownMenuItem onClick={() => handleRemoveCollection()}>
+                  <BookMinus className="h-4 w-4 mr-2" />
+                  Remove from collection
+                </DropdownMenuItem>
               )}
               <DropdownMenuSeparator />
               {active ? (

@@ -89,3 +89,61 @@ export async function POST(req) {
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
+
+export async function PATCH(req) {
+  const session = await ServerSession();
+  const localUUID = req.headers.get("x-client-id");
+
+  try {
+    const { currentCollection, linkId } = await req.json();
+
+    if (!session) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+    if (!localUUID) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    if (session.user.banned) {
+      return new NextResponse("You got banned", { status: 401 });
+    }
+
+    console.log(linkId, currentCollection);
+
+    // Get the Link details and disconnect it from the current collection.
+    const linkDetails = await db.shortLinks.update({
+      where: {
+        id: linkId,
+        creatorId: session.user.id,
+      },
+      data: {
+        collections: {
+          disconnect: [
+            {
+              id: currentCollection,
+            },
+          ],
+        },
+      },
+      include: {
+        collections: true,
+      },
+    });
+
+    if (!linkDetails) {
+      return new NextResponse("Short Url doesn't exists", { status: 404 });
+    } else {
+      return new NextResponse("OK", { status: 200 });
+    }
+  } catch (e) {
+    await logger(
+      "ERROR",
+      "[COLLECTION_MOVE_API]",
+      e.message,
+      new Date(),
+      session.user.id,
+      localUUID,
+    );
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
+}
