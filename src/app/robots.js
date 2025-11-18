@@ -1,14 +1,16 @@
-import conf from "/config/siteconfig.json"
+import { readConfig } from "@/lib/readConfig";
 
 function robots() {
-    return {
-      rules: {
-        userAgent: '*',
-        allow: '/',
-        disallow: '/dashboard/',
-      },
-      sitemap: `https://${conf.SiteUrl}/sitemap.xml`,
-    }
-  }
+  const conf = readConfig();
 
-export default robots
+  return {
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      disallow: "/dashboard/",
+    },
+    sitemap: `https://${conf.SiteUrl}/sitemap.xml`,
+  };
+}
+
+export default robots;

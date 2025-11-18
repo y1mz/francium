@@ -16,7 +16,6 @@ import { useModal } from "../hooks/modal-hook";
 import { useToast } from "@/lib/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { set } from "react-hook-form";
 
 function MoreCollectionsModal() {
   const { isOpen, onClose, type, data } = useModal();
@@ -121,22 +120,6 @@ function MoreCollectionsModal() {
       <CommandInput placeholder="Search collections" />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup>
-          {isCollection && (
-            <CommandItem>
-              <Library className="h-5 w-5 mr-2" />
-              <p>My Links</p>
-              <Button
-                className="ml-auto"
-                variant="ghost"
-                disabled={loading}
-                onClick={() => handleMoveItem()}
-              >
-                <Plus className="h-5 w-5" />
-              </Button>
-            </CommandItem>
-          )}
-        </CommandGroup>
         <CommandGroup heading="My Collections">
           {collectionList &&
             collectionList.map((item, index) => (

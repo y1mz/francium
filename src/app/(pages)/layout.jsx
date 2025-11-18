@@ -1,18 +1,29 @@
-import Footer from "@/components/body/footer"
-import CookiesBanner from "@/components/body/cookie-banner"
+import Footer from "@/components/body/footer";
+import CookiesBanner from "@/components/body/cookie-banner";
 
-import { readConfig } from "@/lib/readConfig"
+import { readConfig } from "@/lib/readConfig";
 
-function MainPageLayout({ children }) {
-    const config = readConfig()
+export async function generateMetadata() {
+  const config = readConfig();
 
-    return (
-        <section>
-            {children}
-            <CookiesBanner />
-            <Footer conf={config} />
-        </section>
-    )
+  return {
+    title: {
+      template: `%s | ${config.SiteName}`,
+      default: config.SiteName,
+    },
+  };
 }
 
-export default MainPageLayout
+function MainPageLayout({ children }) {
+  const config = readConfig();
+
+  return (
+    <section>
+      {children}
+      <CookiesBanner />
+      <Footer conf={config} />
+    </section>
+  );
+}
+
+export default MainPageLayout;
