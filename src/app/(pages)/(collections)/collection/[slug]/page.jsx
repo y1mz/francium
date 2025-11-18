@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import CollectionPageContainer from "@/components/body/containers/collections/collection-page-container";
 
-async function CollectionSlugPage({ params }) {
+async function CollectionSlugPage({ params, searchParams }) {
   const { slug } = await params;
   const session = await ServerSession();
 
@@ -35,11 +35,14 @@ async function CollectionSlugPage({ params }) {
     return notFound();
   }
 
+  const { p } = await searchParams;
+
   return (
     <CollectionPageContainer
       collectionDetails={collectionDetails}
       links={collectionDetails.links}
       otherCollections={userCollections}
+      p={p}
     />
   );
 }
