@@ -58,7 +58,7 @@ function CollectionPageContainer({
     if (pagesCount <= 8) {
       endPages = pages.reverse().slice(0, 2);
     } else {
-      const mid = Math.floor(pages / 2);
+      const mid = Math.floor(pages.length / 2);
       middlePages = pages.slice(mid - 1, mid + 1);
       endPages = pages.reverse().slice(0, 3);
     }

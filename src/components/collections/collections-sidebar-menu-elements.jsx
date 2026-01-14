@@ -16,6 +16,7 @@ import {
   Trash,
   Pen,
   Search,
+  Share,
 } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
 
@@ -68,11 +69,22 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
         {!isBanned && (
           <DropdownMenu>
             <DropdownMenuTrigger className="ml-auto">
-              <div className={cn(!isMobile && "hidden group-hover:block")}>
+              <div
+                className={cn(
+                  !isMobile && "hidden",
+                  currentPath === `/collection/${slug}`
+                    ? "block"
+                    : "group-hover:block",
+                )}
+              >
                 <Ellipsis className="h-5 w-5" />
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="rounded-xl">
+              <DropdownMenuItem>
+                <Share className="h-4 w-4 mr-2" />
+                <p>Share</p>
+              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() =>
                   onOpen("collectionEdit", {

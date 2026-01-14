@@ -220,7 +220,7 @@ function LinkBox({
 
   return (
     <div className="relative rounded-lg bg-white/10 hover:bg-white/20  shadow-lg hover:shadow-none tansition duration-200 h-48 max-w-[350px] py-5">
-      <div className="flex flex-col w-auto px-0 md:px-5">
+      <div className="flex flex-col w-auto px-5">
         {title ? (
           <>
             <h2
@@ -335,22 +335,18 @@ function LinkBox({
             </DropdownMenuContent>
           </DropdownMenu>
           <div className="flex">
-            {!isCollection && (
-              <>
-                {copied ? (
-                  <Button className="bg-green-500 hover:bg-green-300">
-                    Copied!
-                  </Button>
-                ) : (
-                  <Button
-                    disabled={!active}
-                    variant="ghost2"
-                    onClick={() => handleCopy()}
-                  >
-                    Copy Url
-                  </Button>
-                )}
-              </>
+            {copied ? (
+              <Button className="bg-green-500 hover:bg-green-300">
+                Copied!
+              </Button>
+            ) : (
+              <Button
+                disabled={!active}
+                variant="ghost2"
+                onClick={() => handleCopy()}
+              >
+                Copy Url
+              </Button>
             )}
             <Button variant="ghost2" asChild>
               <Link href={url} target="_blank">

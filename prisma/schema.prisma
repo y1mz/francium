@@ -122,8 +122,9 @@ model LinkCollections {
   createDate  DateTime @default(now())
   lastUpdated DateTime @updatedAt
 
-  isPublic   Boolean @default(false)
-  publicSlug String  @unique
+  isPublic     Boolean @default(false)
+  publicSlug   String  @unique
+  shareOptions String?
 
   links ShortLinks[]
 }

@@ -108,8 +108,6 @@ export async function PATCH(req) {
       return new NextResponse("You got banned", { status: 401 });
     }
 
-    console.log(linkId, currentCollection);
-
     // Get the Link details and disconnect it from the current collection.
     const linkDetails = await db.shortLinks.update({
       where: {

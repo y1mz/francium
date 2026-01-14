@@ -1,66 +1,61 @@
-import { db } from '@/lib/db'
-import { redirect } from "next/navigation"
-import { notFound } from "next/navigation"
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
-import UrlReportedContainer from '@/components/body/containers/redirecting-container'
-import UrlExpiredContainer from "@/components/body/containers/redirect/urk-expired-container"
+import UrlReportedContainer from "@/components/body/containers/redirecting-container";
+import UrlExpiredContainer from "@/components/body/containers/redirect/urk-expired-container";
 
 async function RedirectPage({ params }) {
-    const { slug } = await params
-    const currentDate = new Date()
+  const { slug } = await params;
+  const currentDate = new Date();
 
-    const redirectUrl = await db.shortLinks.findUnique({
-        where: {
-            slug
-        },
-        include: {
-            reports: true
-        }
-    })
+  const redirectUrl = await db.shortLinks.findUnique({
+    where: {
+      slug,
+    },
+    include: {
+      reports: true,
+    },
+  });
 
-    if (!redirectUrl) {
-        return notFound()
-    }
+  if (!redirectUrl) {
+    return notFound();
+  }
 
-    if (redirectUrl.active === false) {
-        return (
-            <UrlExpiredContainer />
-        )
-    }
+  if (redirectUrl.active === false) {
+    return <UrlExpiredContainer />;
+  }
 
-    if (redirectUrl.usageLimit && redirectUrl.usageLimit === redirectUrl.usage) {
-        return (
-            <UrlExpiredContainer />
-        )
-    }
+  if (redirectUrl.usageLimit && redirectUrl.usageLimit === redirectUrl.usage) {
+    return <UrlExpiredContainer />;
+  }
 
-    if (redirectUrl.expiresAt && redirectUrl.expiresAt >= currentDate) {
-        let reported = redirectUrl.reports
-        let usageA
-        usageA = redirectUrl.usage + 1
+  if (
+    redirectUrl.expiresAt &&
+    new Date(redirectUrl.expiresAt).valueOf() <= new Date(currentDate).valueOf()
+  ) {
+    return <UrlExpiredContainer />;
+  }
 
-        await db.shortLinks.update({
-            where: {
-                slug
-            },
-            data: {
-                usage: usageA
-            }
-        })
+  let reported = redirectUrl.reports;
+  let usageA;
+  usageA = redirectUrl.usage + 1;
 
-        if (reported.length > 0) {
-            let redirectUU = redirectUrl.link
-            return (
-                <UrlReportedContainer url={redirectUU} />
-            )
-        }
+  await db.shortLinks.update({
+    where: {
+      slug,
+    },
+    data: {
+      usage: usageA,
+    },
+  });
 
-        return redirect(redirectUrl.link)
-    } else {
-        return (
-            <UrlExpiredContainer />
-        )
-    }
+  if (reported.length > 0) {
+    let redirectUU = redirectUrl.link;
+    return <UrlReportedContainer url={redirectUU} />;
+  }
+
+  return redirect(redirectUrl.link);
 }
 
-export default RedirectPage
+export default RedirectPage;

@@ -30,39 +30,51 @@ function LinkContainer({ links, p, session, collections }) {
   // Pagination
 
   const url = "/links";
-  if (!p) {
-    return redirect(url + "?p=1");
-  }
-  const page = p;
+  const pp = parseInt(p);
 
   if (!isFinite(pp)) {
     return redirect(url + "?p=1");
   }
 
+  if (!p) {
+    return redirect(url + "?p=1");
+  }
   const itemsPerPage = 12;
-
-  let pagesNumber =
+  let pagesCount =
     links.length % itemsPerPage >= 1
       ? Math.floor(links.length / itemsPerPage + 1)
       : links.length / itemsPerPage;
-  if (Math.floor(pagesNumber) === 0) {
-    pagesNumber = Math.floor(pagesNumber) + 1;
+  if (Math.floor(pagesCount) === 0) {
+    pagesCount = Math.floor(pagesCount) + 1;
   }
 
-  const pages = Array.from({ length: pagesNumber }, (_, i) => i + 1);
-  const pagess = pages.filter((number) => number < 5);
+  const pages = Array.from({ length: pagesCount }, (_, i) => i + 1);
+  let startPages, endPages, middlePages;
+
+  if (pagesCount <= 5) {
+    startPages = pages;
+  } else if (pagesCount > 5) {
+    startPages = pages.slice(0, 3);
+    if (pagesCount <= 8) {
+      endPages = pages.reverse().slice(0, 2);
+    } else {
+      const mid = Math.floor(pages.length / 2);
+      middlePages = pages.slice(mid - 1, mid + 1);
+      endPages = pages.reverse().slice(0, 3);
+    }
+  }
 
   // Redirect to latest page if page number is invalid
-  if (parseInt(page) > pagesNumber) {
-    return redirect(url + `?p=${pagesNumber}`);
+  if (parseInt(pp) > pagesCount) {
+    return redirect(url + `?p=${pagesCount}`);
   }
-  if (parseInt(page) <= 0) {
+  if (parseInt(pp) <= 0) {
     return redirect(url + "?p=1");
   }
 
   const pagedLinks = shortedLinks.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage,
+    (pp - 1) * itemsPerPage,
+    pp * itemsPerPage,
   );
 
   return (
@@ -100,49 +112,58 @@ function LinkContainer({ links, p, session, collections }) {
             <Pagination>
               <PaginationContent>
                 <PaginationItem>
-                  <Button variant={page == 1 && "disabled"} asChild>
-                    <PaginationPrevious
-                      href={url + `?p=${parseInt(page) - 1}`}
-                    />
+                  <Button variant={pp == 1 && "disabled"} asChild>
+                    <PaginationPrevious href={url + `?p=${parseInt(pp) - 1}`} />
                   </Button>
                 </PaginationItem>
-                {pagess.map((number) => (
-                  <PaginationItem key={number}>
+                {startPages.map((number, index) => (
+                  <PaginationItem key={index}>
                     <PaginationLink
                       href={url + `?p=${number}`}
-                      isActive={page == number}
+                      isActive={pp == number}
                     >
                       {number}
                     </PaginationLink>
                   </PaginationItem>
                 ))}
-                {pagesNumber > 5 && (
-                  <>
-                    {parseInt(page) !== 5 && (
-                      <PaginationItem>
-                        <PaginationEllipsis />
-                      </PaginationItem>
-                    )}
-                    {parseInt(page) >= 5 && (
-                      <>
-                        <PaginationItem>
-                          <PaginationLink
-                            href={url + `?p=${page}`}
-                            isActive={true}
-                          >
-                            {parseInt(page)}
-                          </PaginationLink>
-                        </PaginationItem>
-                      </>
-                    )}
-                  </>
+                {(middlePages || endPages) && (
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
                 )}
+                {middlePages &&
+                  middlePages.map((number, index) => (
+                    <PaginationItem key={index}>
+                      <PaginationLink
+                        href={url + `?p=${number}`}
+                        isActive={pp == number}
+                      >
+                        {number}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                {middlePages && endPages && (
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                )}
+                {endPages &&
+                  endPages.reverse().map((number, index) => (
+                    <PaginationItem key={index}>
+                      <PaginationLink
+                        href={url + `?p=${number}`}
+                        isActive={pp == number}
+                      >
+                        {number}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
                 <PaginationItem>
                   <Button
-                    variant={parseInt(page) == pagesNumber && "disabled"}
+                    variant={parseInt(pp) == pagesCount && "disabled"}
                     asChild
                   >
-                    <PaginationNext href={url + `?p=${parseInt(page) + 1}`} />
+                    <PaginationNext href={url + `?p=${parseInt(pp) + 1}`} />
                   </Button>
                 </PaginationItem>
               </PaginationContent>
