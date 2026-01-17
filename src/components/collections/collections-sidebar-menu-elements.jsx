@@ -81,10 +81,6 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="rounded-xl">
-              <DropdownMenuItem>
-                <Share className="h-4 w-4 mr-2" />
-                <p>Share</p>
-              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() =>
                   onOpen("collectionEdit", {
@@ -162,36 +158,6 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
           <Link href={"/links"}>
             <Library className="h-5 w-5 mr-3" />
             My Links
-          </Link>
-        </Button>
-        <Button
-          variant="sidebar"
-          className={cn(
-            currentPath === "/links/history" && "bg-secondary shadow-sm",
-          )}
-          onClick={() => {
-            handleRedirect("/links/history");
-          }}
-          asChild
-        >
-          <Link href={"/links/history"}>
-            <History className="h-5 w-5 mr-3" />
-            Recently Visited
-          </Link>
-        </Button>
-        <Button
-          variant="sidebar"
-          className={cn(
-            currentPath === "/links/search" && "bg-secondary shadow-sm",
-          )}
-          onClick={() => {
-            handleRedirect("/links/search");
-          }}
-          asChild
-        >
-          <Link href={"/links/search"}>
-            <Search className="h-5 w-5 mr-3" />
-            Search
           </Link>
         </Button>
         <Button
