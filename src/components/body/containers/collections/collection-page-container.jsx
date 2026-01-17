@@ -49,7 +49,7 @@ function CollectionPageContainer({
   }
 
   const pages = Array.from({ length: pagesCount }, (_, i) => i + 1);
-  let startPages, endPages, middlePages;
+  let startPages, endPages;
 
   if (pagesCount <= 5) {
     startPages = pages;
@@ -58,9 +58,7 @@ function CollectionPageContainer({
     if (pagesCount <= 8) {
       endPages = pages.reverse().slice(0, 2);
     } else {
-      const mid = Math.floor(pages.length / 2);
-      middlePages = pages.slice(mid - 1, mid + 1);
-      endPages = pages.reverse().slice(0, 3);
+      endPages = pages.reverse().slice(0, 3).reverse();
     }
   }
 
@@ -130,38 +128,64 @@ function CollectionPageContainer({
                     </PaginationLink>
                   </PaginationItem>
                 ))}
-                {(middlePages || endPages) && (
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                )}
-                {middlePages &&
-                  middlePages.map((number, index) => (
-                    <PaginationItem key={index}>
-                      <PaginationLink
-                        href={url + `?p=${number}`}
-                        isActive={pp == number}
-                      >
-                        {number}
+                {endPages && pp <= 5 ? (
+                  <>
+                    <PaginationItem>
+                      <PaginationLink href={url + `?p=${4}`} isActive={pp == 4}>
+                        4
                       </PaginationLink>
                     </PaginationItem>
-                  ))}
-                {middlePages && endPages && (
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
+                    {pp == 5 && (
+                      <PaginationItem>
+                        <PaginationLink
+                          href={url + `?p=${5}`}
+                          isActive={pp == 5}
+                        >
+                          5
+                        </PaginationLink>
+                      </PaginationItem>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {pp > 5 && (
+                      <PaginationItem>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    )}
+                    {endPages && pp < endPages[0] && (
+                      <>
+                        <PaginationItem>
+                          <PaginationLink
+                            href={url + `?p=${pp}`}
+                            isActive={true}
+                          >
+                            {pp}
+                          </PaginationLink>
+                        </PaginationItem>
+                      </>
+                    )}
+                  </>
                 )}
-                {endPages &&
-                  endPages.map((number, index) => (
-                    <PaginationItem key={index}>
-                      <PaginationLink
-                        href={url + `?p=${number}`}
-                        isActive={pp == number}
-                      >
-                        {number}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
+                {endPages && (
+                  <>
+                    {pp < endPages[0] - 1 && (
+                      <PaginationItem>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    )}
+                    {endPages.map((number, index) => (
+                      <PaginationItem key={index}>
+                        <PaginationLink
+                          href={url + `?p=${number}`}
+                          isActive={pp == number}
+                        >
+                          {number}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                  </>
+                )}
                 <PaginationItem>
                   <Button
                     variant={parseInt(pp) == pagesCount && "disabled"}

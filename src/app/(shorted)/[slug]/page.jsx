@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { notFound } from "next/navigation";
+import { ServerSession } from "@/lib/server-session";
 
 import UrlReportedContainer from "@/components/body/containers/redirecting-container";
 import UrlExpiredContainer from "@/components/body/containers/redirect/urk-expired-container";
@@ -8,6 +9,7 @@ import UrlExpiredContainer from "@/components/body/containers/redirect/urk-expir
 async function RedirectPage({ params }) {
   const { slug } = await params;
   const currentDate = new Date();
+  const session = await ServerSession();
 
   const redirectUrl = await db.shortLinks.findUnique({
     where: {
@@ -22,7 +24,7 @@ async function RedirectPage({ params }) {
     return notFound();
   }
 
-  if (redirectUrl.active === false) {
+  if (!redirectUrl.active) {
     return <UrlExpiredContainer />;
   }
 
@@ -38,15 +40,12 @@ async function RedirectPage({ params }) {
   }
 
   let reported = redirectUrl.reports;
-  let usageA;
-  usageA = redirectUrl.usage + 1;
 
-  await db.shortLinks.update({
-    where: {
-      slug,
-    },
+  // Add a record to history instead of incrementing a number.
+  await db.shortLinkHistory.create({
     data: {
-      usage: usageA,
+      userId: session && session.user.id,
+      linkSlug: redirectUrl.slug,
     },
   });
 
