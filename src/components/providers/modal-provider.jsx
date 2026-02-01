@@ -16,6 +16,8 @@ import NewCollectionModal from "../modals/collections/new-collection-modal";
 import CollectionDeleteModal from "../modals/collections/delete-collection-modal";
 import EditCollectionModal from "../modals/collections/edit-collection-modal";
 import MoreCollectionsModal from "../modals/collections/more-collections-modal";
+import ShareCollectionModal from "@/components/modals/collections/share-collection-modal";
+import ShareCollectionSuccessModal from "../modals/collections/share-collection-success-modal";
 
 function ModalProvider() {
   const [isMounted, setIsMounted] = useState(false);
@@ -42,6 +44,8 @@ function ModalProvider() {
       <CollectionDeleteModal />
       <EditCollectionModal />
       <MoreCollectionsModal />
+      <ShareCollectionModal />
+      <ShareCollectionSuccessModal />
     </>
   );
 }

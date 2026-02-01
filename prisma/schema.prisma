@@ -12,20 +12,21 @@ datasource db {
 }
 
 model User {
-  id            String             @id @default(cuid())
-  name          String
-  email         String?            @unique
-  emailVerified DateTime?
-  image         String?
-  role          String             @default("USER")
-  prefs         UserPreferences[]
-  accounts      Account[]
-  sessions      Session[]
-  bans          UserBans[]
-  links         ShortLinks[]
-  collections   LinkCollections[]
-  reports       LinkReports[]
-  linkHistory   ShortLinkHistory[]
+  id                String                    @id @default(cuid())
+  name              String
+  email             String?                   @unique
+  emailVerified     DateTime?
+  image             String?
+  role              String                    @default("USER")
+  prefs             UserPreferences[]
+  accounts          Account[]
+  sessions          Session[]
+  bans              UserBans[]
+  links             ShortLinks[]
+  collections       LinkCollections[]
+  reports           LinkReports[]
+  linkHistory       ShortLinkHistory[]
+  collectionHistory SharedCollectionHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -126,7 +127,8 @@ model LinkCollections {
   publicSlug   String  @unique
   shareOptions String?
 
-  links ShortLinks[]
+  links        ShortLinks[]
+  sharedVisits SharedCollectionHistory[]
 }
 
 model LinkReports {
@@ -185,4 +187,16 @@ model ShortLinkHistory {
   visitorCountry String     @default("Unknown")
 
   @@index([userId, linkSlug])
+}
+
+model SharedCollectionHistory {
+  id   String   @id @default(cuid())
+  date DateTime @default(now())
+
+  user           User?           @relation(fields: [userId], references: [id])
+  userId         String?
+  collection     LinkCollections @relation(fields: [collectionSlug], references: [publicSlug], onDelete: Cascade)
+  collectionSlug String
+
+  @@index([userId, collectionSlug])
 }

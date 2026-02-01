@@ -1,7 +1,7 @@
 {
   "name": "francium",
-  "version": "1.1.5",
-  "codename": "oneone",
+  "version": "1.2.0",
+  "codename": "onetwo",
   "private": true,
   "scripts": {
     "dev": "next dev",
