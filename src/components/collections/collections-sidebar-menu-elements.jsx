@@ -83,13 +83,20 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="rounded-xl">
               <DropdownMenuItem
-                onClick={() =>
-                  onOpen("collectionShare", {
-                    id: id,
-                    publicSlug: slug,
-                    name: title,
-                  })
-                }
+                onClick={() => {
+                  if (isPublic) {
+                    return onOpen("collectionShareSuccess", {
+                      slug: slug,
+                      name: title,
+                    });
+                  } else {
+                    return onOpen("collectionShare", {
+                      id: id,
+                      publicSlug: slug,
+                      name: title,
+                    });
+                  }
+                }}
               >
                 <Share className="h-4 w-4 mr-2" />
                 <p>Share</p>

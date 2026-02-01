@@ -83,6 +83,7 @@ function CollectionPageContainer({
         id={collectionDetails.id}
         slug={collectionDetails.publicSlug}
         isCollection={true}
+        isPublic={collectionDetails.isPublic}
       />
       <div className="pb-12 px-5">
         <div className="flex flex-col gap-2 py-5">

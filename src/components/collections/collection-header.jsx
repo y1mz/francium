@@ -1,66 +1,72 @@
-"use client"
+"use client";
 
-import { MobileSidebarToggle } from "./collections-mobile-sidebar"
-import LinkNewButton from "../shorter/link-new-button"
-import { Button } from "../ui/button"
-import Link from "next/link"
+import { MobileSidebarToggle } from "./collections-mobile-sidebar";
+import LinkNewButton from "../shorter/link-new-button";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
-import { Home, ChevronRight, Plus } from "lucide-react"
+import { Home, ChevronRight, Plus, Link as LucideLink } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { useLocalSettings } from "@/lib/hooks/useLocalSettings"
+import { cn } from "@/lib/utils";
+import { useLocalSettings } from "@/lib/hooks/useLocalSettings";
 
-function CollectionsHeader({ title, description, id, slug, isCollection }) {
-    const { options } = useLocalSettings()
+function CollectionsHeader({
+  title,
+  description,
+  id,
+  slug,
+  isCollection,
+  isPublic,
+}) {
+  const { options } = useLocalSettings();
 
-    return (
+  return (
     <header
-        className={cn("w-full h-[30vh] shadow-lg",
-            options.enableGradient ? "bg-gradient-to-br from-purple-300 to-indigo-300 dark:from-purple-900 dark:to-indigo-800"
-                : "bg-white/10"
-        )}
+      className={cn(
+        "w-full h-[30vh] shadow-lg",
+        options.enableGradient
+          ? "bg-gradient-to-br from-purple-300 to-indigo-300 dark:from-purple-900 dark:to-indigo-800"
+          : "bg-white/10",
+      )}
     >
-        <div className="w-full flex justify-between items-center px-5 py-3">
-            <nav className="flex items-center gap-1">
-                <MobileSidebarToggle />
-                <Link href="/">
-                    <Home className="h-5 w-5" />
-                </Link>
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                <Link href="/collections">
-                    Collections
-                </Link>
-                {isCollection && (
-                    <>
-                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                        <Link href={"/collection/" + slug} className="line-clamp-1">
-                            {title}
-                        </Link>
-                    </>
-                )}
-            </nav>
-            {isCollection ? (
-                <div className="flex gap-1.5">
-                    <LinkNewButton 
-                        collectionId={id}
-                    />
-                </div>
-            ) : (
-                <Button variant="ghost">
-                    <Plus className="h-5 w-5" />
-                </Button>
-            )}
-        </div>
-        <div className="w-full h-full grid items-center px-5 md:px-10">
-              <div>
-                <h1 className="font-bold text-4xl md:text-5xl">{title}</h1>
-                {isCollection && (
-                    <p>{description}</p>
-                )}
-              </div>
+      <div className="w-full flex justify-between items-center px-5 py-3">
+        <nav className="flex items-center gap-1">
+          <MobileSidebarToggle />
+          <Link href="/">
+            <Home className="h-5 w-5" />
+          </Link>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          <Link href="/collections">Collections</Link>
+          {isCollection && (
+            <>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              <Link href={"/collection/" + slug} className="line-clamp-1">
+                {title}
+              </Link>
+            </>
+          )}
+        </nav>
+        {isCollection ? (
+          <div className="flex gap-1.5">
+            <LinkNewButton collectionId={id} />
           </div>
+        ) : (
+          <Button variant="ghost">
+            <Plus className="h-5 w-5" />
+          </Button>
+        )}
+      </div>
+      <div className="w-full h-full grid items-center px-5 md:px-10">
+        <div>
+          <div className="flex items-center gap-2">
+            {isPublic && <LucideLink className="h-8 w-8" />}
+            <h1 className="font-bold text-4xl md:text-5xl">{title}</h1>
+          </div>
+          {isCollection && <p>{description}</p>}
+        </div>
+      </div>
     </header>
-    )
+  );
 }
 
-export default CollectionsHeader
+export default CollectionsHeader;
