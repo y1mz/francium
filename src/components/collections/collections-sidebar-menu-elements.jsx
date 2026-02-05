@@ -17,6 +17,7 @@ import {
   Pen,
   Search,
   Share,
+  Link as LucideLink,
 } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
 
@@ -47,7 +48,7 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
     router.push(url);
   };
 
-  const CollectionButton = ({ id, slug, title, description }) => {
+  const CollectionButton = ({ id, slug, title, description, isPublic }) => {
     return (
       <Button
         variant="sidebar"
@@ -59,12 +60,12 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
       >
         <Link
           href={`/collection/${slug}`}
-          className="w-full text-start"
+          className="w-full text-start flex gap-2 items-center"
           onClick={() => {
             handleRedirect(`/collection/${slug}`);
           }}
         >
-          {title}
+          {isPublic && <LucideLink className="h-4 w-4" />} {title}
         </Link>
         {!isBanned && (
           <DropdownMenu>
@@ -81,6 +82,25 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="rounded-xl">
+              <DropdownMenuItem
+                onClick={() => {
+                  if (isPublic) {
+                    return onOpen("collectionShareSuccess", {
+                      slug: slug,
+                      name: title,
+                    });
+                  } else {
+                    return onOpen("collectionShare", {
+                      id: id,
+                      publicSlug: slug,
+                      name: title,
+                    });
+                  }
+                }}
+              >
+                <Share className="h-4 w-4 mr-2" />
+                <p>Share</p>
+              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() =>
                   onOpen("collectionEdit", {
@@ -138,6 +158,7 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
             slug={item.publicSlug}
             id={item.id}
             description={item.description}
+            isPublic={item.isPublic}
           />
         ))}
       </>

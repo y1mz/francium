@@ -24,7 +24,7 @@ import {
   CircleMinus,
   LibraryBig,
   CirclePlay,
-  BookPlus,
+  Link as LucideLink,
   BookMinus,
 } from "lucide-react";
 import Link from "next/link";
@@ -281,6 +281,9 @@ function LinkBox({
                           )
                         }
                       >
+                        {collection.isPublic && (
+                          <LucideLink className="h-3 w-3 mr-2" />
+                        )}
                         {collection.name}
                       </DropdownMenuItem>
                     ))}
