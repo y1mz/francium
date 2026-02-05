@@ -184,36 +184,6 @@ function CollectionsSidebarMenuElements({ collections, isBanned }) {
         <Button
           variant="sidebar"
           className={cn(
-            currentPath === "/links/history" && "bg-secondary shadow-sm",
-          )}
-          onClick={() => {
-            handleRedirect("/links/history");
-          }}
-          asChild
-        >
-          <Link href={"/links/history"}>
-            <History className="h-5 w-5 mr-3" />
-            Recently Visited
-          </Link>
-        </Button>
-        <Button
-          variant="sidebar"
-          className={cn(
-            currentPath === "/links/search" && "bg-secondary shadow-sm",
-          )}
-          onClick={() => {
-            handleRedirect("/links/search");
-          }}
-          asChild
-        >
-          <Link href={"/links/search"}>
-            <Search className="h-5 w-5 mr-3" />
-            Search
-          </Link>
-        </Button>
-        <Button
-          variant="sidebar"
-          className={cn(
             currentPath === "/collections" && "bg-secondary shadow-sm",
           )}
           onClick={() => {
