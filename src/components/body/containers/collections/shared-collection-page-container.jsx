@@ -12,7 +12,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import SharedCollectionHeader from "@/components/collections/shared-collection-header";
@@ -65,8 +65,15 @@ function SharedCollectionPageContainer({ slug, collectionDetails, links, p }) {
     pp * itemsPerPage,
   );
 
-  function LinkBox({ LinkId, title, url, shortUrl }) {
+  function LinkBox({ title, url, shortUrl }) {
     const [copied, setCopied] = useState(false);
+
+    useEffect(() => {
+      setTimeout(() => {
+        setCopied(false);
+      }, 4000);
+    }, [copied]);
+
     const handleCopy = async () => {
       const currentUrl = window.location.origin;
       await navigator.clipboard.writeText(`${currentUrl}/${shortUrl}`);
@@ -112,6 +119,7 @@ function SharedCollectionPageContainer({ slug, collectionDetails, links, p }) {
     );
   }
 
+  // Container return
   return (
     <div className="pb-10">
       <SharedCollectionHeader
@@ -136,6 +144,95 @@ function SharedCollectionPageContainer({ slug, collectionDetails, links, p }) {
                 />
               ))}
             </div>
+          )}
+        </div>
+        <div>
+          {links.length > itemsPerPage && (
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <Button variant={pp == 1 && "disabled"} asChild>
+                    <PaginationPrevious href={url + `?p=${parseInt(pp) - 1}`} />
+                  </Button>
+                </PaginationItem>
+                {startPages.map((number, index) => (
+                  <PaginationItem key={index}>
+                    <PaginationLink
+                      href={url + `?p=${number}`}
+                      isActive={pp == number}
+                    >
+                      {number}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                {endPages && pp <= 5 ? (
+                  <>
+                    <PaginationItem>
+                      <PaginationLink href={url + `?p=${4}`} isActive={pp == 4}>
+                        4
+                      </PaginationLink>
+                    </PaginationItem>
+                    {pp == 5 && (
+                      <PaginationItem>
+                        <PaginationLink
+                          href={url + `?p=${5}`}
+                          isActive={pp == 5}
+                        >
+                          5
+                        </PaginationLink>
+                      </PaginationItem>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {pp > 5 && (
+                      <PaginationItem>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    )}
+                    {endPages && pp < endPages[0] && (
+                      <>
+                        <PaginationItem>
+                          <PaginationLink
+                            href={url + `?p=${pp}`}
+                            isActive={true}
+                          >
+                            {pp}
+                          </PaginationLink>
+                        </PaginationItem>
+                      </>
+                    )}
+                  </>
+                )}
+                {endPages && (
+                  <>
+                    {pp < endPages[0] - 1 && (
+                      <PaginationItem>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    )}
+                    {endPages.map((number, index) => (
+                      <PaginationItem key={index}>
+                        <PaginationLink
+                          href={url + `?p=${number}`}
+                          isActive={pp == number}
+                        >
+                          {number}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                  </>
+                )}
+                <PaginationItem>
+                  <Button
+                    variant={parseInt(pp) == pagesCount && "disabled"}
+                    asChild
+                  >
+                    <PaginationNext href={url + `?p=${parseInt(pp) + 1}`} />
+                  </Button>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           )}
         </div>
       </div>

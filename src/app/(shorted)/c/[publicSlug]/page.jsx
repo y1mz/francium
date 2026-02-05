@@ -27,6 +27,24 @@ async function SharedCollectionPage({ params, searchParams }) {
     (link) => link.active == true,
   );
 
+  // Log the collection visit if the user is logged in
+  if (session) {
+    await db.sharedCollectionHistory.upsert({
+      where: {
+        id: collectionDetails.id,
+        userId: session.user.id,
+        collectionSlug: publicSlug,
+      },
+      create: {
+        userId: session.user.id,
+        collectionSlug: publicSlug,
+      },
+      update: {
+        date: new Date(),
+      },
+    });
+  }
+
   return (
     <>
       <SharedCollectionPageContainer

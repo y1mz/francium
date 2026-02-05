@@ -10,7 +10,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
-import { Plus, Library } from "lucide-react";
+import { Plus, Link as LucideLink } from "lucide-react";
 
 import { useModal } from "../hooks/modal-hook";
 import { useToast } from "@/lib/hooks/use-toast";
@@ -124,6 +124,7 @@ function MoreCollectionsModal() {
           {collectionList &&
             collectionList.map((item, index) => (
               <CommandItem key={index}>
+                {item.isPublic && <LucideLink className="mr-2" />}
                 {item.name}
                 <Button
                   className="ml-auto"
